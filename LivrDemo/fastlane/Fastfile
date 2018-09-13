@@ -14,7 +14,7 @@ platform :ios do
 	desc "Run tests"
 	lane :test do
 		scan(
-			clean: true, code_coverage: true, scheme: "LivrDemo", devices: ["iPhone SE", "iPhone 8"]
+			clean: true, code_coverage: true, scheme: "LivrDemo", device: "iPhone 8"
 		)
 
 		slather(

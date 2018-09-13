@@ -1,9 +1,8 @@
-osx_image: xcode10
+osx_image: xcode9.4
 language: swift
 
 cache:
 - bundler
-
 
 install:
 - cd LivrDemo && bundle install
