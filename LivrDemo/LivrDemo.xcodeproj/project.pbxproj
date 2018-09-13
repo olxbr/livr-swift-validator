@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B419D5F27EFFAF7F289FD3BF /* Pods_LivrDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228DEB5DDA0933F6F59C9ACA /* Pods_LivrDemoTests.framework */; };
+		BE1155B3BC4A5EC51DED4713 /* Pods_LivrDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DB5F35E1E83E38A57DF44D /* Pods_LivrDemo.framework */; };
 		D53729892149EFBC00F52CF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53729882149EFBC00F52CF6 /* AppDelegate.swift */; };
 		D537298B2149EFBC00F52CF6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D537298A2149EFBC00F52CF6 /* ViewController.swift */; };
 		D537298E2149EFBC00F52CF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D537298C2149EFBC00F52CF6 /* Main.storyboard */; };
@@ -26,6 +28,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03DB5F35E1E83E38A57DF44D /* Pods_LivrDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LivrDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		15218FD9FD0846364160E383 /* Pods-LivrDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		228DEB5DDA0933F6F59C9ACA /* Pods_LivrDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LivrDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		407E41B1D724B5B7E7F053C4 /* Pods-LivrDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo.release.xcconfig"; sourceTree = "<group>"; };
+		BBD3D3D4D2CC4A6EA3AA0A4E /* Pods-LivrDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LivrDemoTests/Pods-LivrDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 		D53729852149EFBC00F52CF6 /* LivrDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LivrDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D53729882149EFBC00F52CF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D537298A2149EFBC00F52CF6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +43,7 @@
 		D53729992149EFBD00F52CF6 /* LivrDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LivrDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D537299D2149EFBD00F52CF6 /* LivrDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivrDemoTests.swift; sourceTree = "<group>"; };
 		D537299F2149EFBD00F52CF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EF3014263F55C8C5AEF69B5D /* Pods-LivrDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LivrDemoTests/Pods-LivrDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE1155B3BC4A5EC51DED4713 /* Pods_LivrDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,18 +59,41 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B419D5F27EFFAF7F289FD3BF /* Pods_LivrDemoTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		40674D365B38A93E97B16B3F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				15218FD9FD0846364160E383 /* Pods-LivrDemo.debug.xcconfig */,
+				407E41B1D724B5B7E7F053C4 /* Pods-LivrDemo.release.xcconfig */,
+				EF3014263F55C8C5AEF69B5D /* Pods-LivrDemoTests.debug.xcconfig */,
+				BBD3D3D4D2CC4A6EA3AA0A4E /* Pods-LivrDemoTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BFA8C8E5BA5F466DAC9D0293 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				03DB5F35E1E83E38A57DF44D /* Pods_LivrDemo.framework */,
+				228DEB5DDA0933F6F59C9ACA /* Pods_LivrDemoTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D537297C2149EFBC00F52CF6 = {
 			isa = PBXGroup;
 			children = (
 				D53729872149EFBC00F52CF6 /* LivrDemo */,
 				D537299C2149EFBD00F52CF6 /* LivrDemoTests */,
 				D53729862149EFBC00F52CF6 /* Products */,
+				40674D365B38A93E97B16B3F /* Pods */,
+				BFA8C8E5BA5F466DAC9D0293 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,6 +135,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D53729A22149EFBD00F52CF6 /* Build configuration list for PBXNativeTarget "LivrDemo" */;
 			buildPhases = (
+				FC02BFEEE07B79A84467E41F /* [CP] Check Pods Manifest.lock */,
 				D53729812149EFBC00F52CF6 /* Sources */,
 				D53729822149EFBC00F52CF6 /* Frameworks */,
 				D53729832149EFBC00F52CF6 /* Resources */,
@@ -120,6 +153,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D53729A52149EFBD00F52CF6 /* Build configuration list for PBXNativeTarget "LivrDemoTests" */;
 			buildPhases = (
+				67C72E31D2A42241B554CC25 /* [CP] Check Pods Manifest.lock */,
 				D53729952149EFBD00F52CF6 /* Sources */,
 				D53729962149EFBD00F52CF6 /* Frameworks */,
 				D53729972149EFBD00F52CF6 /* Resources */,
@@ -191,6 +225,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		67C72E31D2A42241B554CC25 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LivrDemoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FC02BFEEE07B79A84467E41F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LivrDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D53729812149EFBC00F52CF6 /* Sources */ = {
@@ -358,15 +431,13 @@
 		};
 		D53729A32149EFBD00F52CF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15218FD9FD0846364160E383 /* Pods-LivrDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9MK4PBNUW;
 				INFOPLIST_FILE = LivrDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.marinofelipe.LivrDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -376,15 +447,13 @@
 		};
 		D53729A42149EFBD00F52CF6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 407E41B1D724B5B7E7F053C4 /* Pods-LivrDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9MK4PBNUW;
 				INFOPLIST_FILE = LivrDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.marinofelipe.LivrDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -394,17 +463,14 @@
 		};
 		D53729A62149EFBD00F52CF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EF3014263F55C8C5AEF69B5D /* Pods-LivrDemoTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9MK4PBNUW;
 				INFOPLIST_FILE = LivrDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.marinofelipe.LivrDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -415,17 +481,14 @@
 		};
 		D53729A72149EFBD00F52CF6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BBD3D3D4D2CC4A6EA3AA0A4E /* Pods-LivrDemoTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9MK4PBNUW;
 				INFOPLIST_FILE = LivrDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.marinofelipe.LivrDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

@@ -1,0 +1,12 @@
+platform :ios, '9.0'
+
+target 'LivrDemo' do
+  use_frameworks!
+
+  pod 'Livr', :path => '../'
+
+  target 'LivrDemoTests' do
+    inherit! :search_paths
+  end
+
+end
