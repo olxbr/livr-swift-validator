@@ -1,6 +1,6 @@
 osx_image: xcode10
 language: swift
 install:
-- bundle install
+- cd LivrDemo && bundle install
 script: 
-- cd LivrDemo && bundle exec fastlane test
+- bundle exec fastlane test
