@@ -1,0 +1,18 @@
+osx_image: xcode10
+language: objective-c
+
+cache:
+- bundler
+- cocoapods
+
+before_install:
+- gem install slather
+- gem install coveralls
+- gem cleanup
+
+install:
+- pod repo update --silent
+- pod install --project-directory=LivrDemo
+
+after_success: 
+- cd LivrDemo && fastlane test
