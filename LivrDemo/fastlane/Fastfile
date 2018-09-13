@@ -5,8 +5,11 @@ def cocoapods
 end
 
 default_platform(:ios)
-
 platform :ios do
+	before_all do
+		sh "cd .. && pod repo update --silent"
+    	cocoapods
+  	end
   
 ###-------------------------------- Tests ---------------------------###
 	desc "Run tests"
