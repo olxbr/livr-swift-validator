@@ -4,13 +4,9 @@ language: swift
 cache:
 - bundler
 
-before_install:
-- gem install fastlane -NV
 
 install:
 - cd LivrDemo && bundle install
 
 script: 
-- rm -rf ~/Library/Developer/Xcode/DerivedData
-- sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 - bundle exec fastlane test
