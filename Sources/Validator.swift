@@ -5,39 +5,12 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
-protocol LivrRule {
-    static var name: String {get}
-    var errorCode: String {get}
-    
-    typealias ErrorCode = String
-    func validate(value: Any) -> ErrorCode?
-}
-
-struct Common {
-    
-    struct Required: LivrRule {
-        static var name = "required"
-        var errorCode = "CANNOT_BE_EMPTY"
-        
-        init() {}
-        
-        func validate(value: Any) -> ErrorCode? {
-            guard let stringValue = value as? String, !stringValue.isEmpty else {
-                return errorCode
-            }
-            return nil
-        }
-    }
-}
-
-// TODO: Separate in another file 👆
-
 struct Validator {
     
     private(set) var errors: JSON?
     private(set) var output: JSON?
     
-    private(set) var rules: LivrRulesJSON?
+    private(set) var rules: LivrRulesDict?
     
     typealias Output = JSON
     typealias Errors = JSON
@@ -68,7 +41,7 @@ struct Validator {
         }
     }
     
-    mutating func register(_ rules: LivrRulesJSON) {
+    mutating func register(_ rules: LivrRulesDict) {
         self.rules = rules
     }
     
