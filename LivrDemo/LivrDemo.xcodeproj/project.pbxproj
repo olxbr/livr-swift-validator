@@ -230,7 +230,7 @@
 		D537298E2149EFBC00F52CF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D537298C2149EFBC00F52CF6 /* Main.storyboard */; };
 		D53729902149EFBD00F52CF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D537298F2149EFBD00F52CF6 /* Assets.xcassets */; };
 		D53729932149EFBD00F52CF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D53729912149EFBD00F52CF6 /* LaunchScreen.storyboard */; };
-		D537299E2149EFBD00F52CF6 /* LivrDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D537299D2149EFBD00F52CF6 /* LivrDemoTests.swift */; };
+		D537299E2149EFBD00F52CF6 /* PositiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D537299D2149EFBD00F52CF6 /* PositiveTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -473,7 +473,7 @@
 		D53729922149EFBD00F52CF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D53729942149EFBD00F52CF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D53729992149EFBD00F52CF6 /* LivrDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LivrDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D537299D2149EFBD00F52CF6 /* LivrDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivrDemoTests.swift; sourceTree = "<group>"; };
+		D537299D2149EFBD00F52CF6 /* PositiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositiveTests.swift; sourceTree = "<group>"; };
 		D537299F2149EFBD00F52CF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF3014263F55C8C5AEF69B5D /* Pods-LivrDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LivrDemoTests/Pods-LivrDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1370,7 +1370,7 @@
 			isa = PBXGroup;
 			children = (
 				D50A1ED42150B0D000397D0A /* resources */,
-				D537299D2149EFBD00F52CF6 /* LivrDemoTests.swift */,
+				D537299D2149EFBD00F52CF6 /* PositiveTests.swift */,
 				D537299F2149EFBD00F52CF6 /* Info.plist */,
 			);
 			path = LivrDemoTests;
@@ -1743,7 +1743,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D537299E2149EFBD00F52CF6 /* LivrDemoTests.swift in Sources */,
+				D537299E2149EFBD00F52CF6 /* PositiveTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

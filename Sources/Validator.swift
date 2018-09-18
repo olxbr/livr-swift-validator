@@ -6,17 +6,17 @@
 //
 
 protocol LivrRule {
-    var name: String {get}
+    static var name: String {get}
     var errorCode: String {get}
     
     typealias ErrorCode = String
-    func validate(value: Any) throws -> ErrorCode?
+    func validate(value: Any) -> ErrorCode?
 }
 
 struct Common {
     
     struct Required: LivrRule {
-        var name = "required"
+        static var name = "required"
         var errorCode = "CANNOT_BE_EMPTY"
         
         init() {}
@@ -30,41 +30,54 @@ struct Common {
     }
 }
 
-enum Rule: String {
-    case required
-}
+// TODO: Separate in another file 👆
 
 struct Validator {
     
-    private(set) var errors: [Json]?
+    private(set) var errors: JSON?
+    private(set) var output: JSON?
     
-    typealias Json = [String: Any]
-    mutating func validate(data: Json) -> Bool {
+    private(set) var rules: LivrRulesJSON?
+    
+    typealias Output = JSON
+    typealias Errors = JSON
+    
+    mutating func validate(data: JSON) -> (Output?, Errors?) {
         
-        for pairOfFieldNameAndValidationRule in data {
-            let field = pairOfFieldNameAndValidationRule.key
-            let validationRule = pairOfFieldNameAndValidationRule.value
+        for pairOfFieldNameAndValue in data {
+            let field = pairOfFieldNameAndValue.key
+            let value = pairOfFieldNameAndValue.value
             
-            verify(validationRule, for: field)
+            verify(value, for: field)
         }
         
-        return errors != nil
+        return (nil, errors)
     }
     
-    mutating func verify(_ validationRule: Any, for field: String) {
-        if let stringRule = validationRule as? String, let rule = Rule(rawValue: stringRule), rule == .required {
-            if let error = Common.Required().validate(value: stringRule) {
-                errors?.append([field: error])
-            }
+    mutating func verify(_ value: Any, for field: String) {
+        guard let rule = rules?[field] else {
+            // TODO: log console error for rule not in received rules
+            return
         }
+        
+        if let error = rule.validate(value: value) {
+            errors?[field] = error
+        } else {
+            output?[field] = value
+            // TODO: trim if needed
+        }
+    }
+    
+    mutating func register(_ rules: LivrRulesJSON) {
+        self.rules = rules
     }
     
     private func autoTrim(data: Any) -> Any {
-        if var data = data as? [Json] {
+        if var data = data as? [JSON] {
             for (index, _) in data.enumerated() {
                 data[index].trim()
             }
-        } else if var data = data as? Json {
+        } else if var data = data as? JSON {
             return data.trim()
         }
         
