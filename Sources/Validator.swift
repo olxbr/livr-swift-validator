@@ -5,76 +5,59 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
-enum ValidatorError: Error {
-    case unableToTrim
+protocol LivrRule {
+    var name: String {get}
+    var errorCode: String {get}
+    
+    typealias ErrorCode = String
+    func validate(value: Any) throws -> ErrorCode?
+}
+
+struct Common {
+    
+    struct Required: LivrRule {
+        var name = "required"
+        var errorCode = "CANNOT_BE_EMPTY"
+        
+        init() {}
+        
+        func validate(value: Any) -> ErrorCode? {
+            guard let stringValue = value as? String, !stringValue.isEmpty else {
+                return errorCode
+            }
+            return nil
+        }
+    }
+}
+
+enum Rule: String {
+    case required
 }
 
 struct Validator {
     
-    typealias RuleFunction = () -> Void
-    
-    private(set) var defaultRules: [String: RuleFunction]?
-    private(set) var livrRules: [String: RuleFunction]
-    
-    var isAutoTrim: Bool = true
-    var isPrepared: Bool = false
-    
-    var validators: [String: RuleFunction]?
-    var validatorBuilders: [String: RuleFunction]?
-    var errors: [Error]?
-    
-    init(rules: [String: RuleFunction], isAutoTrim: Bool = true) {
-        self.livrRules = rules
-        self.isAutoTrim = isAutoTrim
-    }
-
-    mutating func register(defaultRules: [String: RuleFunction]) {
-        self.defaultRules = defaultRules
-//        for rule in defaultRules {
-//            self.defaultRules?[rule.key] = rule.value
-//        }
-    }
-    
-    mutating func register(rules: [String: RuleFunction]) {
-        self.validatorBuilders = rules
-    }
-    
-    // MARK: -
-    private mutating func prepare() {
-        guard !isPrepared else { return }
-        
-        for rule in livrRules {
-//            if !rule.value is Array {
-//
-//            }
-        }
-        
-        isPrepared = true
-    }
+    private(set) var errors: [Json]?
     
     typealias Json = [String: Any]
-    mutating func validate(data: Json) throws -> Bool {
-        prepare()
+    mutating func validate(data: Json) -> Bool {
         
-        var dataToValidate = data
-        if isAutoTrim {
-            guard let data = autoTrim(data: data) as? Json else {
-                throw ValidatorError.unableToTrim
-            }
+        for pairOfFieldNameAndValidationRule in data {
+            let field = pairOfFieldNameAndValidationRule.key
+            let validationRule = pairOfFieldNameAndValidationRule.value
             
-            dataToValidate = data
+            verify(validationRule, for: field)
         }
         
-        var errors = Json()
-        var result = Json()
-        var finalData = dataToValidate
-        
-        for validator in validators! {
-            let value = finalData[validator.key]
-            let valids = validator
-        }
+        return errors != nil
     }
     
+    mutating func verify(_ validationRule: Any, for field: String) {
+        if let stringRule = validationRule as? String, let rule = Rule(rawValue: stringRule), rule == .required {
+            if let error = Common.Required().validate(value: stringRule) {
+                errors?.append([field: error])
+            }
+        }
+    }
     
     private func autoTrim(data: Any) -> Any {
         if var data = data as? [Json] {
