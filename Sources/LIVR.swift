@@ -11,8 +11,8 @@ struct LIVR {
     
     static var defaultRules: LivrRulesDict = [Common.Required.name: Common.Required()]
     
-    public static func validator() -> Validator {
-        var validator = Validator()
+    public static func validator(validationRules: JSON) -> Validator {
+        var validator = Validator(validationRules: validationRules)
         validator.register(defaultRules)
         return validator
     }

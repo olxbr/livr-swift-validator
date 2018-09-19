@@ -10,10 +10,49 @@ struct Validator {
     private(set) var errors: JSON?
     private(set) var output: JSON?
     
-    private(set) var rules: LivrRulesDict?
+    private(set) var allAvailableRules: LivrRulesDict?
+    
+    typealias Field = String
+    typealias Rules = [LivrRule]
+    private(set) var rulesByField: [Field: Rules]?
     
     typealias Output = JSON
     typealias Errors = JSON
+    
+    init(validationRules: JSON) {
+        setRulesByField(for: validationRules)
+    }
+    
+    // FIXME: This basic stage do not considers nested objects nor any complex rules, aliased rules and whatsoever - doing the most simple way for each step
+    private mutating func setRulesByField(for validationRules: JSON) {
+        rulesByField = [:]
+        
+        for pairOfFieldAndValidationRules in validationRules {
+            let field = pairOfFieldAndValidationRules.key
+            let validationRules = pairOfFieldAndValidationRules.value
+            
+            if let ruleName = validationRules as? String {
+                guard let rule = allAvailableRules?[ruleName] else {
+                    // LOG or throw error - Rule [' + ruleName + '] not registered
+                    continue
+                }
+                
+                rulesByField?[field] = [rule]
+            } else if let rulesNames = validationRules as? [String] {
+                var rules: [LivrRule] = []
+                for ruleName in rulesNames {
+                    guard let rule = allAvailableRules?[ruleName] else {
+                        // LOG or throw error - Rule [' + ruleName + '] not registered
+                        continue
+                    }
+                    
+                    rules.append(rule)
+                }
+                
+                rulesByField?[field] = rules
+            }
+        }
+    }
     
     mutating func validate(data: JSON) -> (Output?, Errors?) {
         
@@ -21,28 +60,31 @@ struct Validator {
             let field = pairOfFieldNameAndValue.key
             let value = pairOfFieldNameAndValue.value
             
-            verify(value, for: field)
+            validate(value, for: field)
         }
         
         return (nil, errors)
     }
     
-    mutating func verify(_ value: Any, for field: String) {
-        guard let rule = rules?[field] else {
+    mutating private func validate(_ value: Any, for field: String) {
+        // now it treats as a single rule by field only
+        guard let rules = rulesByField?[field] else {
             // TODO: log console error for rule not in received rules
             return
         }
         
-        if let error = rule.validate(value: value) {
-            errors?[field] = error
-        } else {
-            output?[field] = value
-            // TODO: trim if needed
+        for rule in rules {
+            if let error = rule.validate(value: value) {
+                errors?[field] = error
+            } else {
+                output?[field] = value
+                // TODO: trim if needed
+            }
         }
     }
     
     mutating func register(_ rules: LivrRulesDict) {
-        self.rules = rules
+        self.allAvailableRules = rules
     }
     
     private func autoTrim(data: Any) -> Any {
