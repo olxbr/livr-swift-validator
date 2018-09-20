@@ -19,6 +19,11 @@ struct Validator {
     typealias Output = JSON
     typealias Errors = JSON
     
+    // MARK: - Register + Rules of validation
+    mutating func register(_ rules: LivrRulesDict) {
+        self.allAvailableRules = rules
+    }
+    
     init(validationRules: JSON) {
         setRulesByField(for: validationRules)
     }
@@ -32,28 +37,47 @@ struct Validator {
             let validationRules = pairOfFieldAndValidationRules.value
             
             if let ruleName = validationRules as? String {
-                guard let rule = allAvailableRules?[ruleName] else {
-                    // LOG or throw error - Rule [' + ruleName + '] not registered
-                    continue
-                }
+                guard let rule = getRegisterdRule(with: ruleName) else { continue }
                 
                 rulesByField?[field] = [rule]
-            } else if let rulesNames = validationRules as? [String] {
+            } else if let namesOfRules = validationRules as? [String] {
                 var rules: [LivrRule] = []
-                for ruleName in rulesNames {
-                    guard let rule = allAvailableRules?[ruleName] else {
-                        // LOG or throw error - Rule [' + ruleName + '] not registered
-                        continue
-                    }
+                for ruleName in namesOfRules {
+                    guard let rule = getRegisterdRule(with: ruleName) else { continue }
                     
                     rules.append(rule)
                 }
                 
                 rulesByField?[field] = rules
+            } else if let rulesObject = validationRules as? JSON {
+                // analise json to get key and object
+                if let ruleObject = rulesObject.first {
+                    let ruleName = ruleObject.key
+                    guard let rule = getRegisterdRule(with: ruleName) else { continue }
+                    
+                    rulesByField?[field] = [rule]
+                }
+            } else if let rulesObjects = validationRules as? [JSON] {
+                // analise json to get key and object
+                if let ruleObject = rulesObjects.first?.first {
+                    let ruleName = ruleObject.key
+                    guard let rule = getRegisterdRule(with: ruleName) else { continue }
+                    
+                    rulesByField?[field] = [rule]
+                }
             }
         }
     }
     
+    private func getRegisterdRule(with ruleName: String) -> LivrRule? {
+        guard let rule = allAvailableRules?[ruleName] else {
+            // LOG or throw error - Rule [' + ruleName + '] not registered
+            return nil
+        }
+        return rule
+    }
+    
+    // MARK: - Validate + Trim
     mutating func validate(data: JSON) -> (Output?, Errors?) {
         
         for pairOfFieldNameAndValue in data {
@@ -81,10 +105,6 @@ struct Validator {
                 // TODO: trim if needed
             }
         }
-    }
-    
-    mutating func register(_ rules: LivrRulesDict) {
-        self.allAvailableRules = rules
     }
     
     private func autoTrim(data: Any) -> Any {
