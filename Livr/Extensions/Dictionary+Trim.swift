@@ -5,9 +5,9 @@
 //  Created by Felipe Lefèvre Marino on 9/16/18.
 //
 
-typealias JSON = [String: Any]
+typealias JSON = [String: AnyObject]
 
-extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: AnyObject {
     
     mutating func trim() {
         for element in self {

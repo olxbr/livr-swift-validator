@@ -14,6 +14,8 @@ struct Validator {
     
     typealias Field = String
     typealias Rules = [LivrRule]
+    
+    private(set) var validationRules: JSON
     private(set) var rulesByField: [Field: Rules]?
     
     typealias Output = JSON
@@ -25,11 +27,11 @@ struct Validator {
     }
     
     init(validationRules: JSON) {
-        setRulesByField(for: validationRules)
+        self.validationRules = validationRules
     }
     
     // FIXME: This basic stage do not considers nested objects nor any complex rules, aliased rules and whatsoever - doing the most simple way for each step
-    private mutating func setRulesByField(for validationRules: JSON) {
+    private mutating func setRulesByField() {
         rulesByField = [:]
         
         for pairOfFieldAndValidationRules in validationRules {
@@ -80,6 +82,8 @@ struct Validator {
     // MARK: - Validate + Trim
     mutating func validate(data: JSON) -> (Output?, Errors?) {
         
+        setRulesByField()
+        
         for pairOfFieldNameAndValue in data {
             let field = pairOfFieldNameAndValue.key
             let value = pairOfFieldNameAndValue.value
@@ -87,7 +91,7 @@ struct Validator {
             validate(value, for: field)
         }
         
-        return (nil, errors)
+        return (output, errors)
     }
     
     mutating private func validate(_ value: Any, for field: String) {
@@ -99,9 +103,11 @@ struct Validator {
         
         for rule in rules {
             if let error = rule.validate(value: value) {
-                errors?[field] = error
+                errors == nil ? errors = [:] : ()
+                errors?[field] = error as AnyObject
             } else {
-                output?[field] = value
+                output == nil ? output = [:] : ()
+                output?[field] = value as AnyObject
                 // TODO: trim if needed
             }
         }

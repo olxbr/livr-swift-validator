@@ -14,7 +14,7 @@ struct Common {
         init() {}
         
         func validate(value: Any) -> ErrorCode? {
-            guard let stringValue = value as? String, !stringValue.isEmpty else {
+            if String(describing: value).isEmpty {
                 return errorCode
             }
             return nil
