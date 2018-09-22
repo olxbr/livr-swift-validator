@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='LivrTests.xctest' tests='2' failures='0'>
+  <testsuite name='LivrTests.PositiveTests' tests='2' failures='0'>
+    <testcase classname='LivrTests.PositiveTests' name='testPerformanceExample' time='0.296'/>
+    <testcase classname='LivrTests.PositiveTests' name='testRequired' time='0.034'/>
+  </testsuite>
+</testsuites>

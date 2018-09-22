@@ -1,0 +1,56 @@
+def cocoapods
+{
+	podspec: "Livr.podspec"
+}
+end
+
+default_platform(:ios)
+platform :ios do
+	
+###-------------------------------- Tests ---------------------------###
+	desc "Run tests"
+	lane :test do
+		scan(
+			clean: true, code_coverage: true, scheme: "Livr", device: "iPhone 8"
+		)
+
+		slather(
+			proj: "Livr.xcodeproj", scheme: "Livr", source_directory: "Livr", binary_basename: "Livr", travis: true, coveralls: true
+		)
+  	end
+
+  
+###-------------------------------- Tag and publish ---------------------------###
+
+	desc "Tag pod"
+	lane :tag do |options|
+		ensure_git_status_clean	
+		sh "git fetch --tags"
+	  	last_tag = last_git_tag
+	  	
+	  	version_number = get_info_plist_value(path: './Pods/Target Support Files/Livr/Info.plist', key: 'CFBundleShortVersionString')
+
+	  	if (Gem::Version.new(last_tag) >= Gem::Version.new(version_number))
+	    	if options[:force] 
+	      		version_number = patch
+	    	else
+	      	raise "There is already a tag with this number version. If you want to force create a tag do: fastlane tag force:true \nYou should first 		update the version number with : fastlane patch | fastlane minor | fastlane major".yellow
+	    	end
+	  	else
+	    	UI.success "it is ok, all good! last tag #{last_tag} != new version #{version_number} 💪".green
+	  	end
+
+	  	version_bump_podspec(path: "#{cocoapods[:podspec]}", version_number: version_number)
+	  	sh "git commit -am \"Publish pod version: #{version_number} [ci skip]\""
+	  	add_git_tag(tag: version_number)
+	  	push_git_tags
+	  	push_to_git_remote
+	  	
+	end
+
+	desc "publish pod"
+	lane :publish do
+		pod_push(path: "#{cocoapods[:podspec]}")
+	end
+
+end
