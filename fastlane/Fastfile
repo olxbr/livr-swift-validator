@@ -15,7 +15,7 @@ platform :ios do
 		)
 
 		slather(
-			proj: "LivrDemo.xcodeproj", scheme: "Livr", source_directory: "Livr", binary_basename: "Livr", travis: true, coveralls: true
+			proj: "Livr.xcodeproj", scheme: "Livr", source_directory: "Livr", binary_basename: "Livr", travis: true, coveralls: true
 		)
   	end
 
