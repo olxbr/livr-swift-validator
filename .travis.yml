@@ -3,11 +3,9 @@ language: swift
 
 cache:
 - bundler
-- cocoapods
 
 install:
-- pod install --project-directory=LivrDemo
-- cd LivrDemo && bundle install
+- bundle install
 
 script: 
 - bundle exec fastlane test
