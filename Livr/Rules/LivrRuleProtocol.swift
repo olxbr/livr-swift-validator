@@ -10,5 +10,5 @@ protocol LivrRule {
     var errorCode: String {get}
     
     typealias ErrorCode = String
-    func validate(value: Any) -> ErrorCode?
+    func validate(value: Any?) -> ErrorCode?
 }

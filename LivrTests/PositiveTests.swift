@@ -35,6 +35,20 @@ class PositiveTests: XCTestCase {
         XCTAssertEqual(outputAndErrors.0?.description, outputJson.description,"output json should be correct")
     }
     
+    func testNotEmpty() {
+        let jsonLoader = JsonLoader(testDirectory: .resourcesPath + "02-not_empty")
+        
+        let inputJson = jsonLoader.load(file: .input)
+        let outputJson = jsonLoader.load(file: .output)
+        let rulesJson = jsonLoader.load(file: .rules)
+        
+        var validator = LIVR.validator(validationRules: rulesJson)
+        let outputAndErrors = validator.validate(data: inputJson)
+        
+        XCTAssertNil(outputAndErrors.1, "errors json should be nil")
+        XCTAssertEqual(outputAndErrors.0?.description, outputJson.description,"output json should be correct")
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
