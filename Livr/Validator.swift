@@ -5,6 +5,17 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
+enum ValidatingError: Error {
+    case notRegistered(rule: String)
+    
+    var description: String {
+        switch self {
+        case .notRegistered(let ruleName):
+            return "Rule [" + ruleName + "] not registered"
+        }
+    }
+}
+
 struct Validator {
     
     private(set) var errors: JSON?
@@ -31,7 +42,7 @@ struct Validator {
     }
     
     // FIXME: This basic stage do not considers nested objects nor any complex rules, aliased rules and whatsoever - doing the most simple way for each step
-    private mutating func setRulesByField() {
+    private mutating func setRulesByField() throws {
         rulesByField = [:]
         
         for pairOfFieldAndValidationRules in validationRules {
@@ -39,13 +50,13 @@ struct Validator {
             let validationRules = pairOfFieldAndValidationRules.value
             
             if let ruleName = validationRules as? String {
-                guard let rule = getRegisterdRule(with: ruleName) else { continue }
+                guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
                 
                 rulesByField?[field] = [rule]
             } else if let namesOfRules = validationRules as? [String] {
                 var rules: [LivrRule] = []
                 for ruleName in namesOfRules {
-                    guard let rule = getRegisterdRule(with: ruleName) else { continue }
+                    guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
                     
                     rules.append(rule)
                 }
@@ -55,7 +66,7 @@ struct Validator {
                 // analise json to get key and object
                 if let ruleObject = rulesObject.first {
                     let ruleName = ruleObject.key
-                    guard let rule = getRegisterdRule(with: ruleName) else { continue }
+                    guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
                     
                     rulesByField?[field] = [rule]
                 }
@@ -63,7 +74,7 @@ struct Validator {
                 // analise json to get key and object
                 if let ruleObject = rulesObjects.first?.first {
                     let ruleName = ruleObject.key
-                    guard let rule = getRegisterdRule(with: ruleName) else { continue }
+                    guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
                     
                     rulesByField?[field] = [rule]
                 }
@@ -71,18 +82,17 @@ struct Validator {
         }
     }
     
-    private func getRegisterdRule(with ruleName: String) -> LivrRule? {
+    private mutating func getRegisterdRule(with ruleName: String, for field: String) throws -> LivrRule? {
         guard let rule = allAvailableRules?[ruleName] else {
-            // LOG or throw error - Rule [' + ruleName + '] not registered
-            return nil
+            throw ValidatingError.notRegistered(rule: ruleName)
         }
         return rule
     }
     
     // MARK: - Validate + Trim
-    mutating func validate(data: JSON) -> (Output?, Errors?) {
+    mutating func validate(data: JSON) throws -> (Output?, Errors?) {
         
-        setRulesByField()
+        try setRulesByField()
         
         for pairOfFieldNameAndValue in data {
             let field = pairOfFieldNameAndValue.key
@@ -102,12 +112,13 @@ struct Validator {
         }
         
         for rule in rules {
-            if let error = rule.validate(value: value).0 {
+            let errorAndUpdatedValue = rule.validate(value: value)
+            if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error as AnyObject
             } else {
                 output == nil ? output = [:] : ()
-                output?[field] = rule.validate(value: value).1 ?? value as AnyObject
+                output?[field] = errorAndUpdatedValue.1 ?? value as AnyObject
                 // TODO: trim if needed
             }
         }

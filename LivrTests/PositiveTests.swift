@@ -22,6 +22,14 @@ class PositiveTests: XCTestCase {
     func testInteger() {
         validate(testSuiteAt: .resourcesPath + "09-integer")
     }
+    
+    func testDecimal() {
+        validate(testSuiteAt: .resourcesPath + "11-decimal")
+    }
+    
+    func testPositiveInteger() {
+        validate(testSuiteAt: .resourcesPath + "10-positive_integer")
+    }
 }
 
 
