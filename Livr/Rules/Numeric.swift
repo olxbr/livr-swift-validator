@@ -32,7 +32,7 @@ struct Numeric {
         }
     }
     
-    // must be integer
+    // must be a positive integer
     struct PositiveInteger: LivrRule {
         static var name = "positive_integer"
         var errorCode = "NOT_POSITIVE_INTEGER"
@@ -40,7 +40,7 @@ struct Numeric {
         init() {}
         
         func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let selfAsInt = value as? Int else {
+            guard let valueAsInt = value as? Int else {
                 if let stringValue = value as? String {
                     if stringValue.isEmpty {
                         return (nil, nil)
@@ -54,11 +54,10 @@ struct Numeric {
                 }
                 return (errorCode, nil)
             }
-            if selfAsInt < 0 {
+            if valueAsInt < 0 {
                 return (errorCode, nil)
-            } else {
-                return (nil, nil)
             }
+            return (nil, nil)
         }
     }
     
@@ -80,6 +79,39 @@ struct Numeric {
                         return (nil, doubleValue as AnyObject)
                     }
                 }
+                return (errorCode, nil)
+            }
+            return (nil, nil)
+        }
+    }
+    
+    // must be a positive decimal
+    struct PositiveDecimal: LivrRule {
+        static var name = "positive_decimal"
+        var errorCode = "NOT_POSITIVE_DECIMAL"
+        
+        init() {}
+        
+        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+            guard let valueAsDouble = value as? Double else {
+                if let stringValue = value as? String {
+                    if stringValue.isEmpty {
+                        return (nil, nil)
+                    } else if let intValue = Int(stringValue) {
+                        if intValue < 0 {
+                            return (errorCode, nil)
+                        }
+                        return (nil, DecimalNum(intValue) as AnyObject)
+                    } else if let doubleValue = Double(stringValue) {
+                        if doubleValue < 0 {
+                            return (errorCode, nil)
+                        }
+                        return (nil, doubleValue as AnyObject)
+                    }
+                }
+                return (errorCode, nil)
+            }
+            if valueAsDouble < 0 {
                 return (errorCode, nil)
             }
             return (nil, nil)

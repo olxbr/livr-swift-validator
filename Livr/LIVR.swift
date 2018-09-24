@@ -13,7 +13,8 @@ struct LIVR {
                                               Common.NotEmpty.name: Common.NotEmpty(),
                                               Numeric.Integer.name: Numeric.Integer(),
                                               Numeric.Decimal.name: Numeric.Decimal(),
-                                              Numeric.PositiveInteger.name: Numeric.PositiveInteger()]
+                                              Numeric.PositiveInteger.name: Numeric.PositiveInteger(),
+                                              Numeric.PositiveDecimal.name: Numeric.PositiveDecimal()]
     
     public static func validator(validationRules: JSON) -> Validator {
         var validator = Validator(validationRules: validationRules)

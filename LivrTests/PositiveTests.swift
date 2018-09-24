@@ -30,6 +30,10 @@ class PositiveTests: XCTestCase {
     func testPositiveInteger() {
         validate(testSuiteAt: .resourcesPath + "10-positive_integer")
     }
+    
+    func testPositiveDecimal() {
+        validate(testSuiteAt: .resourcesPath + "12-positive_decimal")
+    }
 }
 
 
