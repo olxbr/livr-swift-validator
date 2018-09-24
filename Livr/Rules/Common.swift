@@ -14,11 +14,11 @@ struct Common {
         
         init() {}
         
-        func validate(value: Any?) -> ErrorCode? {
+        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
             guard let value = value, !String(describing: value).isEmpty else {
-                return errorCode
+                return (errorCode, nil)
             }
-            return nil
+            return (nil, nil)
         }
     }
     
@@ -29,11 +29,11 @@ struct Common {
         
         init() {}
         
-        func validate(value: Any?) -> ErrorCode? {
+        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
             if let value = value, String(describing: value).isEmpty {
-                return errorCode
+                return (errorCode, nil)
             }
-            return nil
+            return (nil, nil)
         }
     }
 }

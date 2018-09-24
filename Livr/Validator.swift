@@ -102,12 +102,12 @@ struct Validator {
         }
         
         for rule in rules {
-            if let error = rule.validate(value: value) {
+            if let error = rule.validate(value: value).0 {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error as AnyObject
             } else {
                 output == nil ? output = [:] : ()
-                output?[field] = value as AnyObject
+                output?[field] = rule.validate(value: value).1 ?? value as AnyObject
                 // TODO: trim if needed
             }
         }
