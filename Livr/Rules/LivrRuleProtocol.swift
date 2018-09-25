@@ -13,3 +13,7 @@ protocol LivrRule {
     typealias UpdatedValue = AnyObject
     func validate(value: Any?) -> (ErrorCode?, UpdatedValue?)
 }
+
+extension String {
+    static let formatErrorCode = "FORMAT_ERROR"
+}

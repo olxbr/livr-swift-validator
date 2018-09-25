@@ -15,9 +15,7 @@ struct Common {
         init() {}
         
         func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let value = value, !String(describing: value).isEmpty else {
-                return (errorCode, nil)
-            }
+            if Utils.hasNoValue(value) { return (errorCode, nil) }
             return (nil, nil)
         }
     }

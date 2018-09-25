@@ -18,16 +18,18 @@ struct Numeric {
         init() {}
         
         func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard value as? Int != nil || value == nil else {
-                if let stringValue = value as? String {
-                    if stringValue.isEmpty {
-                        return (nil, nil)
-                    } else if let intValue = Int(stringValue) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isNumber(value) {
+                    if let stringValue = value as? String, let intValue = Int(stringValue) {
                         return (nil, intValue as AnyObject)
                     }
+                    return (errorCode, nil)
                 }
-                return (errorCode, nil)
+                if !(value is Int) { return (errorCode, nil) }
             }
+            
             return (nil, nil)
         }
     }
@@ -40,23 +42,18 @@ struct Numeric {
         init() {}
         
         func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let valueAsInt = value as? Int else {
-                if let stringValue = value as? String {
-                    if stringValue.isEmpty {
-                        return (nil, nil)
-                    } else if let intValue = Int(stringValue) {
-                        if intValue < 0 {
-                            return (errorCode, nil)
-                        } else {
-                            return (nil, intValue as AnyObject)
-                        }
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isNumber(value) {
+                    if let stringValue = value as? String, let intValue = Int(stringValue), intValue > 0 {
+                        return (nil, intValue as AnyObject)
                     }
+                    return (errorCode, nil)
                 }
-                return (errorCode, nil)
+                if let value = value as? Int, value < 1 { return (errorCode, nil) }
             }
-            if valueAsInt < 0 {
-                return (errorCode, nil)
-            }
+            
             return (nil, nil)
         }
     }
@@ -69,17 +66,20 @@ struct Numeric {
         init() {}
         
         func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard value as? Double != nil else {
-                if let stringValue = value as? String {
-                    if stringValue.isEmpty {
-                        return (nil, nil)
-                    } else if let intValue = Int(stringValue) {
-                        return (nil, DecimalNum(intValue) as AnyObject)
-                    } else if let doubleValue = Double(stringValue) {
-                        return (nil, doubleValue as AnyObject)
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isNumber(value) {
+                    if let stringValue = value as? String {
+                        if let intValue = Int(stringValue) {
+                            return (nil, DecimalNum(intValue) as AnyObject)
+                        } else if let doubleValue = Double(stringValue) {
+                            return (nil, doubleValue as AnyObject)
+                        }
                     }
+                    return (errorCode, nil)
                 }
-                return (errorCode, nil)
+                if !(value is Double) { return (errorCode, nil) }
             }
             return (nil, nil)
         }
@@ -93,26 +93,20 @@ struct Numeric {
         init() {}
         
         func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let valueAsDouble = value as? Double else {
-                if let stringValue = value as? String {
-                    if stringValue.isEmpty {
-                        return (nil, nil)
-                    } else if let intValue = Int(stringValue) {
-                        if intValue < 0 {
-                            return (errorCode, nil)
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isNumber(value) {
+                    if let stringValue = value as? String {
+                        if let intValue = Int(stringValue), intValue > 0 {
+                            return (nil, DecimalNum(intValue) as AnyObject)
+                        } else if let doubleValue = Double(stringValue), doubleValue > 0 {
+                            return (nil, doubleValue as AnyObject)
                         }
-                        return (nil, DecimalNum(intValue) as AnyObject)
-                    } else if let doubleValue = Double(stringValue) {
-                        if doubleValue < 0 {
-                            return (errorCode, nil)
-                        }
-                        return (nil, doubleValue as AnyObject)
                     }
+                    return (errorCode, nil)
                 }
-                return (errorCode, nil)
-            }
-            if valueAsDouble < 0 {
-                return (errorCode, nil)
+                if let value = value as? Double, value < 1 { return (errorCode, nil) }
             }
             return (nil, nil)
         }
