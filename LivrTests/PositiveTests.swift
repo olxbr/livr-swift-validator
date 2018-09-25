@@ -42,6 +42,22 @@ class PositiveTests: XCTestCase {
     func testUrl() {
         validate(testSuiteAt: .resourcesPath + "23-url")
     }
+    
+    func testEmail() {
+        validate(testSuiteAt: .resourcesPath + "16-email")
+    }
+    
+    func testISODate() {
+        validate(testSuiteAt: .resourcesPath + "24-iso_date")
+    }
+    
+    func testNotEmptyList() {
+        validate(testSuiteAt: .resourcesPath + "22-not_empty_list")
+    }
+    
+    func testAnyObject() {
+        validate(testSuiteAt: .resourcesPath + "27-any_object")
+    }
 }
 
 

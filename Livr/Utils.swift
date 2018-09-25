@@ -21,4 +21,8 @@ struct Utils {
     static func isNumber(_ value: Any) -> Bool {
         return value is NSNumber
     }
+    
+    static func isList(_ value: Any) -> Bool {
+        return value is Array<Any>
+    }
 }
