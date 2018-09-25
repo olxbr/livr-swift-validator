@@ -29,8 +29,7 @@ struct Validator {
     private(set) var validationRules: JSON
     private(set) var rulesByField: [Field: Rules]?
     
-    typealias Output = JSON
-    typealias Errors = JSON
+    typealias OutputOrErrors = JSON
     
     // MARK: - Register + Rules of validation
     mutating func register(_ rules: LivrRulesDict) {
@@ -90,21 +89,36 @@ struct Validator {
     }
     
     // MARK: - Validate + Trim
-    mutating func validate(data: JSON) throws -> (Output?, Errors?) {
+    mutating func validate(data: JSON) throws -> OutputOrErrors? {
         
         try setRulesByField()
         
-        for pairOfFieldNameAndValue in data {
-            let field = pairOfFieldNameAndValue.key
-            let value = pairOfFieldNameAndValue.value
-            
-            validate(value, for: field)
+        guard let rulesByField = rulesByField else {
+            return nil //see what to return
+        }
+        for case let field in rulesByField.keys {
+            if let value = data[field] {
+                validate(value, for: field)
+            } else {
+                validate(nil, for: field)
+            }
         }
         
-        return (output, errors)
+        if let errors = errors {
+            return errors
+        }
+        return output
     }
     
-    mutating private func validate(_ value: Any, for field: String) {
+    private mutating func validateFieldsThatWereNotInputedButArePresentInRules() {
+        if let rulesByField = rulesByField, !rulesByField.isEmpty {
+            for field in rulesByField.keys {
+                validate(nil, for: field)
+            }
+        }
+    }
+    
+    mutating private func validate(_ value: Any?, for field: String) {
         // now it treats as a single rule by field only
         guard let rules = rulesByField?[field] else {
             // TODO: log console error for rule not in received rules
@@ -115,24 +129,15 @@ struct Validator {
             let errorAndUpdatedValue = rule.validate(value: value)
             if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
-                errors?[field] = error as AnyObject
-            } else {
+                errors?[field] = error
+                output = nil
+            } else if errors == nil {
                 output == nil ? output = [:] : ()
-                output?[field] = errorAndUpdatedValue.1 ?? value as AnyObject
+                output?[field] = errorAndUpdatedValue.1 ?? value
                 // TODO: trim if needed
             }
         }
-    }
-    
-    private func autoTrim(data: Any) -> Any {
-        if var data = data as? [JSON] {
-            for (index, _) in data.enumerated() {
-                data[index].trim()
-            }
-        } else if var data = data as? JSON {
-            return data.trim()
-        }
         
-        return data
+        rulesByField?.removeValue(forKey: field)
     }
 }

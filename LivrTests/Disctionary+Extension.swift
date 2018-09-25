@@ -8,12 +8,9 @@
 
 import Foundation
 
-extension Dictionary where Key: ExpressibleByStringLiteral, Value: AnyObject {
+extension Dictionary where Key: Hashable, Value: Any {
     
-    func string(prettify: Bool = false) -> String? {
-        guard JSONSerialization.isValidJSONObject(self) else { return nil }
-        let options = prettify ? .prettyPrinted : JSONSerialization.WritingOptions()
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: self, options: options) else { return nil }
-        return String(data: jsonData, encoding: .utf8)
+    func isEqual<K: Hashable, V: Any>(to other: [K: V]) -> Bool {
+        return (self as NSDictionary).isEqual(to: other)
     }
 }
