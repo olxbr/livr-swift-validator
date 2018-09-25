@@ -8,7 +8,7 @@
 
 typealias DecimalNum = Decimal
 
-struct Numeric {
+struct NumericRules {
     
     // must be integer
     struct Integer: LivrRule {

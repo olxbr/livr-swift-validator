@@ -9,12 +9,14 @@ typealias LivrRulesDict = [String: LivrRule]
 
 struct LIVR {
     
-    static var defaultRules: LivrRulesDict = [Common.Required.name: Common.Required(),
-                                              Common.NotEmpty.name: Common.NotEmpty(),
-                                              Numeric.Integer.name: Numeric.Integer(),
-                                              Numeric.Decimal.name: Numeric.Decimal(),
-                                              Numeric.PositiveInteger.name: Numeric.PositiveInteger(),
-                                              Numeric.PositiveDecimal.name: Numeric.PositiveDecimal()]
+    static var defaultRules: LivrRulesDict = [CommonRules.Required.name: CommonRules.Required(),
+                                              CommonRules.NotEmpty.name: CommonRules.NotEmpty(),
+                                              NumericRules.Integer.name: NumericRules.Integer(),
+                                              NumericRules.Decimal.name: NumericRules.Decimal(),
+                                              NumericRules.PositiveInteger.name: NumericRules.PositiveInteger(),
+                                              NumericRules.PositiveDecimal.name: NumericRules.PositiveDecimal(),
+                                              StringRules.String.name: StringRules.String(),
+                                              SpecialRules.URL.name: SpecialRules.URL()]
     
     public static func validator(validationRules: JSON) -> Validator {
         var validator = Validator(validationRules: validationRules)

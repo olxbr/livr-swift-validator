@@ -5,7 +5,7 @@
 //  Created by Felipe Lefèvre Marino on 9/18/18.
 //
 
-struct Common {
+struct CommonRules {
     
     // can't be nil/null
     struct Required: LivrRule {

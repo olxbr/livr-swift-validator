@@ -34,6 +34,14 @@ class PositiveTests: XCTestCase {
     func testPositiveDecimal() {
         validate(testSuiteAt: .resourcesPath + "12-positive_decimal")
     }
+    
+    func testString() {
+        validate(testSuiteAt: .resourcesPath + "26-string")
+    }
+    
+    func testUrl() {
+        validate(testSuiteAt: .resourcesPath + "23-url")
+    }
 }
 
 
