@@ -16,6 +16,8 @@ class NegativeTests: XCTestCase {
     }
 }
 
+
+
 // MARK: - Private Constants
 private extension String {
     static let resourcesPath = "resources/negative/"

@@ -100,7 +100,7 @@ struct Validator {
             if let value = data[field] {
                 validate(value, for: field)
             } else {
-                validate(nil, for: field)
+                validate(nil, for: field, asInputed: false)
             }
         }
         
@@ -110,15 +110,7 @@ struct Validator {
         return output
     }
     
-    private mutating func validateFieldsThatWereNotInputedButArePresentInRules() {
-        if let rulesByField = rulesByField, !rulesByField.isEmpty {
-            for field in rulesByField.keys {
-                validate(nil, for: field)
-            }
-        }
-    }
-    
-    mutating private func validate(_ value: Any?, for field: String) {
+    mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
         // now it treats as a single rule by field only
         guard let rules = rulesByField?[field] else {
             // TODO: log console error for rule not in received rules
@@ -131,7 +123,7 @@ struct Validator {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error
                 output = nil
-            } else if errors == nil {
+            } else if errors == nil && isAnInputedValue {
                 output == nil ? output = [:] : ()
                 output?[field] = errorAndUpdatedValue.1 ?? value
                 // TODO: trim if needed

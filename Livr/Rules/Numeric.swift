@@ -18,7 +18,7 @@ struct Numeric {
         init() {}
         
         func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard value as? Int != nil else {
+            guard value as? Int != nil || value == nil else {
                 if let stringValue = value as? String {
                     if stringValue.isEmpty {
                         return (nil, nil)
