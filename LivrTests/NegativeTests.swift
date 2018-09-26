@@ -9,7 +9,7 @@
 import XCTest
 @testable import Livr
 
-class PositiveTests: XCTestCase {
+class NegativeTests: XCTestCase {
     
     func testRequired() {
         validate(testSuiteAt: .resourcesPath + "01-required")
@@ -60,9 +60,7 @@ class PositiveTests: XCTestCase {
     }
 }
 
-
-
 // MARK: - Private Constants
 private extension String {
-    static let resourcesPath = "resources/positive/"
+    static let resourcesPath = "resources/negative/"
 }

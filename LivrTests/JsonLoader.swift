@@ -8,10 +8,10 @@
 
 import Foundation
 
-typealias JSON = [String: AnyObject]
+typealias JSON = [String: Any?]
 
 enum JsonTestFile: String {
-    case input, output, rules
+    case input, output, rules, errors
 }
 
 struct JsonLoader {
