@@ -11,6 +11,7 @@ struct CommonRules {
     struct Required: LivrRule {
         static var name = "required"
         var errorCode = "REQUIRED"
+        var arguments: Any?
         
         init() {}
         
@@ -24,6 +25,7 @@ struct CommonRules {
     struct NotEmpty: LivrRule {
         static var name = "not_empty"
         var errorCode = "CANNOT_BE_EMPTY"
+        var arguments: Any?
         
         init() {}
         
@@ -39,6 +41,7 @@ struct CommonRules {
     struct NotEmptyList: LivrRule {
         static var name = "not_empty_list"
         var errorCode = "CANNOT_BE_EMPTY"
+        var arguments: Any?
         
         init() {}
         
@@ -57,6 +60,7 @@ struct CommonRules {
     struct AnyObject: LivrRule {
         static var name = "any_object"
         var errorCode = String.formatErrorCode
+        var arguments: Any?
         
         init() {}
         

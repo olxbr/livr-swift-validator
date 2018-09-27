@@ -58,9 +58,11 @@ class PositiveTests: XCTestCase {
     func testAnyObject() {
         validate(testSuiteAt: .resourcesPath + "27-any_object")
     }
+    
+    func testEq() {
+        validate(testSuiteAt: .resourcesPath + "25-eq")
+    }
 }
-
-
 
 // MARK: - Private Constants
 private extension String {

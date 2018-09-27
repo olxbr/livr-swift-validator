@@ -14,6 +14,7 @@ struct NumericRules {
     struct Integer: LivrRule {
         static var name = "integer"
         var errorCode = "NOT_INTEGER"
+        var arguments: Any?
         
         init() {}
         
@@ -38,6 +39,7 @@ struct NumericRules {
     struct PositiveInteger: LivrRule {
         static var name = "positive_integer"
         var errorCode = "NOT_POSITIVE_INTEGER"
+        var arguments: Any?
         
         init() {}
         
@@ -62,6 +64,7 @@ struct NumericRules {
     struct Decimal: LivrRule {
         static var name = "decimal"
         var errorCode = "NOT_DECIMAL"
+        var arguments: Any?
         
         init() {}
         
@@ -89,6 +92,7 @@ struct NumericRules {
     struct PositiveDecimal: LivrRule {
         static var name = "positive_decimal"
         var errorCode = "NOT_POSITIVE_DECIMAL"
+        var arguments: Any?
         
         init() {}
         

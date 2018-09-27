@@ -26,6 +26,9 @@ struct Validator {
     typealias Field = String
     typealias Rules = [LivrRule]
     
+    typealias RuleName = String
+    typealias RuleArguments = Any
+    
     private(set) var validationRules: JSON
     private(set) var rulesByField: [Field: Rules]?
     
@@ -65,7 +68,8 @@ struct Validator {
                 // analise json to get key and object
                 if let ruleObject = rulesObject.first {
                     let ruleName = ruleObject.key
-                    guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
+                    guard var rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
+                    rule.arguments = ruleObject.value
                     
                     rulesByField?[field] = [rule]
                 }
@@ -73,7 +77,8 @@ struct Validator {
                 // analise json to get key and object
                 if let ruleObject = rulesObjects.first?.first {
                     let ruleName = ruleObject.key
-                    guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
+                    guard var rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
+                    rule.arguments = ruleObject.value
                     
                     rulesByField?[field] = [rule]
                 }

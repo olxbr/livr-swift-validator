@@ -8,6 +8,7 @@
 protocol LivrRule {
     static var name: String {get}
     var errorCode: String {get}
+    var arguments: Any? {get set}
     
     typealias ErrorCode = String
     typealias UpdatedValue = AnyObject

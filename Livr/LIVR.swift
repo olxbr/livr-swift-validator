@@ -20,7 +20,8 @@ struct LIVR {
                                               SpecialRules.Email.name: SpecialRules.Email(),
                                               SpecialRules.ISODate.name: SpecialRules.ISODate(),
                                               CommonRules.NotEmptyList.name: CommonRules.NotEmptyList(),
-                                              CommonRules.AnyObject.name: CommonRules.AnyObject()]
+                                              CommonRules.AnyObject.name: CommonRules.AnyObject(),
+                                              StringRules.Eq.name: StringRules.Eq()]
     
     public static func validator(validationRules: JSON) -> Validator {
         var validator = Validator(validationRules: validationRules)
