@@ -17,4 +17,6 @@ protocol LivrRule {
 
 extension String {
     static let formatErrorCode = "FORMAT_ERROR"
+    static let tooShortErrorCode = "TOO_SHORT"
+    static let tooLongErrorCode = "TOO_LONG"
 }

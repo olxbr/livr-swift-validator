@@ -62,6 +62,30 @@ class NegativeTests: XCTestCase {
     func testEq() {
         validate(testSuiteAt: .resourcesPath + "25-eq")
     }
+    
+    func testOneOf() {
+        validate(testSuiteAt: .resourcesPath + "03-one_of")
+    }
+    
+    func testMaxLength() {
+        validate(testSuiteAt: .resourcesPath + "05-max_length")
+    }
+    
+    func testMinLength() {
+        validate(testSuiteAt: .resourcesPath + "04-min_length")
+    }
+    
+    func testLengthBetween() {
+        validate(testSuiteAt: .resourcesPath + "07-length_between")
+    }
+    
+    func testLengthEqual() {
+        validate(testSuiteAt: .resourcesPath + "06-length_equal")
+    }
+    
+    func testLike() {
+        validate(testSuiteAt: .resourcesPath + "08-like")
+    }
 }
 
 // MARK: - Private Constants
