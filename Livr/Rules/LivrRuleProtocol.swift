@@ -19,4 +19,7 @@ extension String {
     static let formatErrorCode = "FORMAT_ERROR"
     static let tooShortErrorCode = "TOO_SHORT"
     static let tooLongErrorCode = "TOO_LONG"
+    static let tooLowErrorCode = "TOO_LOW"
+    static let tooHighErrorCode = "TOO_HIGH"
+    static let notNumberErrorCode = "NOT_NUMBER"
 }

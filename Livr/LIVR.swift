@@ -27,7 +27,10 @@ struct LIVR {
                                               StringRules.MinLength.name: StringRules.MinLength(),
                                               StringRules.LengthBetween.name: StringRules.LengthBetween(),
                                               StringRules.LengthEqual.name: StringRules.LengthEqual(),
-                                              StringRules.Like.name: StringRules.Like()]
+                                              StringRules.Like.name: StringRules.Like(),
+                                              NumericRules.MaxNumber.name: NumericRules.MaxNumber(),
+                                              NumericRules.MinNumber.name: NumericRules.MinNumber(),
+                                              NumericRules.NumberBetween.name: NumericRules.NumberBetween()]
     
     public static func validator(validationRules: JSON) -> Validator {
         var validator = Validator(validationRules: validationRules)

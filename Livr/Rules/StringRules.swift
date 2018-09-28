@@ -218,7 +218,8 @@ struct StringRules {
                 if let allowedLength = Int(allowedLengthAsString) {
                     if valueAsString.count < allowedLength {
                         return (.tooShortErrorCode, nil)
-                    } else if valueAsString.count > allowedLength {
+                    } else if 
+                        valueAsString.count > allowedLength {
                         return (.tooLongErrorCode, nil)
                     }
                     return (nil, valueAsString as AnyObject)

@@ -86,6 +86,18 @@ class NegativeTests: XCTestCase {
     func testLike() {
         validate(testSuiteAt: .resourcesPath + "08-like")
     }
+    
+    func testMaxNumber() {
+        validate(testSuiteAt: .resourcesPath + "13-max_number")
+    }
+    
+    func testMinNumber() {
+        validate(testSuiteAt: .resourcesPath + "14-min_number")
+    }
+    
+    func testNumberBetween() {
+        validate(testSuiteAt: .resourcesPath + "15-number_between")
+    }
 }
 
 // MARK: - Private Constants

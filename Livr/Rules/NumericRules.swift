@@ -115,4 +115,149 @@ struct NumericRules {
             return (nil, nil)
         }
     }
+    
+    struct MaxNumber: LivrRule {
+        static var name = "max_number"
+        var errorCode = "TOO_HIGH"
+        var arguments: Any?
+        
+        init() {}
+        
+        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value, let arguments = arguments {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.canBeCoercedToNumber(value) { return (.notNumberErrorCode, nil) }
+                
+                let maxValueAsString = String(describing: arguments)
+                let inputedValueAsString = String(describing: value)
+                
+                if let valueAsInt = value as? Int, let maxValueAsInt = Int(maxValueAsString) {
+                    if valueAsInt > maxValueAsInt {
+                        return (errorCode, nil)
+                    }
+                    return (nil, nil)
+                } else if let valueAsDouble = value as? Double, let maxValueAsDouble = Double(maxValueAsString) {
+                    if valueAsDouble > maxValueAsDouble {
+                        return (errorCode, nil)
+                    }
+                    return (nil, nil)
+                } else if let inputedValueAsDouble = Double(inputedValueAsString), let maxValueAsDouble = Double(maxValueAsString) {
+                    
+                    if inputedValueAsDouble > maxValueAsDouble {
+                        return (errorCode, nil)
+                    }
+                    
+                    if inputedValueAsDouble.truncatingRemainder(dividingBy: 1) == 0 {
+                        return (nil, Int(inputedValueAsDouble) as AnyObject)
+                    }
+                    return (nil, inputedValueAsDouble as AnyObject)
+                }
+                return (nil, nil)
+            }
+            return (nil, nil)
+        }
+    }
+    
+    struct MinNumber: LivrRule {
+        static var name = "min_number"
+        var errorCode = "TOO_LOW"
+        var arguments: Any?
+        
+        init() {}
+        
+        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value, let arguments = arguments {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.canBeCoercedToNumber(value) { return (.notNumberErrorCode, nil) }
+                
+                let minValueAsString = String(describing: arguments)
+                let inputedValueAsString = String(describing: value)
+                
+                if let valueAsInt = value as? Int, let minValueAsInt = Int(minValueAsString) {
+                    if valueAsInt < minValueAsInt {
+                        return (errorCode, nil)
+                    }
+                    return (nil, nil)
+                } else if let valueAsDouble = value as? Double, let minValueAsDouble = Double(minValueAsString) {
+                    if valueAsDouble < minValueAsDouble {
+                        return (errorCode, nil)
+                    }
+                    return (nil, nil)
+                } else if let inputedValueAsDouble = Double(inputedValueAsString), let minValueAsDouble = Double(minValueAsString) {
+                    
+                    if inputedValueAsDouble < minValueAsDouble {
+                        return (errorCode, nil)
+                    }
+                    
+                    if inputedValueAsDouble.truncatingRemainder(dividingBy: 1) == 0 {
+                        return (nil, Int(inputedValueAsDouble) as AnyObject)
+                    }
+                    return (nil, inputedValueAsDouble as AnyObject)
+                }
+                return (nil, nil)
+            }
+            return (nil, nil)
+        }
+    }
+    
+    struct NumberBetween: LivrRule {
+        static var name = "number_between"
+        var errorCode = ""
+        var arguments: Any?
+        
+        init() {}
+        
+        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+            
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value, let arguments = arguments {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.canBeCoercedToNumber(value) { return (.notNumberErrorCode, nil) }
+                
+                let valueAsString = StringType(describing: value)
+                
+                if let arrayOfArguments = arguments as? [Any], let minAllowedValueArgument = arrayOfArguments.first, arrayOfArguments.count > 1 {
+                    
+                    let maxAllowedValueArgument = arrayOfArguments[1]
+                    
+                    let minAllowedValueAsString = String(describing: minAllowedValueArgument)
+                    let maxAllowedValueAsString = String(describing: maxAllowedValueArgument)
+                    
+                    if let valueAsInt = value as? Int, let minAllowedValueAsInt = Int(minAllowedValueAsString),
+                        let maxAllowedValueAsInt = Int(maxAllowedValueAsString) {
+                        if valueAsInt < minAllowedValueAsInt {
+                            return (.tooLowErrorCode, nil)
+                        } else if valueAsInt > maxAllowedValueAsInt {
+                            return (.tooHighErrorCode, nil)
+                        }
+                        return (nil, nil)
+                    } else if let valueAsDouble = value as? Double, let minAllowedValueAsDouble = Double(minAllowedValueAsString), let maxAllowedValueAsDouble = Double(maxAllowedValueAsString) {
+                        if valueAsDouble < minAllowedValueAsDouble {
+                            return (.tooLowErrorCode, nil)
+                        } else if valueAsDouble > maxAllowedValueAsDouble {
+                            return (.tooHighErrorCode, nil)
+                        }
+                        return (nil, nil)
+                    } else if let inputedValueAsDouble = Double(valueAsString), let minAllowedValueAsDouble = Double(minAllowedValueAsString), let maxAllowedValueAsDouble = Double(maxAllowedValueAsString) {
+                        
+                        if inputedValueAsDouble < minAllowedValueAsDouble {
+                            return (.tooLowErrorCode, nil)
+                        } else if inputedValueAsDouble > maxAllowedValueAsDouble {
+                            return (.tooHighErrorCode, nil)
+                        }
+                        
+                        if inputedValueAsDouble.truncatingRemainder(dividingBy: 1) == 0 {
+                            return (nil, Int(inputedValueAsDouble) as AnyObject)
+                        }
+                        return (nil, inputedValueAsDouble as AnyObject)
+                    }
+                    
+                    return (nil, nil)
+                }
+            }
+            return (nil, nil)
+        }
+    }
 }
