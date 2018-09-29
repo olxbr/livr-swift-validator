@@ -22,6 +22,11 @@ struct Utils {
         return value is NSNumber
     }
     
+    static func canBeCoercedToNumber(_ value: Any) -> Bool {
+        let string = String(describing: value)
+        return Double(string) != nil
+    }
+    
     static func isList(_ value: Any) -> Bool {
         return value is Array<Any>
     }

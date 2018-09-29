@@ -58,9 +58,51 @@ class PositiveTests: XCTestCase {
     func testAnyObject() {
         validate(testSuiteAt: .resourcesPath + "27-any_object")
     }
+    
+    func testEq() {
+        validate(testSuiteAt: .resourcesPath + "25-eq")
+    }
+    
+    func testOneOf() {
+        validate(testSuiteAt: .resourcesPath + "03-one_of")
+    }
+    
+    func testMaxLength() {
+        validate(testSuiteAt: .resourcesPath + "05-max_length")
+    }
+    
+    func testMinLength() {
+        validate(testSuiteAt: .resourcesPath + "04-min_length")
+    }
+    
+    func testLengthBetween() {
+        validate(testSuiteAt: .resourcesPath + "07-length_between")
+    }
+    
+    func testLengthEqual() {
+        validate(testSuiteAt: .resourcesPath + "06-length_equal")
+    }
+    
+    func testLike() {
+        validate(testSuiteAt: .resourcesPath + "08-like")
+    }
+    
+    func testMaxNumber() {
+        validate(testSuiteAt: .resourcesPath + "13-max_number")
+    }
+    
+    func testMinNumber() {
+        validate(testSuiteAt: .resourcesPath + "14-min_number")
+    }
+    
+    func testNumberBetween() {
+        validate(testSuiteAt: .resourcesPath + "15-number_between")
+    }
+    
+    func testEqualToField() {
+        validate(testSuiteAt: .resourcesPath + "17-equal_to_field")
+    }
 }
-
-
 
 // MARK: - Private Constants
 private extension String {
