@@ -7,12 +7,14 @@
 
 protocol LivrRule {
     static var name: String {get}
-    var errorCode: String {get}
-    var arguments: Any? {get set}
     
     typealias ErrorCode = String
+    var errorCode: ErrorCode {get}
+    var arguments: Any? {get set}
+    
+    typealias Errors = Any?
     typealias UpdatedValue = AnyObject
-    func validate(value: Any?) -> (ErrorCode?, UpdatedValue?)
+    func validate(value: Any?) -> (Errors?, UpdatedValue?)
 }
 
 extension String {

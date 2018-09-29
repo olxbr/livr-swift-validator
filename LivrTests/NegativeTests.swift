@@ -102,6 +102,10 @@ class NegativeTests: XCTestCase {
     func testEqualToField() {
         validate(testSuiteAt: .resourcesPath + "17-equal_to_field")
     }
+    
+    func testNestedObject() {
+        validate(testSuiteAt: .resourcesPath + "18-nested_object")
+    }
 }
 
 // MARK: - Private Constants

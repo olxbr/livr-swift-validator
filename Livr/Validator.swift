@@ -33,7 +33,7 @@ struct Validator {
     private(set) var rulesByField: [Field: Rules]?
     private(set) var validatingData: JSON?
     
-    typealias OutputOrErrors = JSON
+    typealias Output = JSON
     
     // MARK: - Register + Rules of validation
     mutating func register(_ rules: LivrRulesDict) {
@@ -74,14 +74,19 @@ struct Validator {
                     
                     rulesByField?[field] = [rule]
                 }
-            } else if let rulesObjects = validationRules as? [JSON] {
+            } else if let rulesObjects = validationRules as? [Any] {
                 // analise json to get key and object
-                if let ruleObject = rulesObjects.first?.first {
-                    let ruleName = ruleObject.key
-                    guard var rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                    rule.arguments = ruleObject.value
-                    
-                    rulesByField?[field] = [rule]
+                for rule in rulesObjects {
+                    if let ruleName = rule as? String {
+                        guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
+                        rulesByField?[field] = [rule]
+                    } else if let ruleObject = rule as? JSON, let firstRuleObject = ruleObject.first {
+                        
+                        guard var rule = try getRegisterdRule(with: firstRuleObject.key, for: field) else { continue }
+                        rule.arguments = firstRuleObject.value
+                        
+                        rulesByField?[field] = [rule]
+                    }
                 }
             }
         }
@@ -95,7 +100,7 @@ struct Validator {
     }
     
     // MARK: - Validate + Trim
-    mutating func validate(data: JSON) throws -> OutputOrErrors? {
+    mutating func validate(data: JSON) throws -> Output? {
         
         try setRulesByField()
         
@@ -114,8 +119,8 @@ struct Validator {
         
         validatingData = nil
         
-        if let errors = errors {
-            return errors
+        if errors != nil {
+            return nil
         }
         return output
     }
@@ -148,7 +153,12 @@ struct Validator {
                 output = nil
             } else if errors == nil && isAnInputedValue {
                 output == nil ? output = [:] : ()
-                output?[field] = errorAndUpdatedValue.1 ?? value
+                
+                if rule is MetaRules.NestedObject {
+                    output?[field] = errorAndUpdatedValue.1 ?? [:]
+                } else {
+                    output?[field] = errorAndUpdatedValue.1 ?? value
+                }
                 // TODO: trim if needed
             }
         }

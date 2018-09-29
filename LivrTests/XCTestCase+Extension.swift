@@ -16,30 +16,38 @@ extension XCTestCase {
         
         let inputJson = jsonLoader.load(file: .input)
         let rulesJson = jsonLoader.load(file: .rules)
-        var resultsJson: JSON?
+        var testResultJson: JSON?
         
-        resultsJson = path.contains(String.negative) ? jsonLoader.load(file: .errors) : jsonLoader.load(file: .output)
+        testResultJson = path.contains(String.negative) ? jsonLoader.load(file: .errors) : jsonLoader.load(file: .output)
         
         var validator = LIVR.validator(validationRules: rulesJson)
         
-        var outputOrErrors: Validator.OutputOrErrors?
+        var output: Validator.Output?
         do {
-            outputOrErrors = try validator.validate(data: inputJson)
+            output = try validator.validate(data: inputJson)
         } catch {
             XCTFail((error as? ValidatingError)?.description ?? error.localizedDescription)
-        }
-        
-        guard let suiteResultsJson = resultsJson, let validationOutputOrErrors = outputOrErrors else {
-            XCTFail(.nilSuiteOrValidationJson)
             return
         }
-        XCTAssertTrue((validationOutputOrErrors.isEqual(to: suiteResultsJson)), .validationResultError)
+        
+        guard let expectedResultJson = testResultJson else { XCTFail(.nilTestResultJson); return }
+        
+        if path.contains(String.negative) {
+            guard let errors = validator.errors else { XCTFail(.nilValidatorErrros); return }
+            XCTAssertTrue(errors.isEqual(to: expectedResultJson), .validatorErrorsNotAsExpected)
+        } else {
+            guard let output = output else { XCTFail(.nilValidatorOutput); return }
+            XCTAssertTrue(output.isEqual(to: expectedResultJson), .validatorOutputNotAsExpected)
+        }
     }
 }
 
 // MARK: - Private constants
 private extension String {
-    static let validationResultError = "validator validation result json should be equal to output or errros json for current test suite"
-    static let nilSuiteOrValidationJson = "Suite json loaded from bundle or validation result should not be nil"
     static let negative = "negative"
+    static let nilTestResultJson = "Test result json loaded from bundle should not be nil"
+    static let nilValidatorErrros = "Validator errors should not be nil"
+    static let nilValidatorOutput = "Validator output should not be nil"
+    static let validatorErrorsNotAsExpected = "Validator errors should match test expectation"
+    static let validatorOutputNotAsExpected = "Validator output should match test expectation"
 }
