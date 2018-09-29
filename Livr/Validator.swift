@@ -31,6 +31,7 @@ struct Validator {
     
     private(set) var validationRules: JSON
     private(set) var rulesByField: [Field: Rules]?
+    private(set) var validatingData: JSON?
     
     typealias OutputOrErrors = JSON
     
@@ -98,6 +99,8 @@ struct Validator {
         
         try setRulesByField()
         
+        validatingData = data
+        
         guard let rulesByField = rulesByField else {
             return nil //see what to return
         }
@@ -109,6 +112,8 @@ struct Validator {
             }
         }
         
+        validatingData = nil
+        
         if let errors = errors {
             return errors
         }
@@ -117,13 +122,26 @@ struct Validator {
     
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
         // now it treats as a single rule by field only
-        guard let rules = rulesByField?[field] else {
+        guard var rules = rulesByField?[field] else {
             // TODO: log console error for rule not in received rules
             return
         }
         
-        for rule in rules {
-            let errorAndUpdatedValue = rule.validate(value: value)
+        for (index, rule) in rules.enumerated() {
+            if var equalToFieldRule = rule as? SpecialRules.EqualToField {
+                if let fieldToCompareValue = (rule as? SpecialRules.EqualToField)?.arguments as? String, let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
+                    
+                    equalToFieldRule.otherFieldValue = valueToCompare
+                    rules[index] = equalToFieldRule
+                } else if let arguments = (rule as? SpecialRules.EqualToField)?.arguments as? [Any], let fieldToCompareValue = arguments.first as? String,
+                    let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
+                    
+                    equalToFieldRule.otherFieldValue = valueToCompare
+                    rules[index] = equalToFieldRule
+                }
+            }
+            
+            let errorAndUpdatedValue = rules[index].validate(value: value)
             if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error

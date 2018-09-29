@@ -83,4 +83,27 @@ struct SpecialRules {
             return (nil, nil)
         }
     }
+    
+    struct EqualToField: LivrRule {
+        static var name = "equal_to_field"
+        var errorCode = "FIELDS_NOT_EQUAL"
+        var arguments: Any?
+        var otherFieldValue: Any?
+        
+        init() {}
+        
+        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                
+                if let otherFieldValue = otherFieldValue, String(describing: value) == String(describing: otherFieldValue) {
+                    return (nil, nil)
+                }
+                return (errorCode, nil)
+            }
+            return (nil, nil)
+        }
+    }
+    
 }

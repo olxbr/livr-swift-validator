@@ -98,6 +98,10 @@ class PositiveTests: XCTestCase {
     func testNumberBetween() {
         validate(testSuiteAt: .resourcesPath + "15-number_between")
     }
+    
+    func testEqualToField() {
+        validate(testSuiteAt: .resourcesPath + "17-equal_to_field")
+    }
 }
 
 // MARK: - Private Constants
