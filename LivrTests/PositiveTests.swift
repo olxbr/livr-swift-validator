@@ -110,6 +110,10 @@ class PositiveTests: XCTestCase {
     func testVariableObject() {
         validate(testSuiteAt: .resourcesPath + "28-variable_object")
     }
+    
+    func testListOf() {
+        validate(testSuiteAt: .resourcesPath + "19-list_of")
+    }
 }
 
 // MARK: - Private Constants

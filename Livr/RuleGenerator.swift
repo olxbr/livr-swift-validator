@@ -1,0 +1,72 @@
+//
+//  RuleGenerator.swift
+//  Livr
+//
+//  Created by Felipe Lefèvre Marino on 9/30/18.
+//  Copyright © 2018 Felipe Marino. All rights reserved.
+//
+
+struct RuleGenerator {
+    
+    static func generateRules(from validationRules: Any?) -> [LivrRule]? {
+        
+        if let ruleName = validationRules as? String {
+            if let optionalRule = try? getRegisterdRule(with: ruleName), let rule = optionalRule {
+                return [rule]
+            }
+            return nil
+        } else if let namesOfRules = validationRules as? [String] {
+            var rules: [LivrRule] = []
+            for ruleName in namesOfRules {
+                if let optionalRule = try? getRegisterdRule(with: ruleName), let rule = optionalRule {
+                    rules.append(rule)
+                }
+            }
+            return rules
+        } else if let rulesObject = validationRules as? JSON {
+            // analise json to get key and object
+            if let ruleObject = rulesObject.first {
+                let ruleName = ruleObject.key
+                if let optionalRule = try? getRegisterdRule(with: ruleName), var rule = optionalRule {
+                    rule.arguments = ruleObject.value
+                    return [rule]
+                }
+            }
+        } else if let rulesObjects = validationRules as? [Any] {
+            
+            if let rulesObjectsAsArray = rulesObjects as? [[Any]], let rulesObjects = rulesObjectsAsArray.first {
+                return RuleGenerator.rules(for: rulesObjects)
+            }
+            return RuleGenerator.rules(for: rulesObjects)
+        }
+        
+        return nil
+    }
+    
+    private static func rules(for arrayOfRulesObjects: [Any]) -> [LivrRule]? {
+        var fieldRules: [LivrRule] = []
+        
+        for rule in arrayOfRulesObjects {
+            if let ruleName = rule as? String {
+                if let optionalRule = try? getRegisterdRule(with: ruleName), let rule = optionalRule {
+                    fieldRules.append(rule)
+                }
+            } else if let ruleObject = rule as? JSON, let firstRuleObject = ruleObject.first {
+                if let optionalRule = try? getRegisterdRule(with: firstRuleObject.key),
+                    var rule = optionalRule {
+                    
+                    rule.arguments = firstRuleObject.value
+                    fieldRules.append(rule)
+                }
+            }
+        }
+        return fieldRules
+    }
+    
+    private static func getRegisterdRule(with ruleName: String) throws -> LivrRule? {
+        guard let rule = LIVR.defaultRules[ruleName] else {
+            throw ValidatingError.notRegistered(rule: ruleName)
+        }
+        return rule
+    }
+}

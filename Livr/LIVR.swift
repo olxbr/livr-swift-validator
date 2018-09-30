@@ -33,11 +33,10 @@ struct LIVR {
                                               NumericRules.NumberBetween.name: NumericRules.NumberBetween(),
                                               SpecialRules.EqualToField.name: SpecialRules.EqualToField(),
                                               MetaRules.NestedObject.name: MetaRules.NestedObject(),
-                                              MetaRules.VariableObject.name: MetaRules.VariableObject()]
+                                              MetaRules.VariableObject.name: MetaRules.VariableObject(),
+                                              MetaRules.ListOf.name: MetaRules.ListOf()]
     
     public static func validator(validationRules: JSON) -> Validator {
-        var validator = Validator(validationRules: validationRules)
-        validator.register(defaultRules)
-        return validator
+        return Validator(validationRules: validationRules)
     }
 }

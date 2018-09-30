@@ -21,8 +21,6 @@ struct Validator {
     private(set) var errors: JSON?
     private(set) var output: JSON?
     
-    private(set) var allAvailableRules: LivrRulesDict?
-    
     typealias Field = String
     typealias Rules = [LivrRule]
     
@@ -36,10 +34,6 @@ struct Validator {
     typealias Output = JSON
     
     // MARK: - Register + Rules of validation
-    mutating func register(_ rules: LivrRulesDict) {
-        self.allAvailableRules = rules
-    }
-    
     init(validationRules: JSON) {
         self.validationRules = validationRules
     }
@@ -52,55 +46,10 @@ struct Validator {
             let field = pairOfFieldAndValidationRules.key
             let validationRules = pairOfFieldAndValidationRules.value
             
-            if let ruleName = validationRules as? String {
-                guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                
-                rulesByField?[field] = [rule]
-            } else if let namesOfRules = validationRules as? [String] {
-                var rules: [LivrRule] = []
-                for ruleName in namesOfRules {
-                    guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                    
-                    rules.append(rule)
-                }
-                
+            if let rules = RuleGenerator.generateRules(from: validationRules) {
                 rulesByField?[field] = rules
-            } else if let rulesObject = validationRules as? JSON {
-                // analise json to get key and object
-                if let ruleObject = rulesObject.first {
-                    let ruleName = ruleObject.key
-                    guard var rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                    rule.arguments = ruleObject.value
-                    
-                    rulesByField?[field] = [rule]
-                }
-            } else if let rulesObjects = validationRules as? [Any] {
-                
-                var fieldRules: [LivrRule] = []
-                
-                for rule in rulesObjects {
-                    if let ruleName = rule as? String {
-                        guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                        fieldRules.append(rule)
-                    } else if let ruleObject = rule as? JSON, let firstRuleObject = ruleObject.first {
-                        
-                        guard var rule = try getRegisterdRule(with: firstRuleObject.key, for: field) else { continue }
-                        rule.arguments = firstRuleObject.value
-                        
-                        fieldRules.append(rule)
-                    }
-                }
-                
-                rulesByField?[field] = fieldRules
             }
         }
-    }
-    
-    private mutating func getRegisterdRule(with ruleName: String, for field: String) throws -> LivrRule? {
-        guard let rule = allAvailableRules?[ruleName] else {
-            throw ValidatingError.notRegistered(rule: ruleName)
-        }
-        return rule
     }
     
     // MARK: - Validate + Trim
@@ -127,6 +76,24 @@ struct Validator {
             return nil
         }
         return output
+    }
+    
+    // to validate single values within its rules
+    static func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+        
+        guard let rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) } // TODO: see if this is the correct return
+        
+        var updatedValue: AnyObject?
+        for rule in rules {
+            let errorAndUpdatedValue = rule.validate(value: value)
+            
+            if let error = errorAndUpdatedValue.0 {
+                return (error, nil)
+            } else if let updatedValueFromRule = errorAndUpdatedValue.1 {
+                updatedValue = updatedValueFromRule
+            }
+        }
+        return (nil, updatedValue)
     }
     
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {

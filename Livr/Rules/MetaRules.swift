@@ -72,4 +72,46 @@ struct MetaRules {
             return (validator.errors, nil)
         }
     }
+    
+    struct ListOf: LivrRule {
+        static var name: String = "list_of"
+        var errorCode: ErrorCode = ""
+        var arguments: Any?
+        var updatedValue: UpdatedValue?
+        
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            
+            if let value = value {
+                if !Utils.isList(value) { return (String.formatErrorCode, nil) }
+                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (String.formatErrorCode, nil) }
+                
+                var errors: [Any]?
+                var output: [Any]?
+                
+                if let listOfValues = value as? [Any] {
+                    for value in listOfValues {
+                        
+                        let errorAndUpdatedValue = Validator.validate(value: value, validationRules: arguments)
+                        if let optionalError = errorAndUpdatedValue.0, let error = optionalError {
+                            errors == nil ? errors = [] : ()
+                            errors?.append(error as Any)
+                        } else if errors != nil {
+                            errors?.append(NSNull())
+                        } else if errors == nil {
+                            output == nil ? output = [] : ()
+                            output?.append(errorAndUpdatedValue.1 ?? value)
+                        }
+                    }
+                    
+                    if errors != nil {
+                        return (errors, nil)
+                    }
+                    return (nil, nil)
+                }
+            }
+            
+            return (nil, nil)
+        }
+    }
 }
