@@ -75,19 +75,23 @@ struct Validator {
                     rulesByField?[field] = [rule]
                 }
             } else if let rulesObjects = validationRules as? [Any] {
-                // analise json to get key and object
+                
+                var fieldRules: [LivrRule] = []
+                
                 for rule in rulesObjects {
                     if let ruleName = rule as? String {
                         guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                        rulesByField?[field] = [rule]
+                        fieldRules.append(rule)
                     } else if let ruleObject = rule as? JSON, let firstRuleObject = ruleObject.first {
                         
                         guard var rule = try getRegisterdRule(with: firstRuleObject.key, for: field) else { continue }
                         rule.arguments = firstRuleObject.value
                         
-                        rulesByField?[field] = [rule]
+                        fieldRules.append(rule)
                     }
                 }
+                
+                rulesByField?[field] = fieldRules
             }
         }
     }

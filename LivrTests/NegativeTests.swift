@@ -106,6 +106,10 @@ class NegativeTests: XCTestCase {
     func testNestedObject() {
         validate(testSuiteAt: .resourcesPath + "18-nested_object")
     }
+    
+    func testVariableObject() {
+        validate(testSuiteAt: .resourcesPath + "28-variable_object")
+    }
 }
 
 // MARK: - Private Constants
