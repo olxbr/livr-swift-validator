@@ -20,10 +20,10 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 return (nil, StringType(describing: value) as AnyObject)
             }
             return (nil, nil)
@@ -38,11 +38,11 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let arguments = arguments else { return (.formatErrorCode, nil) }
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 if let listOfArguments = arguments as? [Any],
                     let firstArgument = listOfArguments.first,
                     StringType(describing: firstArgument) == StringType(describing: value) {
@@ -65,11 +65,11 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let arguments = arguments else { return (.formatErrorCode, nil) }
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 if StringType(describing: arguments) == StringType(describing: value) {
                     return (nil, arguments as AnyObject)
                 }
@@ -100,11 +100,11 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let arguments = arguments else { return (.formatErrorCode, nil) }
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 
                 var maxLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
@@ -135,11 +135,11 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let arguments = arguments else { return (.formatErrorCode, nil) }
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 
                 var minLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
@@ -170,11 +170,11 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let arguments = arguments else { return (.formatErrorCode, nil) }
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 
                 let valueAsString = StringType(describing: value)
                 if let arrayOfArguments = arguments as? [Any], let minLengthArgument = arrayOfArguments.first, arrayOfArguments.count > 1 {
@@ -186,11 +186,11 @@ struct StringRules {
                     if let minLength = Int(minLengthAsString),
                         valueAsString.count < minLength {
                         
-                        return (.tooShortErrorCode, nil)
+                        return (StringType.tooShortErrorCode, nil)
                     } else if let maxLength = Int(maxLengthAsString),
                         valueAsString.count > maxLength {
                         
-                        return (.tooLongErrorCode, nil)
+                        return (StringType.tooLongErrorCode, nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 }
@@ -207,20 +207,20 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let arguments = arguments else { return (.formatErrorCode, nil) }
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 
                 var allowedLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
                 if let allowedLength = Int(allowedLengthAsString) {
                     if valueAsString.count < allowedLength {
-                        return (.tooShortErrorCode, nil)
+                        return (StringType.tooShortErrorCode, nil)
                     } else if 
                         valueAsString.count > allowedLength {
-                        return (.tooLongErrorCode, nil)
+                        return (StringType.tooLongErrorCode, nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 } else if let arrayOfArguments = arguments as? [Any], let firstArgument = arrayOfArguments.first {
@@ -228,9 +228,9 @@ struct StringRules {
                     allowedLengthAsString = StringType(describing: firstArgument)
                     if let allowedLength = Int(allowedLengthAsString) {
                         if valueAsString.count < allowedLength {
-                            return (.tooShortErrorCode, nil)
+                            return (StringType.tooShortErrorCode, nil)
                         } else if valueAsString.count > allowedLength {
-                            return (.tooLongErrorCode, nil)
+                            return (StringType.tooLongErrorCode, nil)
                         }
                         return (nil, valueAsString as AnyObject)
                     }
@@ -248,11 +248,11 @@ struct StringRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
-            guard let arguments = arguments else { return (.formatErrorCode, nil) }
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 
                 let valueAsString = StringType(describing: value)
                 

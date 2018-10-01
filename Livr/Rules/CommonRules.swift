@@ -15,7 +15,7 @@ struct CommonRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (errorCode, nil) }
             return (nil, nil)
         }
@@ -29,7 +29,7 @@ struct CommonRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if let value = value, String(describing: value).isEmpty {
                 return (errorCode, nil)
             }
@@ -45,11 +45,11 @@ struct CommonRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (errorCode, nil) }
             if let value = value {
                 if Utils.hasNoValue(value) { return (errorCode, nil) }
-                if !Utils.isList(value) { return (.formatErrorCode, nil) }
+                if !Utils.isList(value) { return (String.formatErrorCode, nil) }
                 if let value = value as? Array<Any>, value.count < 1 { return (errorCode, nil) }
             }
             return (nil, nil)
@@ -64,7 +64,7 @@ struct CommonRules {
         
         init() {}
         
-        func validate(value: Any?) -> (LivrRule.ErrorCode?, LivrRule.UpdatedValue?) {
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if value as? JSON == nil {
                 return (errorCode, nil)

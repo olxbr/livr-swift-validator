@@ -102,6 +102,30 @@ class NegativeTests: XCTestCase {
     func testEqualToField() {
         validate(testSuiteAt: .resourcesPath + "17-equal_to_field")
     }
+    
+    func testNestedObject() {
+        validate(testSuiteAt: .resourcesPath + "18-nested_object")
+    }
+    
+    func testVariableObject() {
+        validate(testSuiteAt: .resourcesPath + "28-variable_object")
+    }
+    
+    func testListOf() {
+        validate(testSuiteAt: .resourcesPath + "19-list_of")
+    }
+    
+    func testListOfObjects() {
+        validate(testSuiteAt: .resourcesPath + "20-list_of_objects")
+    }
+    
+    func testListOfDifferentObjects() {
+        validate(testSuiteAt: .resourcesPath + "21-list_of_different_objects")
+    }
+    
+    func testOr() {
+        validate(testSuiteAt: .resourcesPath + "29-or")
+    }
 }
 
 // MARK: - Private Constants

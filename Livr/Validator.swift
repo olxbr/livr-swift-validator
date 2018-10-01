@@ -21,8 +21,6 @@ struct Validator {
     private(set) var errors: JSON?
     private(set) var output: JSON?
     
-    private(set) var allAvailableRules: LivrRulesDict?
-    
     typealias Field = String
     typealias Rules = [LivrRule]
     
@@ -33,13 +31,9 @@ struct Validator {
     private(set) var rulesByField: [Field: Rules]?
     private(set) var validatingData: JSON?
     
-    typealias OutputOrErrors = JSON
+    typealias Output = JSON
     
     // MARK: - Register + Rules of validation
-    mutating func register(_ rules: LivrRulesDict) {
-        self.allAvailableRules = rules
-    }
-    
     init(validationRules: JSON) {
         self.validationRules = validationRules
     }
@@ -52,50 +46,14 @@ struct Validator {
             let field = pairOfFieldAndValidationRules.key
             let validationRules = pairOfFieldAndValidationRules.value
             
-            if let ruleName = validationRules as? String {
-                guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                
-                rulesByField?[field] = [rule]
-            } else if let namesOfRules = validationRules as? [String] {
-                var rules: [LivrRule] = []
-                for ruleName in namesOfRules {
-                    guard let rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                    
-                    rules.append(rule)
-                }
-                
+            if let rules = RuleGenerator.generateRules(from: validationRules) {
                 rulesByField?[field] = rules
-            } else if let rulesObject = validationRules as? JSON {
-                // analise json to get key and object
-                if let ruleObject = rulesObject.first {
-                    let ruleName = ruleObject.key
-                    guard var rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                    rule.arguments = ruleObject.value
-                    
-                    rulesByField?[field] = [rule]
-                }
-            } else if let rulesObjects = validationRules as? [JSON] {
-                // analise json to get key and object
-                if let ruleObject = rulesObjects.first?.first {
-                    let ruleName = ruleObject.key
-                    guard var rule = try getRegisterdRule(with: ruleName, for: field) else { continue }
-                    rule.arguments = ruleObject.value
-                    
-                    rulesByField?[field] = [rule]
-                }
             }
         }
     }
     
-    private mutating func getRegisterdRule(with ruleName: String, for field: String) throws -> LivrRule? {
-        guard let rule = allAvailableRules?[ruleName] else {
-            throw ValidatingError.notRegistered(rule: ruleName)
-        }
-        return rule
-    }
-    
     // MARK: - Validate + Trim
-    mutating func validate(data: JSON) throws -> OutputOrErrors? {
+    mutating func validate(data: JSON) throws -> Output? {
         
         try setRulesByField()
         
@@ -114,10 +72,32 @@ struct Validator {
         
         validatingData = nil
         
-        if let errors = errors {
-            return errors
+        if errors != nil {
+            return nil
         }
         return output
+    }
+    
+    // to validate single values within its rules
+    static func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+        
+        guard let rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) } // TODO: see if this is the correct return
+        return Validator.validate(value: value, rules: rules)
+    }
+    
+    static func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+        
+        var updatedValue: AnyObject?
+        for rule in rules {
+            let errorAndUpdatedValue = rule.validate(value: value)
+            
+            if let error = errorAndUpdatedValue.0 {
+                return (error, nil)
+            } else if let updatedValueFromRule = errorAndUpdatedValue.1 {
+                updatedValue = updatedValueFromRule
+            }
+        }
+        return (nil, updatedValue)
     }
     
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
@@ -148,7 +128,14 @@ struct Validator {
                 output = nil
             } else if errors == nil && isAnInputedValue {
                 output == nil ? output = [:] : ()
-                output?[field] = errorAndUpdatedValue.1 ?? value
+                
+                if rule is MetaRules.NestedObject {
+                    output?[field] = errorAndUpdatedValue.1 ?? [:]
+                } else if output?[field] == nil { // TODO: improve to see if is any modifiers using a protocol or inheritance
+                    output?[field] = errorAndUpdatedValue.1 ?? value
+                } else if let updatedValue = errorAndUpdatedValue.1 {
+                    output?[field] = updatedValue
+                }
                 // TODO: trim if needed
             }
         }

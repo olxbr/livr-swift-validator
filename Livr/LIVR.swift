@@ -31,11 +31,16 @@ struct LIVR {
                                               NumericRules.MaxNumber.name: NumericRules.MaxNumber(),
                                               NumericRules.MinNumber.name: NumericRules.MinNumber(),
                                               NumericRules.NumberBetween.name: NumericRules.NumberBetween(),
-                                              SpecialRules.EqualToField.name: SpecialRules.EqualToField()]
+                                              SpecialRules.EqualToField.name: SpecialRules.EqualToField(),
+                                              MetaRules.NestedObject.name: MetaRules.NestedObject(),
+                                              MetaRules.VariableObject.name: MetaRules.VariableObject(),
+                                              MetaRules.ListOf.name: MetaRules.ListOf(),
+                                              MetaRules.ListOfObjects.name: MetaRules.ListOfObjects(),
+                                              MetaRules.ListOfDifferentObjects.name: MetaRules.ListOfDifferentObjects(),
+                                              MetaRules.Or.name: MetaRules.Or(),
+                                              ModifiersRules.ToLc.name: ModifiersRules.ToLc()]
     
     public static func validator(validationRules: JSON) -> Validator {
-        var validator = Validator(validationRules: validationRules)
-        validator.register(defaultRules)
-        return validator
+        return Validator(validationRules: validationRules)
     }
 }
