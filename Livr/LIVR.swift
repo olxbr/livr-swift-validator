@@ -35,7 +35,8 @@ struct LIVR {
                                               MetaRules.NestedObject.name: MetaRules.NestedObject(),
                                               MetaRules.VariableObject.name: MetaRules.VariableObject(),
                                               MetaRules.ListOf.name: MetaRules.ListOf(),
-                                              MetaRules.ListOfObjects.name: MetaRules.ListOfObjects()]
+                                              MetaRules.ListOfObjects.name: MetaRules.ListOfObjects(),
+                                              MetaRules.ListOfDifferentObjects.name: MetaRules.ListOfDifferentObjects()]
     
     public static func validator(validationRules: JSON) -> Validator {
         return Validator(validationRules: validationRules)
