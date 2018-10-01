@@ -107,7 +107,7 @@ struct MetaRules {
                     if errors != nil {
                         return (errors, nil)
                     }
-                    return (nil, output as AnyObject)
+                    return (nil, (output ?? value) as AnyObject)
                 }
             }
             
