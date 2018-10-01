@@ -107,7 +107,64 @@ struct MetaRules {
                     if errors != nil {
                         return (errors, nil)
                     }
-                    return (nil, nil)
+                    return (nil, output as AnyObject)
+                }
+            }
+            
+            return (nil, nil)
+        }
+    }
+    
+    struct ListOfObjects: LivrRule {
+        static var name: String = "list_of_objects"
+        var errorCode: ErrorCode = ""
+        var arguments: Any?
+        var updatedValue: UpdatedValue?
+        
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            
+            if let value = value {
+                if !Utils.isList(value) { return (String.formatErrorCode, nil) }
+                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (String.formatErrorCode, nil) }
+                guard let validationRules = arguments as? JSON else { return (String.formatErrorCode, nil) }
+
+                var errors: [Any]?
+                var output: [Any]?
+                
+                if let listOfValues = value as? [Any] {
+                    for value in listOfValues {
+                        
+                        if !(value is JSON) {
+                            errors == nil ? errors = [] : ()
+                            errors?.append(String.formatErrorCode)
+                            continue
+                        }
+                        
+                        var validator = LIVR.validator(validationRules: validationRules)
+                        
+                        var validatorOutput: JSON?
+                        do {
+                            validatorOutput = try validator.validate(data: value as! JSON)
+                        } catch {
+                            return (errorCode, nil)
+                        }
+                        
+                        if let validationErrors = validator.errors {
+                            errors == nil ? errors = [] : ()
+                            errors?.append(validationErrors as Any)
+                        } else if errors != nil {
+                            errors?.append(NSNull())
+                        } else if errors == nil {
+                            output == nil ? output = [] : ()
+                            output?.append(validatorOutput as Any)
+                        }
+                    }
+                    
+                    if errors != nil {
+                        return (errors, nil)
+                    }
+                    return (nil, (output ?? value) as AnyObject)
                 }
             }
             

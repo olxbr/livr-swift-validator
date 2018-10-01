@@ -34,7 +34,8 @@ struct LIVR {
                                               SpecialRules.EqualToField.name: SpecialRules.EqualToField(),
                                               MetaRules.NestedObject.name: MetaRules.NestedObject(),
                                               MetaRules.VariableObject.name: MetaRules.VariableObject(),
-                                              MetaRules.ListOf.name: MetaRules.ListOf()]
+                                              MetaRules.ListOf.name: MetaRules.ListOf(),
+                                              MetaRules.ListOfObjects.name: MetaRules.ListOfObjects()]
     
     public static func validator(validationRules: JSON) -> Validator {
         return Validator(validationRules: validationRules)
