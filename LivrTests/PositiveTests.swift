@@ -122,6 +122,14 @@ class PositiveTests: XCTestCase {
     func testListOfDifferentObjects() {
         validate(testSuiteAt: .resourcesPath + "21-list_of_different_objects")
     }
+    
+    func testOr() {
+        validate(testSuiteAt: .resourcesPath + "29-or")
+    }
+    
+    func testToLc() {
+        validate(testSuiteAt: .resourcesPath + "31-to_lc")
+    }
 }
 
 // MARK: - Private Constants

@@ -36,7 +36,9 @@ struct LIVR {
                                               MetaRules.VariableObject.name: MetaRules.VariableObject(),
                                               MetaRules.ListOf.name: MetaRules.ListOf(),
                                               MetaRules.ListOfObjects.name: MetaRules.ListOfObjects(),
-                                              MetaRules.ListOfDifferentObjects.name: MetaRules.ListOfDifferentObjects()]
+                                              MetaRules.ListOfDifferentObjects.name: MetaRules.ListOfDifferentObjects(),
+                                              MetaRules.Or.name: MetaRules.Or(),
+                                              ModifiersRules.ToLc.name: ModifiersRules.ToLc()]
     
     public static func validator(validationRules: JSON) -> Validator {
         return Validator(validationRules: validationRules)

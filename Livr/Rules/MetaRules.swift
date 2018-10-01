@@ -238,4 +238,44 @@ struct MetaRules {
             return (nil, nil)
         }
     }
+    
+    struct Or: LivrRule {
+        static var name: String = "or"
+        var errorCode: ErrorCode = ""
+        var arguments: Any?
+        var updatedValue: UpdatedValue?
+        
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            
+            var updatedValue: LivrRule.UpdatedValue?
+            var errors: [LivrRule.Errors]?
+            
+            if let value = value {
+                if let arrayOfArguments = arguments as? [Any] {
+                    for argument in arrayOfArguments {
+                        let rules = RuleGenerator.generateRules(from: argument)
+                        var errorsForBlockOfRules: [LivrRule.Errors]?
+                        
+                        for rule in rules! {
+                            let errorAndUpdatedValue = Validator.validate(value: value, rules: [rule])
+                            
+                            if let validatorUpdatedValue = errorAndUpdatedValue.1, !(rule is ModifiersRules.ToLc && errorsForBlockOfRules != nil) {
+                                updatedValue = validatorUpdatedValue
+                                return (nil, updatedValue as AnyObject)
+                            } else if errorAndUpdatedValue.0 == nil && !rules!.contains(where: { $0 is ModifiersRules.ToLc }) {
+                                return (nil, nil)
+                            } else if let error = errorAndUpdatedValue.0 {
+                                errors == nil ? errors = [] : ()
+                                errors?.append(error)
+                                errorsForBlockOfRules == nil ? errorsForBlockOfRules = [] : ()
+                                errorsForBlockOfRules?.append(error)
+                            }
+                        }
+                    }
+                }
+            }            
+            return (errors?.last as AnyObject, nil)
+        }
+    }
 }

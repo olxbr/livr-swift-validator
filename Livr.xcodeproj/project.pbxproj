@@ -16,6 +16,7 @@
 		D50F3738215A629E00DB7B0D /* SpecialRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F3737215A629E00DB7B0D /* SpecialRules.swift */; };
 		D50F373A215F4AC700DB7B0D /* MetaRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F3739215F4AC700DB7B0D /* MetaRules.swift */; };
 		D50F373C2161547E00DB7B0D /* RuleGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F373B2161547E00DB7B0D /* RuleGenerator.swift */; };
+		D50F373E2161B7F700DB7B0D /* ModifiersRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F373D2161B7F700DB7B0D /* ModifiersRules.swift */; };
 		D541BBBE2153555300C52B55 /* Livr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D541BBB42153555300C52B55 /* Livr.framework */; };
 		D541BBC32153555300C52B55 /* PositiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBC22153555300C52B55 /* PositiveTests.swift */; };
 		D541BBC52153555300C52B55 /* Livr.h in Headers */ = {isa = PBXBuildFile; fileRef = D541BBB72153555300C52B55 /* Livr.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,6 +50,7 @@
 		D50F3737215A629E00DB7B0D /* SpecialRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialRules.swift; sourceTree = "<group>"; };
 		D50F3739215F4AC700DB7B0D /* MetaRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaRules.swift; sourceTree = "<group>"; };
 		D50F373B2161547E00DB7B0D /* RuleGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleGenerator.swift; sourceTree = "<group>"; };
+		D50F373D2161B7F700DB7B0D /* ModifiersRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiersRules.swift; sourceTree = "<group>"; };
 		D541BBB42153555300C52B55 /* Livr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Livr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D541BBB72153555300C52B55 /* Livr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Livr.h; sourceTree = "<group>"; };
 		D541BBB82153555300C52B55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				D50F3735215A5EAE00DB7B0D /* StringRules.swift */,
 				D50F3737215A629E00DB7B0D /* SpecialRules.swift */,
 				D50F3739215F4AC700DB7B0D /* MetaRules.swift */,
+				D50F373D2161B7F700DB7B0D /* ModifiersRules.swift */,
 			);
 			path = Rules;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				D50F373C2161547E00DB7B0D /* RuleGenerator.swift in Sources */,
 				D50F373A215F4AC700DB7B0D /* MetaRules.swift in Sources */,
 				D50F3734215A500300DB7B0D /* Utils.swift in Sources */,
+				D50F373E2161B7F700DB7B0D /* ModifiersRules.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

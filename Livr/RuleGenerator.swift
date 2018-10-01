@@ -47,7 +47,10 @@ struct RuleGenerator {
         var fieldRules: [LivrRule] = []
         
         for rule in arrayOfRulesObjects {
-            if let ruleName = rule as? String {
+            
+            if let arrayOfRules = rule as? [Any], let rules = RuleGenerator.rules(for: arrayOfRules) {
+                fieldRules.append(contentsOf: rules)
+            } else if let ruleName = rule as? String {
                 if let optionalRule = try? getRegisterdRule(with: ruleName), let rule = optionalRule {
                     fieldRules.append(rule)
                 }

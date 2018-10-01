@@ -82,6 +82,10 @@ struct Validator {
     static func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
         guard let rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) } // TODO: see if this is the correct return
+        return Validator.validate(value: value, rules: rules)
+    }
+    
+    static func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
         var updatedValue: AnyObject?
         for rule in rules {
@@ -127,8 +131,10 @@ struct Validator {
                 
                 if rule is MetaRules.NestedObject {
                     output?[field] = errorAndUpdatedValue.1 ?? [:]
-                } else {
+                } else if output?[field] == nil { // TODO: improve to see if is any modifiers using a protocol or inheritance
                     output?[field] = errorAndUpdatedValue.1 ?? value
+                } else if let updatedValue = errorAndUpdatedValue.1 {
+                    output?[field] = updatedValue
                 }
                 // TODO: trim if needed
             }

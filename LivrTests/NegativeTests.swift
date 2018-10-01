@@ -122,6 +122,10 @@ class NegativeTests: XCTestCase {
     func testListOfDifferentObjects() {
         validate(testSuiteAt: .resourcesPath + "21-list_of_different_objects")
     }
+    
+    func testOr() {
+        validate(testSuiteAt: .resourcesPath + "29-or")
+    }
 }
 
 // MARK: - Private Constants
