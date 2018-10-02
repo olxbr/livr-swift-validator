@@ -10,4 +10,9 @@ extension String {
     mutating func trim() {
         self = self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+    
+    func removingCharacters(in set: CharacterSet) -> String {
+        let filtered = unicodeScalars.lazy.filter { !set.contains($0) }
+        return String(String.UnicodeScalarView(filtered))
+    }
 }

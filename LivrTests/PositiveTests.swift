@@ -138,6 +138,10 @@ class PositiveTests: XCTestCase {
     func testRemove() {
         validate(testSuiteAt: .resourcesPath + "33-remove")
     }
+    
+    func testLeaveOnly() {
+        validate(testSuiteAt: .resourcesPath + "34-leave_only")
+    }
 }
 
 // MARK: - Private Constants

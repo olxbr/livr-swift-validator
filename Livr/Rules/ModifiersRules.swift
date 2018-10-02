@@ -71,20 +71,28 @@ struct ModifiersRules {
         
         func modified(value: Any) -> AnyObject {
             guard let charactersToRemove = arguments as? String else { return value as AnyObject }
-            
-            var modifiedValue = String(describing: value)
-            for char in charactersToRemove {
-                modifiedValue = modifiedValue.replacingOccurrences(of: String(char), with: "")
-            }
-            
-            return modifiedValue as AnyObject
+            return String(describing: value).removingCharacters(in: CharacterSet(charactersIn: charactersToRemove)) as AnyObject
         }
     }
-}
-
-extension String {
     
-    func stringByRemovingAll(characters: [Character]) -> String {
-        return String(self.filter({ !characters.contains($0) }))
+    struct LeaveOnly: LivrRule, Modifier {
+        static var name: String = "leave_only"
+        var errorCode: ErrorCode = ""
+        var arguments: Any?
+        
+        func validate(value: Any?) -> (Errors?, ModifiedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                return (nil, modified(value: value))
+            }
+            return (nil, nil)
+        }
+        
+        func modified(value: Any) -> AnyObject {
+            guard let charactersToRemove = arguments as? String else { return value as AnyObject }
+            return String(describing: value).removingCharacters(in: CharacterSet(charactersIn: charactersToRemove).inverted) as AnyObject
+        }
     }
 }
