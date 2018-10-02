@@ -260,10 +260,10 @@ struct MetaRules {
                         for rule in rules! {
                             let errorAndUpdatedValue = Validator.validate(value: value, rules: [rule])
                             
-                            if let validatorUpdatedValue = errorAndUpdatedValue.1, !(rule is ModifiersRules.ToLc && errorsForBlockOfRules != nil) {
+                            if let validatorUpdatedValue = errorAndUpdatedValue.1, !(rule is Modifier && errorsForBlockOfRules != nil) {
                                 updatedValue = validatorUpdatedValue
                                 return (nil, updatedValue as AnyObject)
-                            } else if errorAndUpdatedValue.0 == nil && !rules!.contains(where: { $0 is ModifiersRules.ToLc }) {
+                            } else if errorAndUpdatedValue.0 == nil && !rules!.contains(where: { $0 is Modifier }) {
                                 return (nil, nil)
                             } else if let error = errorAndUpdatedValue.0 {
                                 errors == nil ? errors = [] : ()

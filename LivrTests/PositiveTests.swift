@@ -134,6 +134,10 @@ class PositiveTests: XCTestCase {
     func testToUc() {
         validate(testSuiteAt: .resourcesPath + "32-to_uc")
     }
+    
+    func testRemove() {
+        validate(testSuiteAt: .resourcesPath + "33-remove")
+    }
 }
 
 // MARK: - Private Constants
