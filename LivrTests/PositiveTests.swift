@@ -130,6 +130,10 @@ class PositiveTests: XCTestCase {
     func testToLc() {
         validate(testSuiteAt: .resourcesPath + "31-to_lc")
     }
+    
+    func testToUc() {
+        validate(testSuiteAt: .resourcesPath + "32-to_uc")
+    }
 }
 
 // MARK: - Private Constants

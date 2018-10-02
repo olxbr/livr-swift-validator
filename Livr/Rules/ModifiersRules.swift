@@ -24,4 +24,21 @@ struct ModifiersRules {
             return (nil, nil)
         }
     }
+    
+    struct ToUc: LivrRule {
+        static var name: String = "to_uc"
+        var errorCode: ErrorCode = ""
+        var arguments: Any?
+        var updatedValue: UpdatedValue?
+        
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                return (nil, String(describing: value).uppercased() as AnyObject)
+            }
+            return (nil, nil)
+        }
+    }
 }
