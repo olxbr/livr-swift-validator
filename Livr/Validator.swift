@@ -126,7 +126,7 @@ struct Validator {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error
                 output = nil
-            } else if errors == nil && isAnInputedValue {
+            } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
                 output == nil ? output = [:] : ()
                 
                 if rule is MetaRules.NestedObject {

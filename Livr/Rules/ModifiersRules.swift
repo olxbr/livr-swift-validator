@@ -95,4 +95,24 @@ struct ModifiersRules {
             return String(describing: value).removingCharacters(in: CharacterSet(charactersIn: charactersToRemove).inverted) as AnyObject
         }
     }
+    
+    struct Default: LivrRule, Modifier {
+        static var name: String = "default"
+        var errorCode: ErrorCode = ""
+        var arguments: Any?
+        
+        func validate(value: Any?) -> (Errors?, ModifiedValue?) {
+            if Utils.hasNoValue(value) || value == nil {
+                return (nil, modified(value: value))
+            }
+            return (nil, nil)
+        }
+        
+        func modified(value: Any) -> AnyObject {
+            if let argumentsAsArray = arguments as? [Any] {
+                return argumentsAsArray.first as AnyObject
+            }
+            return arguments as AnyObject
+        }
+    }
 }

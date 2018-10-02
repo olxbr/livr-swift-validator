@@ -41,7 +41,8 @@ struct LIVR {
                                               ModifiersRules.ToLc.name: ModifiersRules.ToLc(),
                                               ModifiersRules.ToUc.name: ModifiersRules.ToUc(),
                                               ModifiersRules.Remove.name: ModifiersRules.Remove(),
-                                              ModifiersRules.LeaveOnly.name: ModifiersRules.LeaveOnly()]
+                                              ModifiersRules.LeaveOnly.name: ModifiersRules.LeaveOnly(),
+                                              ModifiersRules.Default.name: ModifiersRules.Default()]
     
     public static func validator(validationRules: JSON) -> Validator {
         return Validator(validationRules: validationRules)
