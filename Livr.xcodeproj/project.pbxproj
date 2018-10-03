@@ -28,6 +28,7 @@
 		D541BBDB2153562700C52B55 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD52153562700C52B55 /* Validator.swift */; };
 		D541C10421536F3E00C52B55 /* JsonLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541C10321536F3E00C52B55 /* JsonLoader.swift */; };
 		D541C30521548F0700C52B55 /* resources in Resources */ = {isa = PBXBuildFile; fileRef = D541C30421548F0700C52B55 /* resources */; };
+		D5467FE62164560E00B9CAD3 /* AutoTrimTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		D541BBD52153562700C52B55 /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		D541C10321536F3E00C52B55 /* JsonLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoader.swift; sourceTree = "<group>"; };
 		D541C30421548F0700C52B55 /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
+		D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrimTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				D50F372F2158485500DB7B0D /* Disctionary+Extension.swift */,
 				D541BBC22153555300C52B55 /* PositiveTests.swift */,
 				D50F37312159B7C500DB7B0D /* NegativeTests.swift */,
+				D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */,
 				D541C10321536F3E00C52B55 /* JsonLoader.swift */,
 				D541C30421548F0700C52B55 /* resources */,
 				D541BBC42153555300C52B55 /* Info.plist */,
@@ -290,6 +293,7 @@
 				D50F372E2158341300DB7B0D /* XCTestCase+Extension.swift in Sources */,
 				D541C10421536F3E00C52B55 /* JsonLoader.swift in Sources */,
 				D541BBC32153555300C52B55 /* PositiveTests.swift in Sources */,
+				D5467FE62164560E00B9CAD3 /* AutoTrimTests.swift in Sources */,
 				D50F37302158485500DB7B0D /* Disctionary+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

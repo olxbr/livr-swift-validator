@@ -87,7 +87,10 @@ struct Validator {
         return Validator.validate(value: value, rules: rules)
     }
     
-    static func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+    static func validate(value: Any?, rules: [LivrRule], autoTrim: Bool = true) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+        
+        var rules = rules
+        autoTrim ? rules.append(ModifiersRules.Trim()) : ()
         
         var updatedValue: AnyObject?
         for rule in rules {
@@ -108,6 +111,8 @@ struct Validator {
             // TODO: log console error for rule not in received rules
             return
         }
+        
+        isAutoTrim ? rules.append(ModifiersRules.Trim()) : ()
         
         for (index, rule) in rules.enumerated() {
             if var equalToFieldRule = rule as? SpecialRules.EqualToField {
