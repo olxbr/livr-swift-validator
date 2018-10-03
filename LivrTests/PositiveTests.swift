@@ -146,6 +146,10 @@ class PositiveTests: XCTestCase {
     func testDefault() {
         validate(testSuiteAt: .resourcesPath + "35-default")
     }
+    
+    func testTrim() {
+        validate(testSuiteAt: .resourcesPath + "30-trim")
+    }
 }
 
 // MARK: - Private Constants

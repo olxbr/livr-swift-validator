@@ -101,6 +101,7 @@ struct ModifiersRules {
         var errorCode: ErrorCode = ""
         var arguments: Any?
         
+        // TODO: fix
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
             if Utils.hasNoValue(value) || value == nil {
                 return (nil, modified(value: value))
@@ -113,6 +114,26 @@ struct ModifiersRules {
                 return argumentsAsArray.first as AnyObject
             }
             return arguments as AnyObject
+        }
+    }
+    
+    struct Trim: LivrRule, Modifier {
+        static var name: String = "trim"
+        var errorCode: ErrorCode = ""
+        var arguments: Any?
+        
+        func validate(value: Any?) -> (Errors?, ModifiedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            
+            if let value = value {
+                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                return (nil, modified(value: value))
+            }
+            return (nil, nil)
+        }
+        
+        func modified(value: Any) -> AnyObject {
+            return String(describing: value).trimmingCharacters(in: .whitespacesAndNewlines) as AnyObject
         }
     }
 }

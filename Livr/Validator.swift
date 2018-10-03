@@ -31,14 +31,16 @@ struct Validator {
     private(set) var rulesByField: [Field: Rules]?
     private(set) var validatingData: JSON?
     
+    private(set) var isAutoTrim: Bool
+    
     typealias Output = JSON
     
     // MARK: - Register + Rules of validation
-    init(validationRules: JSON) {
+    init(validationRules: JSON, isAutoTrim: Bool = true) {
         self.validationRules = validationRules
+        self.isAutoTrim = isAutoTrim
     }
     
-    // FIXME: This basic stage do not considers nested objects nor any complex rules, aliased rules and whatsoever - doing the most simple way for each step
     private mutating func setRulesByField() throws {
         rulesByField = [:]
         
