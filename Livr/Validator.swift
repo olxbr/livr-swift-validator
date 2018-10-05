@@ -6,12 +6,15 @@
 //
 
 enum ValidatingError: Error {
-    case notRegistered(rule: String)
+    case notRegistered(rule: String),
+    nilValidationRules
     
     var description: String {
         switch self {
         case .notRegistered(let ruleName):
             return "Rule [" + ruleName + "] not registered"
+        default:
+            return "validation rules should not be nil"
         }
     }
 }
@@ -27,7 +30,7 @@ struct Validator {
     typealias RuleName = String
     typealias RuleArguments = Any
     
-    private(set) var validationRules: JSON
+    private(set) var validationRules: JSON?
     private(set) var rulesByField: [Field: Rules]?
     private(set) var validatingData: JSON?
     
@@ -36,12 +39,17 @@ struct Validator {
     typealias Output = JSON
     
     // MARK: - Register + Rules of validation
+    init(isAutoTrim: Bool) {
+        self.isAutoTrim = isAutoTrim
+    }
+    
     init(validationRules: JSON, isAutoTrim: Bool = true) {
         self.validationRules = validationRules
         self.isAutoTrim = isAutoTrim
     }
     
     private mutating func setRulesByField() throws {
+        guard let validationRules = validationRules else { throw ValidatingError.nilValidationRules }
         rulesByField = [:]
         
         for pairOfFieldAndValidationRules in validationRules {
@@ -81,16 +89,14 @@ struct Validator {
     }
     
     // to validate single values within its rules
-    static func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+    func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
-        guard let rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) } // TODO: see if this is the correct return
-        return Validator.validate(value: value, rules: rules)
+        guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) } // TODO: see if this is the correct return
+        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        return validate(value: value, rules: rules)
     }
     
-    static func validate(value: Any?, rules: [LivrRule], autoTrim: Bool = true) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
-        
-        var rules = rules
-        autoTrim ? rules.append(ModifiersRules.Trim()) : ()
+    func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
         var updatedValue: AnyObject?
         for rule in rules {
@@ -106,13 +112,15 @@ struct Validator {
     }
     
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
-        // now it treats as a single rule by field only
+        
+        var value = value
+        
         guard var rules = rulesByField?[field] else {
             // TODO: log console error for rule not in received rules
             return
         }
         
-        isAutoTrim ? rules.append(ModifiersRules.Trim()) : ()
+        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
         
         for (index, rule) in rules.enumerated() {
             if var equalToFieldRule = rule as? SpecialRules.EqualToField {
@@ -138,12 +146,11 @@ struct Validator {
                 
                 if rule is MetaRules.NestedObject {
                     output?[field] = errorAndUpdatedValue.1 ?? [:]
-                } else if output?[field] == nil { // TODO: improve to see if is any modifiers using a protocol or inheritance
+                } else if output?[field] == nil {
                     output?[field] = errorAndUpdatedValue.1 ?? value
                 } else if let updatedValue = errorAndUpdatedValue.1 {
                     output?[field] = updatedValue
                 }
-                // TODO: trim if needed
             }
         }
         

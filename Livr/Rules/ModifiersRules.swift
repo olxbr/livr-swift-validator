@@ -133,7 +133,17 @@ struct ModifiersRules {
         }
         
         func modified(value: Any) -> AnyObject {
-            return String(describing: value).trimmingCharacters(in: .whitespacesAndNewlines) as AnyObject
+            let valueAsString = String(describing: value)
+            
+            guard !valueAsString.trimmingCharacters(in: .whitespaces).isEmpty else {
+                return value as AnyObject
+            }
+            
+            if valueAsString.contains(" ") || valueAsString.contains("\n") {
+                return String(describing: value).trimmingCharacters(in: .whitespacesAndNewlines) as AnyObject
+            } else {
+                return value as AnyObject
+            }
         }
     }
 }

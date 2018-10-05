@@ -28,7 +28,7 @@ class AutoTrimTests: XCTestCase {
         }
 
         XCTAssertEqual(output["field-1"] as? String, "13")
-        XCTAssertEqual(output["field-2"] as? [String: String], ["string_value":"not_trimmed_string"])
+        XCTAssertEqual(output["field-2"] as? [String: String], ["string_value": "not_trimmed_string"])
         XCTAssertEqual(output["field-3"] as? [String], ["white_space_in_the_end", "white_space_in_the_beginning"])
     }
 }
