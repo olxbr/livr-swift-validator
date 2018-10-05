@@ -6,13 +6,18 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+protocol RuleThatCreatesValidator {
+    var isAutoTrim: Bool {get set}
+}
+
 struct MetaRules {
     
-    struct NestedObject: LivrRule {
+    struct NestedObject: LivrRule, RuleThatCreatesValidator {
         static var name: String = "nested_object"
         var errorCode: ErrorCode = "FORMAT_ERROR"
         var arguments: Any?
         var updatedValue: UpdatedValue?
+        var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             guard let validationRules = arguments as? JSON else { return (String.formatErrorCode, nil) }
@@ -20,7 +25,7 @@ struct MetaRules {
             
             if !(value is JSON) { return (String.formatErrorCode, nil) }
             
-            var validator = LIVR.validator(validationRules: validationRules)
+            var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
             
             var output: JSON?
             do {
@@ -36,11 +41,12 @@ struct MetaRules {
         }
     }
     
-    struct VariableObject: LivrRule {
+    struct VariableObject: LivrRule, RuleThatCreatesValidator {
         static var name: String = "variable_object"
         var errorCode: ErrorCode = "FORMAT_ERROR"
         var arguments: Any?
         var updatedValue: UpdatedValue?
+        var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             guard let variableObjectRules = arguments as? [Any], variableObjectRules.count > 1 else { return (String.formatErrorCode, nil) }
@@ -57,7 +63,7 @@ struct MetaRules {
                 return (String.formatErrorCode, nil)
             }
                 
-            var validator = LIVR.validator(validationRules: validationRules)
+            var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
             
             var output: JSON?
             do {
@@ -73,11 +79,12 @@ struct MetaRules {
         }
     }
     
-    struct ListOf: LivrRule {
+    struct ListOf: LivrRule, RuleThatCreatesValidator {
         static var name: String = "list_of"
         var errorCode: ErrorCode = ""
         var arguments: Any?
         var updatedValue: UpdatedValue?
+        var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
@@ -89,10 +96,12 @@ struct MetaRules {
                 var errors: [Any]?
                 var output: [Any]?
                 
+                let validator = LIVR.validator(isAutoTrim: isAutoTrim)
+                
                 if let listOfValues = value as? [Any] {
                     for value in listOfValues {
                         
-                        let errorAndUpdatedValue = Validator.validate(value: value, validationRules: arguments)
+                        let errorAndUpdatedValue = validator.validate(value: value, validationRules: arguments)
                         if let optionalError = errorAndUpdatedValue.0, let error = optionalError {
                             errors == nil ? errors = [] : ()
                             errors?.append(error as Any)
@@ -115,11 +124,12 @@ struct MetaRules {
         }
     }
     
-    struct ListOfObjects: LivrRule {
+    struct ListOfObjects: LivrRule, RuleThatCreatesValidator {
         static var name: String = "list_of_objects"
         var errorCode: ErrorCode = ""
         var arguments: Any?
         var updatedValue: UpdatedValue?
+        var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
@@ -141,7 +151,7 @@ struct MetaRules {
                             continue
                         }
                         
-                        var validator = LIVR.validator(validationRules: validationRules)
+                        var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
                         
                         var validatorOutput: JSON?
                         do {
@@ -172,11 +182,12 @@ struct MetaRules {
         }
     }
     
-    struct ListOfDifferentObjects: LivrRule {
+    struct ListOfDifferentObjects: LivrRule, RuleThatCreatesValidator {
         static var name: String = "list_of_different_objects"
         var errorCode: ErrorCode = ""
         var arguments: Any?
         var updatedValue: UpdatedValue?
+        var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
@@ -208,7 +219,7 @@ struct MetaRules {
                                 continue
                         }
                         
-                        var validator = LIVR.validator(validationRules: validationRules)
+                        var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
                         
                         var validatorOutput: JSON?
                         do {
@@ -239,11 +250,12 @@ struct MetaRules {
         }
     }
     
-    struct Or: LivrRule {
+    struct Or: LivrRule, RuleThatCreatesValidator {
         static var name: String = "or"
         var errorCode: ErrorCode = ""
         var arguments: Any?
         var updatedValue: UpdatedValue?
+        var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
@@ -257,13 +269,15 @@ struct MetaRules {
                         let rules = RuleGenerator.generateRules(from: argument)
                         var errorsForBlockOfRules: [LivrRule.Errors]?
                         
+                        let validator = LIVR.validator(isAutoTrim: isAutoTrim)
+                        
                         for rule in rules! {
-                            let errorAndUpdatedValue = Validator.validate(value: value, rules: [rule])
+                            let errorAndUpdatedValue = validator.validate(value: value, rules: [rule])
                             
-                            if let validatorUpdatedValue = errorAndUpdatedValue.1, !(rule is ModifiersRules.ToLc && errorsForBlockOfRules != nil) {
+                            if let validatorUpdatedValue = errorAndUpdatedValue.1, !(rule is Modifier && errorsForBlockOfRules != nil) {
                                 updatedValue = validatorUpdatedValue
                                 return (nil, updatedValue as AnyObject)
-                            } else if errorAndUpdatedValue.0 == nil && !rules!.contains(where: { $0 is ModifiersRules.ToLc }) {
+                            } else if errorAndUpdatedValue.0 == nil && !rules!.contains(where: { $0 is Modifier }) {
                                 return (nil, nil)
                             } else if let error = errorAndUpdatedValue.0 {
                                 errors == nil ? errors = [] : ()

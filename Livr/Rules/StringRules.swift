@@ -23,6 +23,7 @@ struct StringRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
+                if Utils.isString(value) { return (nil, nil) }
                 if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
                 return (nil, StringType(describing: value) as AnyObject)
             }
