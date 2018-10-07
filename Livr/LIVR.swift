@@ -57,4 +57,8 @@ struct LIVR {
     public static func validator(isAutoTrim: Bool) -> Validator {
         return Validator(isAutoTrim: isAutoTrim)
     }
+    
+    public static func register(rule: RuleAlias) {
+        LIVR.defaultRules[rule.name] = rule
+    }
 }

@@ -11,7 +11,7 @@ import Foundation
 typealias JSON = [String: Any?]
 
 enum JsonTestFile: String {
-    case input, output, rules, errors
+    case input, output, rules, errors, aliases
 }
 
 struct JsonLoader {
@@ -22,14 +22,18 @@ struct JsonLoader {
         self.directory = testDirectory
     }
     
-    func load(file: JsonTestFile) -> JSON {
+    func load(file: JsonTestFile) -> Any {
         switch file {
+        case .aliases:
+            let arrayOfJsons: [JSON] = loadJson(for: file.rawValue)
+            return arrayOfJsons
         default:
-            return loadJson(for: file.rawValue)
+            let json: JSON = loadJson(for: file.rawValue)
+            return json
         }
     }
     
-    private func loadJson(for file: String) -> JSON {
+    private func loadJson<T>(for file: String) -> T {
         let bundle = Bundle.init(for: PositiveTests.classForCoder())
         guard let fileUrl = bundle.path(forResource: file,
                                         ofType: .json,
@@ -40,7 +44,7 @@ struct JsonLoader {
         
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: fileUrl), options: .alwaysMapped)
-            guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? JSON else {
+            guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? T else {
                 fatalError(.unableToLoadJsonError)
             }
 
