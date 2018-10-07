@@ -6,8 +6,6 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
-// FIXME: Improve rules readability when needed and also
-
 typealias StringType = String
 
 struct StringRules {

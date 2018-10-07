@@ -101,10 +101,9 @@ struct ModifiersRules {
         var errorCode: ErrorCode = ""
         var arguments: Any?
         
-        // TODO: fix
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
             if Utils.hasNoValue(value) || value == nil {
-                return (nil, modified(value: value))
+                return (nil, modified(value: ""))
             }
             return (nil, nil)
         }
