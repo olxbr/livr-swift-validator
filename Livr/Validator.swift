@@ -118,7 +118,7 @@ struct Validator {
     // to validate single values within its rules
     func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
-        guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) } // TODO: see if this is the correct return
+        guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) }
         isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
         return validate(value: value, rules: rules)
     }
@@ -140,10 +140,7 @@ struct Validator {
     
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
         
-        guard var rules = rulesByField?[field] else {
-            // TODO: log console error for rule not in received rules
-            return
-        }
+        guard var rules = rulesByField?[field] else { return }
         
         isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
         
