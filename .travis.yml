@@ -9,3 +9,7 @@ install:
 
 script: 
 - bundle exec fastlane test
+
+### To be run when releasing versions ### - Travis doesn't support different jobs by branches, yet
+- bundle exec fatlante tag
+- bundle exec fatlante publish
