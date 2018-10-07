@@ -70,7 +70,7 @@ struct Validator {
     
     func registerRule(alias: String, rules: Any, errorCode: LivrRule.ErrorCode? = nil) {
         
-        let ruleAlias = RuleAlias(name: alias, errorCode: errorCode ?? .formatErrorCode, rules: rules, isAutoTrim: isAutoTrim)
+        let ruleAlias = RuleAlias(name: alias, errorCode: errorCode, rules: rules, isAutoTrim: isAutoTrim)
         LIVR.register(rule: ruleAlias)
     }
     

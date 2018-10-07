@@ -28,14 +28,14 @@ protocol LivrRule {
 struct RuleAlias: LivrRule, CustomRule, RuleThatCreatesValidator {
     
     var name: String
-    var errorCode: ErrorCode
+    var errorCode: ErrorCode = ""
     var rules: Any
     var arguments: Any?
     var isAutoTrim: Bool
     
-    init(name: String, errorCode: ErrorCode, rules: Any, isAutoTrim: Bool) {
+    init(name: String, errorCode: ErrorCode?, rules: Any, isAutoTrim: Bool) {
         self.name = name
-        self.errorCode = errorCode
+        errorCode != nil ? self.errorCode = errorCode! : ()
         self.rules = rules
         self.isAutoTrim = isAutoTrim
     }
@@ -47,6 +47,9 @@ struct RuleAlias: LivrRule, CustomRule, RuleThatCreatesValidator {
             let errorOrUpdatedValue = validator.validate(value: value, rules: rules)
             
             if let error = errorOrUpdatedValue.0 {
+                if !self.errorCode.isEmpty {
+                    return (errorCode, nil)
+                }
                 return (error, nil)
             }
             return (nil, (errorOrUpdatedValue.1 ?? value) as AnyObject)

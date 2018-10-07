@@ -48,6 +48,7 @@ extension XCTestCase {
     }
     
     private func loadAliasesIfNeeded(for path: String, validator: Validator, jsonLoader: JsonLoader) {
+        guard path.contains(String.aliases) else { return }
         guard let aliases = jsonLoader.load(file: .aliases) as? [JSON] else {
             fatalError(.errorLoadingAliasesJson)
         }
@@ -63,6 +64,7 @@ extension XCTestCase {
 // MARK: - Private constants
 private extension String {
     static let negative = "negative"
+    static let aliases = "aliases"
     static let nilTestResultJson = "Test result json loaded from bundle should not be nil"
     static let nilValidatorErrros = "Validator errors should not be nil"
     static let nilValidatorOutput = "Validator output should not be nil"
