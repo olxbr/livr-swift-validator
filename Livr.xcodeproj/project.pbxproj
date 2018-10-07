@@ -17,6 +17,7 @@
 		D50F373A215F4AC700DB7B0D /* MetaRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F3739215F4AC700DB7B0D /* MetaRules.swift */; };
 		D50F373C2161547E00DB7B0D /* RuleGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F373B2161547E00DB7B0D /* RuleGenerator.swift */; };
 		D50F373E2161B7F700DB7B0D /* ModifiersRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F373D2161B7F700DB7B0D /* ModifiersRules.swift */; };
+		D53791502169D4EF0087257E /* AliasesPositiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D537914F2169D4EF0087257E /* AliasesPositiveTests.swift */; };
 		D541BBBE2153555300C52B55 /* Livr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D541BBB42153555300C52B55 /* Livr.framework */; };
 		D541BBC32153555300C52B55 /* PositiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBC22153555300C52B55 /* PositiveTests.swift */; };
 		D541BBC52153555300C52B55 /* Livr.h in Headers */ = {isa = PBXBuildFile; fileRef = D541BBB72153555300C52B55 /* Livr.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -52,6 +53,7 @@
 		D50F3739215F4AC700DB7B0D /* MetaRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaRules.swift; sourceTree = "<group>"; };
 		D50F373B2161547E00DB7B0D /* RuleGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleGenerator.swift; sourceTree = "<group>"; };
 		D50F373D2161B7F700DB7B0D /* ModifiersRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiersRules.swift; sourceTree = "<group>"; };
+		D537914F2169D4EF0087257E /* AliasesPositiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasesPositiveTests.swift; sourceTree = "<group>"; };
 		D541BBB42153555300C52B55 /* Livr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Livr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D541BBB72153555300C52B55 /* Livr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Livr.h; sourceTree = "<group>"; };
 		D541BBB82153555300C52B55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				D50F372D2158341300DB7B0D /* XCTestCase+Extension.swift */,
 				D50F372F2158485500DB7B0D /* Disctionary+Extension.swift */,
+				D537914F2169D4EF0087257E /* AliasesPositiveTests.swift */,
 				D541BBC22153555300C52B55 /* PositiveTests.swift */,
 				D50F37312159B7C500DB7B0D /* NegativeTests.swift */,
 				D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */,
@@ -291,6 +294,7 @@
 			files = (
 				D50F37322159B7C500DB7B0D /* NegativeTests.swift in Sources */,
 				D50F372E2158341300DB7B0D /* XCTestCase+Extension.swift in Sources */,
+				D53791502169D4EF0087257E /* AliasesPositiveTests.swift in Sources */,
 				D541C10421536F3E00C52B55 /* JsonLoader.swift in Sources */,
 				D541BBC32153555300C52B55 /* PositiveTests.swift in Sources */,
 				D5467FE62164560E00B9CAD3 /* AutoTrimTests.swift in Sources */,
