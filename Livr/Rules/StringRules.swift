@@ -13,7 +13,7 @@ typealias StringType = String
 struct StringRules {
     
     // must be a string or is converted to
-    struct String: LivrRule {
+    struct String: LivrRule, PreDefinedRule {
         static var name = "string"
         var errorCode = ""
         var arguments: Any?
@@ -32,7 +32,7 @@ struct StringRules {
     }
     
     // must be equal defined value
-    struct Eq: LivrRule {
+    struct Eq: LivrRule, PreDefinedRule {
         static var name = "eq"
         var errorCode = "NOT_ALLOWED_VALUE"
         var arguments: Any?
@@ -59,7 +59,7 @@ struct StringRules {
         }
     }
 
-    struct OneOf: LivrRule {
+    struct OneOf: LivrRule, PreDefinedRule {
         static var name = "one_of"
         var errorCode = "NOT_ALLOWED_VALUE"
         var arguments: Any?
@@ -94,7 +94,7 @@ struct StringRules {
         }
     }
     
-    struct MaxLength: LivrRule {
+    struct MaxLength: LivrRule, PreDefinedRule {
         static var name = "max_length"
         var errorCode = "TOO_LONG"
         var arguments: Any?
@@ -129,7 +129,7 @@ struct StringRules {
         }
     }
     
-    struct MinLength: LivrRule {
+    struct MinLength: LivrRule, PreDefinedRule {
         static var name = "min_length"
         var errorCode = "TOO_SHORT"
         var arguments: Any?
@@ -164,7 +164,7 @@ struct StringRules {
         }
     }
     
-    struct LengthBetween: LivrRule {
+    struct LengthBetween: LivrRule, PreDefinedRule {
         static var name = "length_between"
         var errorCode = ""
         var arguments: Any?
@@ -201,7 +201,7 @@ struct StringRules {
         }
     }
     
-    struct LengthEqual: LivrRule {
+    struct LengthEqual: LivrRule, PreDefinedRule {
         static var name = "length_equal"
         var errorCode = ""
         var arguments: Any?
@@ -242,7 +242,7 @@ struct StringRules {
         }
     }
     
-    struct Like: LivrRule {
+    struct Like: LivrRule, PreDefinedRule {
         static var name = "like"
         var errorCode = "WRONG_FORMAT"
         var arguments: Any?

@@ -7,12 +7,17 @@
 
 enum ValidatingError: Error {
     case notRegistered(rule: String),
-    nilValidationRules
+    nilValidationRules,
+    emptyAliasName, emptyAliasRules
     
     var description: String {
         switch self {
         case .notRegistered(let ruleName):
             return "Rule [" + ruleName + "] not registered"
+        case .emptyAliasName:
+            return "Alias should have a name key containing it's String name"
+        case .emptyAliasRules:
+            return "Alias should have a rules key containing it's rules"
         default:
             return "validation rules should not be nil"
         }
@@ -48,6 +53,27 @@ struct Validator {
         self.isAutoTrim = isAutoTrim
     }
     
+    func registerRule(aliases: [JSON]) throws {
+        
+        for alias in aliases {
+            guard let name = alias["name"] as? String else {
+                throw ValidatingError.emptyAliasName
+            }
+            guard let optionalRules = alias["rules"], let rules = optionalRules else {
+                throw ValidatingError.emptyAliasRules
+            }
+            let errorCode = alias["error"] as? String
+            
+            self.registerRule(alias: name, rules: rules, errorCode: errorCode)            
+        }
+    }
+    
+    func registerRule(alias: String, rules: Any, errorCode: LivrRule.ErrorCode? = nil) {
+        
+        let ruleAlias = RuleAlias(name: alias, errorCode: errorCode ?? .formatErrorCode, rules: rules, isAutoTrim: isAutoTrim)
+        LIVR.register(rule: ruleAlias)
+    }
+    
     private mutating func setRulesByField() throws {
         guard let validationRules = validationRules else { throw ValidatingError.nilValidationRules }
         rulesByField = [:]
@@ -62,7 +88,8 @@ struct Validator {
         }
     }
     
-    // MARK: - Validate + Trim
+    // MARK: - Validating
+    
     mutating func validate(data: JSON) throws -> Output? {
         
         try setRulesByField()
@@ -112,8 +139,6 @@ struct Validator {
     }
     
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
-        
-        var value = value
         
         guard var rules = rulesByField?[field] else {
             // TODO: log console error for rule not in received rules

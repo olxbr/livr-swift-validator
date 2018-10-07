@@ -11,7 +11,7 @@ typealias URLType = URL
 struct SpecialRules {
     
     // must be a valid URL
-    struct URL: LivrRule {
+    struct URL: LivrRule, PreDefinedRule {
         static var name = "url"
         var errorCode = "WRONG_URL"
         let regex = "^(?:(?:http|https|HTTP|HTTPS)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[0-1]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))\\.?|localhost)(?::\\d{2,5})?(?:[/?#]\\S*)?$"
@@ -36,7 +36,7 @@ struct SpecialRules {
     }
     
     // must be a valid email
-    struct Email: LivrRule {
+    struct Email: LivrRule, PreDefinedRule {
         static var name = "email"
         var errorCode = "WRONG_EMAIL"
         let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -60,7 +60,7 @@ struct SpecialRules {
     }
     
     // must be a valid email
-    struct ISODate: LivrRule {
+    struct ISODate: LivrRule, PreDefinedRule {
         static var name = "iso_date"
         var errorCode = "WRONG_DATE"
         var arguments: Any?
@@ -84,7 +84,7 @@ struct SpecialRules {
         }
     }
     
-    struct EqualToField: LivrRule {
+    struct EqualToField: LivrRule, PreDefinedRule {
         static var name = "equal_to_field"
         var errorCode = "FIELDS_NOT_EQUAL"
         var arguments: Any?

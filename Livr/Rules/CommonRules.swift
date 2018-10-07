@@ -8,7 +8,7 @@
 struct CommonRules {
     
     // can't be nil/null
-    struct Required: LivrRule {
+    struct Required: LivrRule, PreDefinedRule {
         static var name = "required"
         var errorCode = "REQUIRED"
         var arguments: Any?
@@ -22,7 +22,7 @@ struct CommonRules {
     }
     
     // can be Any? value, including nil/null
-    struct NotEmpty: LivrRule {
+    struct NotEmpty: LivrRule, PreDefinedRule {
         static var name = "not_empty"
         var errorCode = "CANNOT_BE_EMPTY"
         var arguments: Any?
@@ -38,7 +38,7 @@ struct CommonRules {
     }
     
     // must be a list of Any
-    struct NotEmptyList: LivrRule {
+    struct NotEmptyList: LivrRule, PreDefinedRule {
         static var name = "not_empty_list"
         var errorCode = "CANNOT_BE_EMPTY"
         var arguments: Any?
@@ -57,7 +57,7 @@ struct CommonRules {
     }
     
     // must be a list of Any
-    struct AnyObject: LivrRule {
+    struct AnyObject: LivrRule, PreDefinedRule {
         static var name = "any_object"
         var errorCode = String.formatErrorCode
         var arguments: Any?

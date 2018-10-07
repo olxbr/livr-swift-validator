@@ -11,7 +11,7 @@ typealias DecimalNum = Decimal
 struct NumericRules {
     
     // must be integer
-    struct Integer: LivrRule {
+    struct Integer: LivrRule, PreDefinedRule {
         static var name = "integer"
         var errorCode = "NOT_INTEGER"
         var arguments: Any?
@@ -36,7 +36,7 @@ struct NumericRules {
     }
     
     // must be a positive integer
-    struct PositiveInteger: LivrRule {
+    struct PositiveInteger: LivrRule, PreDefinedRule {
         static var name = "positive_integer"
         var errorCode = "NOT_POSITIVE_INTEGER"
         var arguments: Any?
@@ -61,7 +61,7 @@ struct NumericRules {
     }
     
     // must be decimal
-    struct Decimal: LivrRule {
+    struct Decimal: LivrRule, PreDefinedRule {
         static var name = "decimal"
         var errorCode = "NOT_DECIMAL"
         var arguments: Any?
@@ -89,7 +89,7 @@ struct NumericRules {
     }
     
     // must be a positive decimal
-    struct PositiveDecimal: LivrRule {
+    struct PositiveDecimal: LivrRule, PreDefinedRule {
         static var name = "positive_decimal"
         var errorCode = "NOT_POSITIVE_DECIMAL"
         var arguments: Any?
@@ -116,7 +116,7 @@ struct NumericRules {
         }
     }
     
-    struct MaxNumber: LivrRule {
+    struct MaxNumber: LivrRule, PreDefinedRule {
         static var name = "max_number"
         var errorCode = "TOO_HIGH"
         var arguments: Any?
@@ -159,7 +159,7 @@ struct NumericRules {
         }
     }
     
-    struct MinNumber: LivrRule {
+    struct MinNumber: LivrRule, PreDefinedRule {
         static var name = "min_number"
         var errorCode = "TOO_LOW"
         var arguments: Any?
@@ -202,7 +202,7 @@ struct NumericRules {
         }
     }
     
-    struct NumberBetween: LivrRule {
+    struct NumberBetween: LivrRule, PreDefinedRule {
         static var name = "number_between"
         var errorCode = ""
         var arguments: Any?

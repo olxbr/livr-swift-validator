@@ -12,7 +12,7 @@ protocol RuleThatCreatesValidator {
 
 struct MetaRules {
     
-    struct NestedObject: LivrRule, RuleThatCreatesValidator {
+    struct NestedObject: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "nested_object"
         var errorCode: ErrorCode = "FORMAT_ERROR"
         var arguments: Any?
@@ -41,7 +41,7 @@ struct MetaRules {
         }
     }
     
-    struct VariableObject: LivrRule, RuleThatCreatesValidator {
+    struct VariableObject: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "variable_object"
         var errorCode: ErrorCode = "FORMAT_ERROR"
         var arguments: Any?
@@ -79,7 +79,7 @@ struct MetaRules {
         }
     }
     
-    struct ListOf: LivrRule, RuleThatCreatesValidator {
+    struct ListOf: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "list_of"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -124,7 +124,7 @@ struct MetaRules {
         }
     }
     
-    struct ListOfObjects: LivrRule, RuleThatCreatesValidator {
+    struct ListOfObjects: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "list_of_objects"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -182,7 +182,7 @@ struct MetaRules {
         }
     }
     
-    struct ListOfDifferentObjects: LivrRule, RuleThatCreatesValidator {
+    struct ListOfDifferentObjects: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "list_of_different_objects"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -250,7 +250,7 @@ struct MetaRules {
         }
     }
     
-    struct Or: LivrRule, RuleThatCreatesValidator {
+    struct Or: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "or"
         var errorCode: ErrorCode = ""
         var arguments: Any?

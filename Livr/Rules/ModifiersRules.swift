@@ -14,7 +14,7 @@ protocol Modifier {
 
 struct ModifiersRules {
     
-    struct ToLc: LivrRule, Modifier {
+    struct ToLc: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "to_lc"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -34,7 +34,7 @@ struct ModifiersRules {
         }
     }
     
-    struct ToUc: LivrRule, Modifier {
+    struct ToUc: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "to_uc"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -54,7 +54,7 @@ struct ModifiersRules {
         }
     }
     
-    struct Remove: LivrRule, Modifier {
+    struct Remove: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "remove"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -75,7 +75,7 @@ struct ModifiersRules {
         }
     }
     
-    struct LeaveOnly: LivrRule, Modifier {
+    struct LeaveOnly: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "leave_only"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -96,7 +96,7 @@ struct ModifiersRules {
         }
     }
     
-    struct Default: LivrRule, Modifier {
+    struct Default: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "default"
         var errorCode: ErrorCode = ""
         var arguments: Any?
@@ -117,7 +117,7 @@ struct ModifiersRules {
         }
     }
     
-    struct Trim: LivrRule, Modifier {
+    struct Trim: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "trim"
         var errorCode: ErrorCode = ""
         var arguments: Any?

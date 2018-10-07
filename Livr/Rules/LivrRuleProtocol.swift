@@ -5,16 +5,54 @@
 //  Created by Felipe Lefèvre Marino on 9/18/18.
 //
 
-protocol LivrRule {
+protocol PreDefinedRule: LivrRule {
     static var name: String {get}
+}
+
+protocol CustomRule {
+    var name: String {get set}
+    var rules: Any {get set}
+}
+
+protocol LivrRule {
+    var arguments: Any? {get set}
     
     typealias ErrorCode = String
     var errorCode: ErrorCode {get}
-    var arguments: Any? {get set}
     
     typealias Errors = Any?
     typealias UpdatedValue = AnyObject
     func validate(value: Any?) -> (Errors?, UpdatedValue?)
+}
+
+struct RuleAlias: LivrRule, CustomRule, RuleThatCreatesValidator {
+    
+    var name: String
+    var errorCode: ErrorCode
+    var rules: Any
+    var arguments: Any?
+    var isAutoTrim: Bool
+    
+    init(name: String, errorCode: ErrorCode, rules: Any, isAutoTrim: Bool) {
+        self.name = name
+        self.errorCode = errorCode
+        self.rules = rules
+        self.isAutoTrim = isAutoTrim
+    }
+    
+    func validate(value: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+        
+        let validator = Validator.init(isAutoTrim: isAutoTrim)
+        if let rules = RuleGenerator.generateRules(from: self.rules) {
+            let errorOrUpdatedValue = validator.validate(value: value, rules: rules)
+            
+            if let error = errorOrUpdatedValue.0 {
+                return (error, nil)
+            }
+            return (nil, (errorOrUpdatedValue.1 ?? value) as AnyObject)
+        }
+        return (nil, nil)
+    }
 }
 
 extension String {
