@@ -14,6 +14,14 @@ class AliasesPositiveTests: XCTestCase {
     func testAdultAge() {
         validate(testSuiteAt: .resourcesPath + "01-adult_age")
     }
+    
+    func testAddress() {
+        validate(testSuiteAt: .resourcesPath + "02-address")
+    }
+    
+    func testAdultAgeInUser() {
+        validate(testSuiteAt: .resourcesPath + "03-adult_age_in_user")
+    }
 }
 
 // MARK: - Private Constants
