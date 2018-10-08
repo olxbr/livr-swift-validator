@@ -7,7 +7,7 @@
 
 typealias LivrRulesDict = [String: LivrRule]
 
-struct LIVR {
+public struct LIVR {
     
     static var defaultRules: LivrRulesDict = [CommonRules.Required.name: CommonRules.Required(),
                                               CommonRules.NotEmpty.name: CommonRules.NotEmpty(),

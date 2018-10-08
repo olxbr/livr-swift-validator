@@ -15,7 +15,7 @@ platform :ios do
 		)
 
 		slather(
-			proj: "Livr.xcodeproj", scheme: "Livr", source_directory: "Livr", binary_basename: "Livr", travis: true, coveralls: true
+			proj: "Livr.xcodeproj", workspace: "Livr.xcworkspace", scheme: "Livr", source_directory: "Livr", binary_basename: "Livr", travis: true, coveralls: true
 		)
   	end
 
@@ -23,8 +23,7 @@ platform :ios do
 ###-------------------------------- Tag and publish ---------------------------###
 
 	desc "Tag pod"
-	lane :tag do |options|
-		ensure_git_status_clean	
+	lane :tag do |options|	
 		sh "git fetch --tags"
 	  	last_tag = last_git_tag
 	  	
@@ -41,7 +40,6 @@ platform :ios do
 	  	end
 
 	  	version_bump_podspec(path: "#{cocoapods[:podspec]}", version_number: version_number)
-	  	sh "git commit -am \"Publish pod version: #{version_number} [ci skip]\""
 	  	add_git_tag(tag: version_number)
 	  	push_git_tags
 	  	push_to_git_remote

@@ -5,7 +5,7 @@
 //  Created by Felipe Lefèvre Marino on 9/16/18.
 //
 
-typealias JSON = [String: Any?]
+public typealias JSON = [String: Any?]
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
     

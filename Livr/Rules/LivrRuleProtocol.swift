@@ -5,16 +5,16 @@
 //  Created by Felipe Lefèvre Marino on 9/18/18.
 //
 
-protocol PreDefinedRule: LivrRule {
+public protocol PreDefinedRule: LivrRule {
     static var name: String {get}
 }
 
-protocol CustomRule {
+public protocol CustomRule {
     var name: String {get set}
     var rules: Any {get set}
 }
 
-protocol LivrRule {
+public protocol LivrRule {
     var arguments: Any? {get set}
     
     typealias ErrorCode = String
@@ -25,22 +25,22 @@ protocol LivrRule {
     func validate(value: Any?) -> (Errors?, UpdatedValue?)
 }
 
-struct RuleAlias: LivrRule, CustomRule, RuleThatCreatesValidator {
+public struct RuleAlias: LivrRule, CustomRule, RuleThatCreatesValidator {
     
-    var name: String
-    var errorCode: ErrorCode = ""
-    var rules: Any
-    var arguments: Any?
-    var isAutoTrim: Bool
+    public var name: String
+    public var errorCode: ErrorCode = ""
+    public var rules: Any
+    public var arguments: Any?
+    public var isAutoTrim: Bool
     
-    init(name: String, errorCode: ErrorCode?, rules: Any, isAutoTrim: Bool) {
+    public init(name: String, errorCode: ErrorCode?, rules: Any, isAutoTrim: Bool) {
         self.name = name
         errorCode != nil ? self.errorCode = errorCode! : ()
         self.rules = rules
         self.isAutoTrim = isAutoTrim
     }
     
-    func validate(value: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+    public func validate(value: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
         let validator = Validator.init(isAutoTrim: isAutoTrim)
         if let rules = RuleGenerator.generateRules(from: self.rules) {
