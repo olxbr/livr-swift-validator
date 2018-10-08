@@ -11,7 +11,6 @@ Lightweight Swift validator supporting Language Independent Validation Rules Spe
 - [Description](#description)
 - [Synopsis](#synopsis)
 - [Installation](#installation)
-- [Acknowledgments](acknowledgments)
 - [License](#license)
 
 # Description
