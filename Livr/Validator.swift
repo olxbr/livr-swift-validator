@@ -24,10 +24,10 @@ enum ValidatingError: Error {
     }
 }
 
-struct Validator {
+public struct Validator {
     
-    private(set) var errors: JSON?
-    private(set) var output: JSON?
+    public private(set) var errors: JSON?
+    public private(set) var output: JSON?
     
     typealias Field = String
     typealias Rules = [LivrRule]
@@ -41,7 +41,7 @@ struct Validator {
     
     private(set) var isAutoTrim: Bool
     
-    typealias Output = JSON
+    public typealias Output = JSON
     
     // MARK: - Register + Rules of validation
     init(isAutoTrim: Bool) {
@@ -53,7 +53,7 @@ struct Validator {
         self.isAutoTrim = isAutoTrim
     }
     
-    func registerRule(aliases: [JSON]) throws {
+    public func registerRule(aliases: [JSON]) throws {
         
         for alias in aliases {
             guard let name = alias["name"] as? String else {
@@ -68,7 +68,7 @@ struct Validator {
         }
     }
     
-    func registerRule(alias: String, rules: Any, errorCode: LivrRule.ErrorCode? = nil) {
+    public func registerRule(alias: String, rules: Any, errorCode: LivrRule.ErrorCode? = nil) {
         
         let ruleAlias = RuleAlias(name: alias, errorCode: errorCode, rules: rules, isAutoTrim: isAutoTrim)
         LIVR.register(rule: ruleAlias)
@@ -90,7 +90,7 @@ struct Validator {
     
     // MARK: - Validating
     
-    mutating func validate(data: JSON) throws -> Output? {
+    public mutating func validate(data: JSON) throws -> Output? {
         
         try setRulesByField()
         
@@ -116,14 +116,14 @@ struct Validator {
     }
     
     // to validate single values within its rules
-    func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+    public func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
         guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) }
         isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
         return validate(value: value, rules: rules)
     }
     
-    func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+    public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
         
         var updatedValue: AnyObject?
         for rule in rules {
