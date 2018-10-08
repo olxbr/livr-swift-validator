@@ -1,0 +1,16 @@
+PODS:
+  - Livr (1.0.1)
+
+DEPENDENCIES:
+  - Livr (from `../`)
+
+EXTERNAL SOURCES:
+  Livr:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Livr: b6c6eb8075a725e30c74e38a9f3a82465f22f193
+
+PODFILE CHECKSUM: 9c555a7c3d7a91cc2414b97dc818cde30e44efce
+
+COCOAPODS: 1.5.3

@@ -7,4 +7,7 @@
    <FileRef
       location = "group:Livr.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:LivrDemo/Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>
