@@ -68,8 +68,9 @@ public struct Validator {
         }
     }
     
-    // TODO: func that receives alias name + function
-    // or even better a subclass o alias rule to be registered
+    public func register(customRule: CustomRule) {
+        LIVR.register(rule: customRule)
+    }
     
     public func registerRule(alias: String, rules: Any, errorCode: LivrRule.ErrorCode? = nil) {
         
