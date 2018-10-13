@@ -5,6 +5,8 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
+public typealias JSON = [String: Any?]
+
 public struct Validator {
     
     public private(set) var errors: JSON?
