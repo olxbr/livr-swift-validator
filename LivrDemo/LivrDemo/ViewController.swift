@@ -11,21 +11,34 @@ import Livr
 
 class ViewController: UIViewController {
     
+    var validator: Validator?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        validator = LIVR.validator(validationRules: getRules())
+        
         showHowToUseLivrValidator()
+        showHowToUseCustomRuleInheritance()
     }
     
     private func showHowToUseLivrValidator() {
-        var validator = LIVR.validator(validationRules: getRules())
-     
-        try? validator.registerRule(aliases: getAliasingRules())
-        
-        guard let output = try? validator.validate(data: getInput()) else {
+        try? validator?.registerRule(aliases: getAliasingRules())
+        validate()
+    }
+    
+    private func showHowToUseCustomRuleInheritance() {
+        validator?.register(customRule: AdultAge())
+        validate()
+    }
+    
+    private func validate() {
+        guard let output = try? validator?.validate(data: getInput()) else {
             fatalError("output should not be nil")
         }
         
-        print(output ?? "")
+        print("Output: " + output.debugDescription)
+        print("Errors: " + String(describing: validator?.errors.debugDescription) + "\n")
     }
 }
 
@@ -43,7 +56,7 @@ extension ViewController {
         return ["first_name": "Vasya",
                 "last_name": "Pupkin",
                 "middle_name": "Some",
-                "age": "25",
+                "age": "18",
                 "salary": 0]
     }
     
