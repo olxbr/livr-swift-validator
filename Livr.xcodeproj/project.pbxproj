@@ -25,7 +25,6 @@
 		D541BBD62153562700C52B55 /* LIVR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBCE2153562700C52B55 /* LIVR.swift */; };
 		D541BBD72153562700C52B55 /* LivrRuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD02153562700C52B55 /* LivrRuleProtocol.swift */; };
 		D541BBD82153562700C52B55 /* CommonRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD12153562700C52B55 /* CommonRules.swift */; };
-		D541BBD92153562700C52B55 /* Dictionary+Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD32153562700C52B55 /* Dictionary+Trim.swift */; };
 		D541BBDA2153562700C52B55 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD42153562700C52B55 /* String.swift */; };
 		D541BBDB2153562700C52B55 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD52153562700C52B55 /* Validator.swift */; };
 		D541C10421536F3E00C52B55 /* JsonLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541C10321536F3E00C52B55 /* JsonLoader.swift */; };
@@ -66,7 +65,6 @@
 		D541BBCE2153562700C52B55 /* LIVR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LIVR.swift; sourceTree = "<group>"; };
 		D541BBD02153562700C52B55 /* LivrRuleProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivrRuleProtocol.swift; sourceTree = "<group>"; };
 		D541BBD12153562700C52B55 /* CommonRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonRules.swift; sourceTree = "<group>"; };
-		D541BBD32153562700C52B55 /* Dictionary+Trim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Trim.swift"; sourceTree = "<group>"; };
 		D541BBD42153562700C52B55 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D541BBD52153562700C52B55 /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		D541C10321536F3E00C52B55 /* JsonLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoader.swift; sourceTree = "<group>"; };
@@ -157,7 +155,6 @@
 		D541BBD22153562700C52B55 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D541BBD32153562700C52B55 /* Dictionary+Trim.swift */,
 				D541BBD42153562700C52B55 /* String.swift */,
 			);
 			path = Extensions;
@@ -303,7 +300,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D541BBD72153562700C52B55 /* LivrRuleProtocol.swift in Sources */,
-				D541BBD92153562700C52B55 /* Dictionary+Trim.swift in Sources */,
 				D541BBD82153562700C52B55 /* CommonRules.swift in Sources */,
 				D50F3738215A629E00DB7B0D /* SpecialRules.swift in Sources */,
 				D50F3736215A5EAE00DB7B0D /* StringRules.swift in Sources */,
