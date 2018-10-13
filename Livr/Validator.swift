@@ -5,25 +5,6 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
-enum ValidatingError: Error {
-    case notRegistered(rule: String),
-    nilValidationRules,
-    emptyAliasName, emptyAliasRules
-    
-    var description: String {
-        switch self {
-        case .notRegistered(let ruleName):
-            return "Rule [" + ruleName + "] not registered"
-        case .emptyAliasName:
-            return "Alias should have a name key containing it's String name"
-        case .emptyAliasRules:
-            return "Alias should have a rules key containing it's rules"
-        default:
-            return "validation rules should not be nil"
-        }
-    }
-}
-
 public struct Validator {
     
     public private(set) var errors: JSON?
@@ -43,6 +24,25 @@ public struct Validator {
     
     public typealias Output = JSON
     
+    enum ErrorType: Error {
+        case notRegistered(rule: String),
+        nilValidationRules,
+        emptyAliasName, emptyAliasRules
+        
+        var description: String {
+            switch self {
+            case .notRegistered(let ruleName):
+                return "Rule [" + ruleName + "] not registered"
+            case .emptyAliasName:
+                return "Alias should have a name key containing it's String name"
+            case .emptyAliasRules:
+                return "Alias should have a rules key containing it's rules"
+            default:
+                return "validation rules should not be nil"
+            }
+        }
+    }
+    
     // MARK: - Register + Rules of validation
     init(isAutoTrim: Bool) {
         self.isAutoTrim = isAutoTrim
@@ -57,16 +57,19 @@ public struct Validator {
         
         for alias in aliases {
             guard let name = alias["name"] as? String else {
-                throw ValidatingError.emptyAliasName
+                throw ErrorType.emptyAliasName
             }
             guard let optionalRules = alias["rules"], let rules = optionalRules else {
-                throw ValidatingError.emptyAliasRules
+                throw ErrorType.emptyAliasRules
             }
             let errorCode = alias["error"] as? String
             
             self.registerRule(alias: name, rules: rules, errorCode: errorCode)            
         }
     }
+    
+    // TODO: func that receives alias name + function
+    // or even better a subclass o alias rule to be registered
     
     public func registerRule(alias: String, rules: Any, errorCode: LivrRule.ErrorCode? = nil) {
         
@@ -75,7 +78,7 @@ public struct Validator {
     }
     
     private mutating func setRulesByField() throws {
-        guard let validationRules = validationRules else { throw ValidatingError.nilValidationRules }
+        guard let validationRules = validationRules else { throw ErrorType.nilValidationRules }
         rulesByField = [:]
         
         for pairOfFieldAndValidationRules in validationRules {
@@ -96,9 +99,7 @@ public struct Validator {
         
         validatingData = data
         
-        guard let rulesByField = rulesByField else {
-            return nil //see what to return
-        }
+        guard let rulesByField = rulesByField else { return nil }
         for case let field in rulesByField.keys {
             if let value = data[field] {
                 validate(value, for: field)
