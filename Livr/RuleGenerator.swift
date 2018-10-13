@@ -65,11 +65,12 @@ struct RuleGenerator {
         }
         return fieldRules
     }
-    
+
     private static func getRegisterdRule(with ruleName: String) throws -> LivrRule? {
         guard let rule = LIVR.defaultRules[ruleName] else {
-            throw ValidatingError.notRegistered(rule: ruleName)
+            throw Validator.ErrorType.notRegistered(rule: ruleName)
         }
+        
         return rule
     }
 }

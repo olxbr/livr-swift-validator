@@ -32,7 +32,7 @@ extension XCTestCase {
         do {
             output = try validator.validate(data: inputJson)
         } catch {
-            XCTFail((error as? ValidatingError)?.description ?? error.localizedDescription)
+            XCTFail((error as? Validator.ErrorType)?.description ?? error.localizedDescription)
             return
         }
         
@@ -56,7 +56,7 @@ extension XCTestCase {
         do {
             try validator.registerRule(aliases: aliases)
         } catch {
-            fatalError((error as? ValidatingError)?.description ?? error.localizedDescription)
+            fatalError((error as? Validator.ErrorType)?.description ?? error.localizedDescription)
         }
     }
 }

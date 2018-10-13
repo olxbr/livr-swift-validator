@@ -6,7 +6,7 @@
 //
 
 struct CommonRules {
-    
+
     // can't be nil/null
     struct Required: LivrRule, PreDefinedRule {
         static var name = "required"

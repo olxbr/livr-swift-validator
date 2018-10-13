@@ -150,6 +150,18 @@ class PositiveTests: XCTestCase {
     func testTrim() {
         validate(testSuiteAt: .resourcesPath + "30-trim")
     }
+    
+    func testValidationPerformance() {
+        self.measure {
+            for _ in 0...300 {
+                testNestedObject()
+                testVariableObject()
+                testListOf()
+                testListOfObjects()
+                testListOfDifferentObjects()
+            }
+        }
+    }
 }
 
 // MARK: - Private Constants

@@ -22,7 +22,7 @@ struct StringRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
                 if Utils.isString(value) { return (nil, nil) }
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 return (nil, StringType(describing: value) as AnyObject)
             }
             return (nil, nil)
@@ -41,7 +41,7 @@ struct StringRules {
             guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 if let listOfArguments = arguments as? [Any],
                     let firstArgument = listOfArguments.first,
                     StringType(describing: firstArgument) == StringType(describing: value) {
@@ -68,7 +68,7 @@ struct StringRules {
             guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 if StringType(describing: arguments) == StringType(describing: value) {
                     return (nil, arguments as AnyObject)
                 }
@@ -103,7 +103,7 @@ struct StringRules {
             guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 
                 var maxLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
@@ -138,7 +138,7 @@ struct StringRules {
             guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 
                 var minLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
@@ -173,7 +173,7 @@ struct StringRules {
             guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 
                 let valueAsString = StringType(describing: value)
                 if let arrayOfArguments = arguments as? [Any], let minLengthArgument = arrayOfArguments.first, arrayOfArguments.count > 1 {
@@ -210,7 +210,7 @@ struct StringRules {
             guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 
                 var allowedLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
@@ -251,7 +251,7 @@ struct StringRules {
             guard let arguments = arguments else { return (StringType.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (StringType.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 
                 let valueAsString = StringType(describing: value)
                 

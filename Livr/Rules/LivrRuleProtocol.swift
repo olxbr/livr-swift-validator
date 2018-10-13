@@ -5,15 +5,6 @@
 //  Created by Felipe Lefèvre Marino on 9/18/18.
 //
 
-public protocol PreDefinedRule: LivrRule {
-    static var name: String {get}
-}
-
-public protocol CustomRule {
-    var name: String {get set}
-    var rules: Any {get set}
-}
-
 public protocol LivrRule {
     var arguments: Any? {get set}
     
@@ -25,11 +16,20 @@ public protocol LivrRule {
     func validate(value: Any?) -> (Errors?, UpdatedValue?)
 }
 
-public struct RuleAlias: LivrRule, CustomRule, RuleThatCreatesValidator {
+public protocol PreDefinedRule: LivrRule {
+    static var name: String {get}
+}
+
+public protocol CustomRule: LivrRule {
+    var name: String {get}
+    var rules: Any? {get set}
+}
+
+public struct RuleAlias: CustomRule, RuleThatCreatesValidator {
     
     public var name: String
     public var errorCode: ErrorCode = ""
-    public var rules: Any
+    public var rules: Any?
     public var arguments: Any?
     public var isAutoTrim: Bool
     

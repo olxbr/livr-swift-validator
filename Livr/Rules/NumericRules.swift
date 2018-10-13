@@ -21,7 +21,7 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 if !Utils.isNumber(value) {
                     if let stringValue = value as? String, let intValue = Int(stringValue) {
                         return (nil, intValue as AnyObject)
@@ -46,7 +46,7 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 if !Utils.isNumber(value) {
                     if let stringValue = value as? String, let intValue = Int(stringValue), intValue > 0 {
                         return (nil, intValue as AnyObject)
@@ -71,7 +71,7 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 if !Utils.isNumber(value) {
                     if let stringValue = value as? String {
                         if let intValue = Int(stringValue) {
@@ -99,7 +99,7 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 if !Utils.isNumber(value) {
                     if let stringValue = value as? String {
                         if let intValue = Int(stringValue), intValue > 0 {
@@ -126,7 +126,7 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value, let arguments = arguments {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 if !Utils.canBeCoercedToNumber(value) { return (String.notNumberErrorCode, nil) }
                 
                 let maxValueAsString = String(describing: arguments)
@@ -169,7 +169,7 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value, let arguments = arguments {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 if !Utils.canBeCoercedToNumber(value) { return (String.notNumberErrorCode, nil) }
                 
                 let minValueAsString = String(describing: arguments)
@@ -213,7 +213,7 @@ struct NumericRules {
             
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value, let arguments = arguments {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 if !Utils.canBeCoercedToNumber(value) { return (String.notNumberErrorCode, nil) }
                 
                 let valueAsString = StringType(describing: value)

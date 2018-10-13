@@ -22,7 +22,7 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 
                 let predicate = NSPredicate(format:"SELF MATCHES %@", regex)
                 if let stringValue = value as? String,
@@ -47,7 +47,7 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 
                 let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
                 if let stringValue = value as? String, predicate.evaluate(with: stringValue) {
@@ -70,7 +70,7 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
@@ -95,7 +95,7 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (String.formatErrorCode, nil) }
+                if !Utils.isPrimitive(value) { return (String.formatErrorCode, nil) }
                 
                 if let otherFieldValue = otherFieldValue, String(describing: value) == String(describing: otherFieldValue) {
                     return (nil, nil)

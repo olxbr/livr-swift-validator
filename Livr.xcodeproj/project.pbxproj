@@ -25,12 +25,12 @@
 		D541BBD62153562700C52B55 /* LIVR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBCE2153562700C52B55 /* LIVR.swift */; };
 		D541BBD72153562700C52B55 /* LivrRuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD02153562700C52B55 /* LivrRuleProtocol.swift */; };
 		D541BBD82153562700C52B55 /* CommonRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD12153562700C52B55 /* CommonRules.swift */; };
-		D541BBD92153562700C52B55 /* Dictionary+Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD32153562700C52B55 /* Dictionary+Trim.swift */; };
 		D541BBDA2153562700C52B55 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD42153562700C52B55 /* String.swift */; };
 		D541BBDB2153562700C52B55 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541BBD52153562700C52B55 /* Validator.swift */; };
 		D541C10421536F3E00C52B55 /* JsonLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D541C10321536F3E00C52B55 /* JsonLoader.swift */; };
 		D541C30521548F0700C52B55 /* resources in Resources */ = {isa = PBXBuildFile; fileRef = D541C30421548F0700C52B55 /* resources */; };
 		D5467FE62164560E00B9CAD3 /* AutoTrimTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */; };
+		D57A6ED321719E2000E0F236 /* AdultAge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57A6ED221719E2000E0F236 /* AdultAge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,12 +65,12 @@
 		D541BBCE2153562700C52B55 /* LIVR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LIVR.swift; sourceTree = "<group>"; };
 		D541BBD02153562700C52B55 /* LivrRuleProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivrRuleProtocol.swift; sourceTree = "<group>"; };
 		D541BBD12153562700C52B55 /* CommonRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonRules.swift; sourceTree = "<group>"; };
-		D541BBD32153562700C52B55 /* Dictionary+Trim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Trim.swift"; sourceTree = "<group>"; };
 		D541BBD42153562700C52B55 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D541BBD52153562700C52B55 /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		D541C10321536F3E00C52B55 /* JsonLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoader.swift; sourceTree = "<group>"; };
 		D541C30421548F0700C52B55 /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
 		D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrimTests.swift; sourceTree = "<group>"; };
+		D57A6ED221719E2000E0F236 /* AdultAge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdultAge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,13 +128,9 @@
 		D541BBC12153555300C52B55 /* LivrTests */ = {
 			isa = PBXGroup;
 			children = (
-				D50F372D2158341300DB7B0D /* XCTestCase+Extension.swift */,
-				D50F372F2158485500DB7B0D /* Disctionary+Extension.swift */,
-				D537914F2169D4EF0087257E /* AliasesPositiveTests.swift */,
-				D5379151216AA3100087257E /* AliasesNegativeTests.swift */,
-				D541BBC22153555300C52B55 /* PositiveTests.swift */,
-				D50F37312159B7C500DB7B0D /* NegativeTests.swift */,
-				D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */,
+				D57A6ED121719E0800E0F236 /* Common */,
+				D57A6ED021719DE700E0F236 /* Aliases */,
+				D57A6ECF21719DDA00E0F236 /* Extensions */,
 				D541C10321536F3E00C52B55 /* JsonLoader.swift */,
 				D541C30421548F0700C52B55 /* resources */,
 				D541BBC42153555300C52B55 /* Info.plist */,
@@ -159,10 +155,38 @@
 		D541BBD22153562700C52B55 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D541BBD32153562700C52B55 /* Dictionary+Trim.swift */,
 				D541BBD42153562700C52B55 /* String.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D57A6ECF21719DDA00E0F236 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D50F372D2158341300DB7B0D /* XCTestCase+Extension.swift */,
+				D50F372F2158485500DB7B0D /* Disctionary+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D57A6ED021719DE700E0F236 /* Aliases */ = {
+			isa = PBXGroup;
+			children = (
+				D537914F2169D4EF0087257E /* AliasesPositiveTests.swift */,
+				D5379151216AA3100087257E /* AliasesNegativeTests.swift */,
+				D57A6ED221719E2000E0F236 /* AdultAge.swift */,
+			);
+			path = Aliases;
+			sourceTree = "<group>";
+		};
+		D57A6ED121719E0800E0F236 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				D541BBC22153555300C52B55 /* PositiveTests.swift */,
+				D50F37312159B7C500DB7B0D /* NegativeTests.swift */,
+				D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,7 +300,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D541BBD72153562700C52B55 /* LivrRuleProtocol.swift in Sources */,
-				D541BBD92153562700C52B55 /* Dictionary+Trim.swift in Sources */,
 				D541BBD82153562700C52B55 /* CommonRules.swift in Sources */,
 				D50F3738215A629E00DB7B0D /* SpecialRules.swift in Sources */,
 				D50F3736215A5EAE00DB7B0D /* StringRules.swift in Sources */,
@@ -295,6 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D57A6ED321719E2000E0F236 /* AdultAge.swift in Sources */,
 				D50F37322159B7C500DB7B0D /* NegativeTests.swift in Sources */,
 				D50F372E2158341300DB7B0D /* XCTestCase+Extension.swift in Sources */,
 				D53791502169D4EF0087257E /* AliasesPositiveTests.swift in Sources */,

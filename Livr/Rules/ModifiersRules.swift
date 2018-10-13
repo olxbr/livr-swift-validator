@@ -23,7 +23,7 @@ struct ModifiersRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                if !Utils.isPrimitive(value) { return (nil, nil) }
                 return (nil, modified(value: value))
             }
             return (nil, nil)
@@ -43,7 +43,7 @@ struct ModifiersRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                if !Utils.isPrimitive(value) { return (nil, nil) }
                 return (nil, modified(value: value))
             }
             return (nil, nil)
@@ -63,7 +63,7 @@ struct ModifiersRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                if !Utils.isPrimitive(value) { return (nil, nil) }
                 return (nil, modified(value: value))
             }
             return (nil, nil)
@@ -84,7 +84,7 @@ struct ModifiersRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                if !Utils.isPrimitive(value) { return (nil, nil) }
                 return (nil, modified(value: value))
             }
             return (nil, nil)
@@ -125,7 +125,7 @@ struct ModifiersRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isPrimitive(value: value) { return (nil, nil) }
+                if !Utils.isPrimitive(value) { return (nil, nil) }
                 return (nil, modified(value: value))
             }
             return (nil, nil)
