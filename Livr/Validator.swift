@@ -120,14 +120,14 @@ public struct Validator {
     }
     
     // to validate single values within its rules
-    public func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+    public func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
         guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) }
         isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
         return validate(value: value, rules: rules)
     }
     
-    public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors?, LivrRule.UpdatedValue?) {
+    public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
         var updatedValue: AnyObject?
         for rule in rules {

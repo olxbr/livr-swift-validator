@@ -102,7 +102,7 @@ struct MetaRules {
                     for value in listOfValues {
                         
                         let errorAndUpdatedValue = validator.validate(value: value, validationRules: arguments)
-                        if let optionalError = errorAndUpdatedValue.0, let error = optionalError {
+                        if let error = errorAndUpdatedValue.0 {
                             errors == nil ? errors = [] : ()
                             errors?.append(error as Any)
                         } else if errors != nil {
