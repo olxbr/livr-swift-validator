@@ -8,8 +8,6 @@
 
 import Foundation
 
-typealias JSON = [String: Any?]
-
 enum JsonTestFile: String {
     case input, output, rules, errors, aliases
 }
@@ -25,10 +23,10 @@ struct JsonLoader {
     func load(file: JsonTestFile) -> Any {
         switch file {
         case .aliases:
-            let arrayOfJsons: [JSON] = loadJson(for: file.rawValue)
+            let arrayOfJsons: [[String: Any?]] = loadJson(for: file.rawValue)
             return arrayOfJsons
         default:
-            let json: JSON = loadJson(for: file.rawValue)
+            let json: [String: Any?] = loadJson(for: file.rawValue)
             return json
         }
     }

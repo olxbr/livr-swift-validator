@@ -51,7 +51,7 @@ public struct LIVR {
                                               ModifiersRules.Trim.name: ModifiersRules.Trim()]
     
     
-    public static func validator(validationRules: JSON, isAutoTrim: Bool = true) -> Validator {
+    public static func validator(validationRules: [String: Any?], isAutoTrim: Bool = true) -> Validator {
         return Validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
     }
     

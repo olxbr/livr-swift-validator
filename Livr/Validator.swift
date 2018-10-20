@@ -5,12 +5,10 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
-public typealias JSON = [String: Any?]
-
 public struct Validator {
     
-    public private(set) var errors: JSON?
-    public private(set) var output: JSON?
+    public private(set) var errors: [String: Any?]?
+    public private(set) var output: [String: Any?]?
     
     typealias Field = String
     typealias Rules = [LivrRule]
@@ -18,13 +16,13 @@ public struct Validator {
     typealias RuleName = String
     typealias RuleArguments = Any
     
-    private(set) var validationRules: JSON?
+    private(set) var validationRules: [String: Any?]?
     private(set) var rulesByField: [Field: Rules]?
-    private(set) var validatingData: JSON?
+    private(set) var validatingData: [String: Any?]?
     
     private(set) var isAutoTrim: Bool
     
-    public typealias Output = JSON
+    public typealias Output = [String: Any?]
     
     enum ErrorType: Error {
         case notRegistered(rule: String),
@@ -50,12 +48,12 @@ public struct Validator {
         self.isAutoTrim = isAutoTrim
     }
     
-    init(validationRules: JSON, isAutoTrim: Bool = true) {
+    init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
         self.validationRules = validationRules
         self.isAutoTrim = isAutoTrim
     }
     
-    public func registerRule(aliases: [JSON]) throws {
+    public func registerRule(aliases: [[String: Any?]]) throws {
         
         for alias in aliases {
             guard let name = alias["name"] as? String else {
@@ -96,7 +94,7 @@ public struct Validator {
     
     // MARK: - Validating
     
-    public mutating func validate(data: JSON) throws -> Output? {
+    public mutating func validate(data: [String: Any?]) throws -> Output? {
         
         try setRulesByField()
         

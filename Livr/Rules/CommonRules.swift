@@ -66,7 +66,7 @@ struct CommonRules {
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
-            if value as? JSON == nil {
+            if value as? [String: Any?] == nil {
                 return (errorCode, nil)
             }
             return (nil, nil)

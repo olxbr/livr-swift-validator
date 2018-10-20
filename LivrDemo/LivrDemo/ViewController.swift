@@ -44,7 +44,7 @@ class ViewController: UIViewController {
 
 extension ViewController {
     
-    func getRules() -> JSON {
+    func getRules() -> [String: Any?] {
         return ["first_name": "required",
                 "age": "adult_age",
                 "last_name": ["required"],
@@ -52,7 +52,7 @@ extension ViewController {
                 "salary": ["required": []]]
     }
     
-    func getInput() -> JSON {
+    func getInput() -> [String: Any?] {
         return ["first_name": "Vasya",
                 "last_name": "Pupkin",
                 "middle_name": "Some",
@@ -60,7 +60,7 @@ extension ViewController {
                 "salary": 0]
     }
     
-    func getAliasingRules() -> [JSON] {
+    func getAliasingRules() -> [[String: Any?]] {
         return [
             [
                 "name": "adult_age",
