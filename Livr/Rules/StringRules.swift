@@ -253,7 +253,7 @@ struct StringRules {
             if let value = value {
                 if !Utils.isPrimitive(value) { return (StringType.formatErrorCode, nil) }
                 
-                let valueAsString = StringType(describing: value)
+                let valueAsString = value as? StringType ?? StringType(describing: value)
                 
                 if let regex = arguments as? StringType {
                     let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
