@@ -31,7 +31,6 @@
 		D541C30521548F0700C52B55 /* resources in Resources */ = {isa = PBXBuildFile; fileRef = D541C30421548F0700C52B55 /* resources */; };
 		D5467FE62164560E00B9CAD3 /* AutoTrimTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */; };
 		D57A6ED321719E2000E0F236 /* AdultAge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57A6ED221719E2000E0F236 /* AdultAge.swift */; };
-		D5A82974217C03C10070F263 /* ZipCodeLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A82973217C03C10070F263 /* ZipCodeLike.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +71,6 @@
 		D541C30421548F0700C52B55 /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
 		D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrimTests.swift; sourceTree = "<group>"; };
 		D57A6ED221719E2000E0F236 /* AdultAge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdultAge.swift; sourceTree = "<group>"; };
-		D5A82973217C03C10070F263 /* ZipCodeLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipCodeLike.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,7 +185,6 @@
 				D541BBC22153555300C52B55 /* PositiveTests.swift */,
 				D50F37312159B7C500DB7B0D /* NegativeTests.swift */,
 				D5467FE52164560E00B9CAD3 /* AutoTrimTests.swift */,
-				D5A82973217C03C10070F263 /* ZipCodeLike.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -324,7 +321,6 @@
 				D57A6ED321719E2000E0F236 /* AdultAge.swift in Sources */,
 				D50F37322159B7C500DB7B0D /* NegativeTests.swift in Sources */,
 				D50F372E2158341300DB7B0D /* XCTestCase+Extension.swift in Sources */,
-				D5A82974217C03C10070F263 /* ZipCodeLike.swift in Sources */,
 				D53791502169D4EF0087257E /* AliasesPositiveTests.swift in Sources */,
 				D541C10421536F3E00C52B55 /* JsonLoader.swift in Sources */,
 				D541BBC32153555300C52B55 /* PositiveTests.swift in Sources */,
