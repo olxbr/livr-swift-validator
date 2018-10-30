@@ -99,7 +99,7 @@ validator.registerRule(alias: "strong_password", rules: ["min_length": 6], error
 
 ### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
 
-**Tested with `pod --version`: `1.0.2`**
+**Tested with `pod --version`: `1.0.3`**
 
 ```ruby
 # Podfile
