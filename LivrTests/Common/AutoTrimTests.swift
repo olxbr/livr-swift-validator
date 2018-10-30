@@ -12,11 +12,11 @@ import XCTest
 class AutoTrimTests: XCTestCase {
     
     func testAutoTrim() {
-        let rules: JSON = ["field-1": ["required"],
+        let rules: [String: Any?] = ["field-1": ["required"],
                          "field-2": ["nested_object": ["string_value": "string"]],
                          "field-3": ["list_of": "required"]]
         
-        let input: JSON = ["field-1": " 13",
+        let input: [String: Any?] = ["field-1": " 13",
                            "field-2": ["string_value":" not_trimmed_string "],
                            "field-3": ["white_space_in_the_end ", " white_space_in_the_beginning"]]
         

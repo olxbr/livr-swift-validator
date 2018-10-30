@@ -20,16 +20,16 @@ struct MetaRules {
         var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let validationRules = arguments as? JSON else { return (String.formatErrorCode, nil) }
+            guard let validationRules = arguments as? [String: Any?] else { return (String.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             
-            if !(value is JSON) { return (String.formatErrorCode, nil) }
+            if !(value is [String: Any?]) { return (String.formatErrorCode, nil) }
             
             var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
             
-            var output: JSON?
+            var output: [String: Any?]?
             do {
-                output = try validator.validate(data: value as! JSON)
+                output = try validator.validate(data: value as! [String: Any?])
             } catch {
                 return (errorCode, nil)
             }
@@ -52,22 +52,22 @@ struct MetaRules {
             guard let variableObjectRules = arguments as? [Any], variableObjectRules.count > 1 else { return (String.formatErrorCode, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             
-            if !(value is JSON) { return (String.formatErrorCode, nil) }
+            if !(value is [String: Any?]) { return (String.formatErrorCode, nil) }
             
-            guard let validationForEachKeyFieldValue = variableObjectRules[1] as? JSON,
+            guard let validationForEachKeyFieldValue = variableObjectRules[1] as? [String: Any?],
                 let keyField = variableObjectRules.first as? String,
-                let valueAsJson = value as? JSON,
+                let valueAsJson = value as? [String: Any?],
                 let keyFieldValue = valueAsJson[keyField] as? String,
-                let validationRules = validationForEachKeyFieldValue[keyFieldValue] as? JSON else {
+                let validationRules = validationForEachKeyFieldValue[keyFieldValue] as? [String: Any?] else {
                     
                 return (String.formatErrorCode, nil)
             }
                 
             var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
             
-            var output: JSON?
+            var output: [String: Any?]?
             do {
-                output = try validator.validate(data: value as! JSON)
+                output = try validator.validate(data: value as! [String: Any?])
             } catch {
                 return (errorCode, nil)
             }
@@ -102,7 +102,7 @@ struct MetaRules {
                     for value in listOfValues {
                         
                         let errorAndUpdatedValue = validator.validate(value: value, validationRules: arguments)
-                        if let optionalError = errorAndUpdatedValue.0, let error = optionalError {
+                        if let error = errorAndUpdatedValue.0 {
                             errors == nil ? errors = [] : ()
                             errors?.append(error as Any)
                         } else if errors != nil {
@@ -137,7 +137,7 @@ struct MetaRules {
             if let value = value {
                 if !Utils.isList(value) { return (String.formatErrorCode, nil) }
                 guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (String.formatErrorCode, nil) }
-                guard let validationRules = arguments as? JSON else { return (String.formatErrorCode, nil) }
+                guard let validationRules = arguments as? [String: Any?] else { return (String.formatErrorCode, nil) }
 
                 var errors: [Any]?
                 var output: [Any]?
@@ -145,7 +145,7 @@ struct MetaRules {
                 if let listOfValues = value as? [Any] {
                     for value in listOfValues {
                         
-                        if !(value is JSON) {
+                        if !(value is [String: Any?]) {
                             errors == nil ? errors = [] : ()
                             errors?.append(String.formatErrorCode)
                             continue
@@ -153,9 +153,9 @@ struct MetaRules {
                         
                         var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
                         
-                        var validatorOutput: JSON?
+                        var validatorOutput: [String: Any?]?
                         do {
-                            validatorOutput = try validator.validate(data: value as! JSON)
+                            validatorOutput = try validator.validate(data: value as! [String: Any?])
                         } catch {
                             return (errorCode, nil)
                         }
@@ -203,17 +203,17 @@ struct MetaRules {
                 if let listOfValues = value as? [Any] {
                     for value in listOfValues {
                         
-                        if !(value is JSON) {
+                        if !(value is [String: Any?]) {
                             errors == nil ? errors = [] : ()
                             errors?.append(String.formatErrorCode)
                             continue
                         }
                         
-                        guard let validationForEachKeyFieldValue = variableObjectRules[1] as? JSON,
+                        guard let validationForEachKeyFieldValue = variableObjectRules[1] as? [String: Any?],
                             let keyField = variableObjectRules.first as? String,
-                            let valueAsJson = value as? JSON,
+                            let valueAsJson = value as? [String: Any?],
                             let keyFieldValue = valueAsJson[keyField] as? String,
-                            let validationRules = validationForEachKeyFieldValue[keyFieldValue] as? JSON else {
+                            let validationRules = validationForEachKeyFieldValue[keyFieldValue] as? [String: Any?] else {
                                 
                                 errors?.append(String.formatErrorCode)
                                 continue
@@ -221,9 +221,9 @@ struct MetaRules {
                         
                         var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
                         
-                        var validatorOutput: JSON?
+                        var validatorOutput: [String: Any?]?
                         do {
-                            validatorOutput = try validator.validate(data: value as! JSON)
+                            validatorOutput = try validator.validate(data: value as! [String: Any?])
                         } catch {
                             return (errorCode, nil)
                         }

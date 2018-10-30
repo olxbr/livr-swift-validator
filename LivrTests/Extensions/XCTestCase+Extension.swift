@@ -14,13 +14,13 @@ extension XCTestCase {
     func validate(testSuiteAt path: String) {
         let jsonLoader = JsonLoader(testDirectory: path)
         
-        guard let inputJson = jsonLoader.load(file: .input) as? JSON else { fatalError("nilInputJson") }
-        guard let rulesJson = jsonLoader.load(file: .rules) as? JSON else { fatalError("nilRulesJson") }
-        var testResultJson: JSON?
+        guard let inputJson = jsonLoader.load(file: .input) as? [String: Any?] else { fatalError("nilInputJson") }
+        guard let rulesJson = jsonLoader.load(file: .rules) as? [String: Any?] else { fatalError("nilRulesJson") }
+        var testResultJson: [String: Any?]?
         
-        if path.contains(String.negative), let errorJson = jsonLoader.load(file: .errors) as? JSON {
+        if path.contains(String.negative), let errorJson = jsonLoader.load(file: .errors) as? [String: Any?] {
             testResultJson = errorJson
-        } else if let outputJson = jsonLoader.load(file: .output) as? JSON {
+        } else if let outputJson = jsonLoader.load(file: .output) as? [String: Any?] {
             testResultJson = outputJson
         }
         
@@ -49,7 +49,7 @@ extension XCTestCase {
     
     private func loadAliasesIfNeeded(for path: String, validator: Validator, jsonLoader: JsonLoader) {
         guard path.contains(String.aliases) else { return }
-        guard let aliases = jsonLoader.load(file: .aliases) as? [JSON] else {
+        guard let aliases = jsonLoader.load(file: .aliases) as? [[String: Any?]] else {
             fatalError(.errorLoadingAliasesJson)
         }
         
@@ -70,5 +70,5 @@ private extension String {
     static let nilValidatorOutput = "Validator output should not be nil"
     static let validatorErrorsNotAsExpected = "Validator errors should match test expectation"
     static let validatorOutputNotAsExpected = "Validator output should match test expectation"
-    static let errorLoadingAliasesJson = "Aliases json could not be loaded from bundle as [JSON]"
+    static let errorLoadingAliasesJson = "Aliases json could not be loaded from bundle as [[String: Any?]]"
 }

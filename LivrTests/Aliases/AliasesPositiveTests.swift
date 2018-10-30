@@ -36,7 +36,7 @@ class AliasesPositiveTests: XCTestCase {
 
 extension AliasesPositiveTests {
     
-    func getRules() -> JSON {
+    func getRules() -> [String: Any?] {
         return ["first_name": "required",
                 "age": "adult_age",
                 "last_name": ["required"],
@@ -44,7 +44,7 @@ extension AliasesPositiveTests {
                 "salary": ["required": []]]
     }
     
-    func getInput() -> JSON {
+    func getInput() -> [String: Any?] {
         return ["first_name": "Vasya",
                 "last_name": "Pupkin",
                 "middle_name": "Some",

@@ -23,7 +23,7 @@ struct RuleGenerator {
                 }
             }
             return rules
-        } else if let rulesObject = validationRules as? JSON {
+        } else if let rulesObject = validationRules as? [String: Any?] {
             // analise json to get key and object
             if let ruleObject = rulesObject.first {
                 let ruleName = ruleObject.key
@@ -54,7 +54,7 @@ struct RuleGenerator {
                 if let optionalRule = try? getRegisterdRule(with: ruleName), let rule = optionalRule {
                     fieldRules.append(rule)
                 }
-            } else if let ruleObject = rule as? JSON, let firstRuleObject = ruleObject.first {
+            } else if let ruleObject = rule as? [String: Any?], let firstRuleObject = ruleObject.first {
                 if let optionalRule = try? getRegisterdRule(with: firstRuleObject.key),
                     var rule = optionalRule {
                     
