@@ -63,3 +63,27 @@ public struct LIVR {
         LIVR.defaultRules[rule.name] = rule
     }
 }
+
+extension LIVR {
+    
+    public enum ErrorCode: String {
+        case required = "REQUIRED",
+        cannotBeEmpty = "CANNOT_BE_EMPTY",
+        format = "FORMAT_ERROR",
+        tooShort = "TOO_SHORT",
+        tooLong = "TOO_LONG",
+        tooLow = "TOO_LOW",
+        tooHigh = "TOO_HIGH",
+        notNumber = "NOT_NUMBER",
+        notInteger = "NOT_INTEGER",
+        notPositiveInteger = "NOT_POSITIVE_INTEGER",
+        notDecimal = "NOT_DECIMAL",
+        notPositiveDecimal = "NOT_POSITIVE_DECIMAL",
+        notAllowedValue = "NOT_ALLOWED_VALUE",
+        wrongFormat = "WRONG_FORMAT",
+        wrongEmail = "WRONG_EMAIL",
+        wrongUrl = "WRONG_URL",
+        wrongDate = "WRONG_DATE",
+        fieldsNotEqual = "FIELDS_NOT_EQUAL"
+    }
+}
