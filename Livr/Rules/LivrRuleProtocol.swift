@@ -8,8 +8,7 @@
 public protocol LivrRule {
     var arguments: Any? {get set}
     
-    typealias ErrorCode = String
-    var errorCode: ErrorCode {get}
+    var errorCode: LIVR.ErrorCode {get}
     
     typealias Errors = Any?
     typealias UpdatedValue = AnyObject
@@ -23,19 +22,21 @@ public protocol PreDefinedRule: LivrRule {
 public protocol CustomRule: LivrRule {
     var name: String {get}
     var rules: Any? {get set}
+    var customErrorCode: String? {get set}
 }
 
 public struct RuleAlias: CustomRule, RuleThatCreatesValidator {
     
     public var name: String
-    public var errorCode: ErrorCode = ""
+    public var errorCode: LIVR.ErrorCode = .format
+    public var customErrorCode: String?
     public var rules: Any?
     public var arguments: Any?
     public var isAutoTrim: Bool
     
-    public init(name: String, errorCode: ErrorCode?, rules: Any, isAutoTrim: Bool) {
+    public init(name: String, errorCode: String?, rules: Any, isAutoTrim: Bool) {
         self.name = name
-        errorCode != nil ? self.errorCode = errorCode! : ()
+        self.customErrorCode = errorCode
         self.rules = rules
         self.isAutoTrim = isAutoTrim
     }
@@ -47,8 +48,8 @@ public struct RuleAlias: CustomRule, RuleThatCreatesValidator {
             let errorOrUpdatedValue = validator.validate(value: value, rules: rules)
             
             if let error = errorOrUpdatedValue.0 {
-                if !self.errorCode.isEmpty {
-                    return (errorCode, nil)
+                if let customErrorCode = customErrorCode {
+                    return (customErrorCode, nil)
                 }
                 return (error, nil)
             }
@@ -56,13 +57,4 @@ public struct RuleAlias: CustomRule, RuleThatCreatesValidator {
         }
         return (nil, nil)
     }
-}
-
-public extension String {
-    static let formatErrorCode = "FORMAT_ERROR"
-    static let tooShortErrorCode = "TOO_SHORT"
-    static let tooLongErrorCode = "TOO_LONG"
-    static let tooLowErrorCode = "TOO_LOW"
-    static let tooHighErrorCode = "TOO_HIGH"
-    static let notNumberErrorCode = "NOT_NUMBER"
 }

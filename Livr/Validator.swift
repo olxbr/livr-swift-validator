@@ -21,6 +21,7 @@ public struct Validator {
     private(set) var validatingData: [String: Any?]?
     
     private(set) var isAutoTrim: Bool
+    public var allRequired: Bool = false
     
     public typealias Output = [String: Any?]
     
@@ -53,6 +54,11 @@ public struct Validator {
         self.isAutoTrim = isAutoTrim
     }
     
+    private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
+        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
+    }
+    
     public func registerRule(aliases: [[String: Any?]]) throws {
         
         for alias in aliases {
@@ -72,7 +78,7 @@ public struct Validator {
         LIVR.register(rule: customRule)
     }
     
-    public func registerRule(alias: String, rules: Any, errorCode: LivrRule.ErrorCode? = nil) {
+    public func registerRule(alias: String, rules: Any, errorCode: String? = nil) {
         
         let ruleAlias = RuleAlias(name: alias, errorCode: errorCode, rules: rules, isAutoTrim: isAutoTrim)
         LIVR.register(rule: ruleAlias)
@@ -94,6 +100,7 @@ public struct Validator {
     
     // MARK: - Validating
     
+    @discardableResult
     public mutating func validate(data: [String: Any?]) throws -> Output? {
         
         try setRulesByField()
@@ -118,13 +125,16 @@ public struct Validator {
     }
     
     // to validate single values within its rules
+    
+    @discardableResult
     public func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
         guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) }
-        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        insertCommonRulesIfNeeded(in: &rules)
         return validate(value: value, rules: rules)
     }
     
+    @discardableResult
     public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
         var updatedValue: AnyObject?
@@ -143,8 +153,7 @@ public struct Validator {
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
         
         guard var rules = rulesByField?[field] else { return }
-        
-        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        insertCommonRulesIfNeeded(in: &rules)
         
         for (index, rule) in rules.enumerated() {
             if var equalToFieldRule = rule as? SpecialRules.EqualToField {

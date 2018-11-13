@@ -14,16 +14,16 @@ struct MetaRules {
     
     struct NestedObject: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "nested_object"
-        var errorCode: ErrorCode = "FORMAT_ERROR"
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         var updatedValue: UpdatedValue?
         var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let validationRules = arguments as? [String: Any?] else { return (String.formatErrorCode, nil) }
+            guard let validationRules = arguments as? [String: Any?] else { return (errorCode.rawValue, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             
-            if !(value is [String: Any?]) { return (String.formatErrorCode, nil) }
+            if !(value is [String: Any?]) { return (errorCode.rawValue, nil) }
             
             var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
             
@@ -31,7 +31,7 @@ struct MetaRules {
             do {
                 output = try validator.validate(data: value as! [String: Any?])
             } catch {
-                return (errorCode, nil)
+                return (errorCode.rawValue, nil)
             }
             
             if let output = output {
@@ -43,16 +43,16 @@ struct MetaRules {
     
     struct VariableObject: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "variable_object"
-        var errorCode: ErrorCode = "FORMAT_ERROR"
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         var updatedValue: UpdatedValue?
         var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let variableObjectRules = arguments as? [Any], variableObjectRules.count > 1 else { return (String.formatErrorCode, nil) }
+            guard let variableObjectRules = arguments as? [Any], variableObjectRules.count > 1 else { return (errorCode.rawValue, nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             
-            if !(value is [String: Any?]) { return (String.formatErrorCode, nil) }
+            if !(value is [String: Any?]) { return (errorCode.rawValue, nil) }
             
             guard let validationForEachKeyFieldValue = variableObjectRules[1] as? [String: Any?],
                 let keyField = variableObjectRules.first as? String,
@@ -60,7 +60,7 @@ struct MetaRules {
                 let keyFieldValue = valueAsJson[keyField] as? String,
                 let validationRules = validationForEachKeyFieldValue[keyFieldValue] as? [String: Any?] else {
                     
-                return (String.formatErrorCode, nil)
+                return (errorCode.rawValue, nil)
             }
                 
             var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
@@ -69,7 +69,7 @@ struct MetaRules {
             do {
                 output = try validator.validate(data: value as! [String: Any?])
             } catch {
-                return (errorCode, nil)
+                return (errorCode.rawValue, nil)
             }
             
             if let output = output {
@@ -81,7 +81,7 @@ struct MetaRules {
     
     struct ListOf: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "list_of"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         var updatedValue: UpdatedValue?
         var isAutoTrim: Bool = true
@@ -90,8 +90,8 @@ struct MetaRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isList(value) { return (String.formatErrorCode, nil) }
-                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (String.formatErrorCode, nil) }
+                if !Utils.isList(value) { return (errorCode.rawValue, nil) }
+                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (errorCode.rawValue, nil) }
                 
                 var errors: [Any]?
                 var output: [Any]?
@@ -126,7 +126,7 @@ struct MetaRules {
     
     struct ListOfObjects: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "list_of_objects"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         var updatedValue: UpdatedValue?
         var isAutoTrim: Bool = true
@@ -135,9 +135,9 @@ struct MetaRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isList(value) { return (String.formatErrorCode, nil) }
-                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (String.formatErrorCode, nil) }
-                guard let validationRules = arguments as? [String: Any?] else { return (String.formatErrorCode, nil) }
+                if !Utils.isList(value) { return (errorCode.rawValue, nil) }
+                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (errorCode.rawValue, nil) }
+                guard let validationRules = arguments as? [String: Any?] else { return (errorCode.rawValue, nil) }
 
                 var errors: [Any]?
                 var output: [Any]?
@@ -147,7 +147,7 @@ struct MetaRules {
                         
                         if !(value is [String: Any?]) {
                             errors == nil ? errors = [] : ()
-                            errors?.append(String.formatErrorCode)
+                            errors?.append(errorCode.rawValue)
                             continue
                         }
                         
@@ -157,7 +157,7 @@ struct MetaRules {
                         do {
                             validatorOutput = try validator.validate(data: value as! [String: Any?])
                         } catch {
-                            return (errorCode, nil)
+                            return (errorCode.rawValue, nil)
                         }
                         
                         if let validationErrors = validator.errors {
@@ -184,7 +184,7 @@ struct MetaRules {
     
     struct ListOfDifferentObjects: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "list_of_different_objects"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         var updatedValue: UpdatedValue?
         var isAutoTrim: Bool = true
@@ -193,9 +193,9 @@ struct MetaRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
-                if !Utils.isList(value) { return (String.formatErrorCode, nil) }
-                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (String.formatErrorCode, nil) }
-                guard let variableObjectRules = arguments as? [Any], variableObjectRules.count > 1 else { return (String.formatErrorCode, nil) }
+                if !Utils.isList(value) { return (errorCode.rawValue, nil) }
+                guard value as? [[Any]] == nil || (value as? [Any])?.count == 0 else { return (errorCode.rawValue, nil) }
+                guard let variableObjectRules = arguments as? [Any], variableObjectRules.count > 1 else { return (errorCode.rawValue, nil) }
                 
                 var errors: [Any]?
                 var output: [Any]?
@@ -205,7 +205,7 @@ struct MetaRules {
                         
                         if !(value is [String: Any?]) {
                             errors == nil ? errors = [] : ()
-                            errors?.append(String.formatErrorCode)
+                            errors?.append(errorCode.rawValue)
                             continue
                         }
                         
@@ -215,7 +215,7 @@ struct MetaRules {
                             let keyFieldValue = valueAsJson[keyField] as? String,
                             let validationRules = validationForEachKeyFieldValue[keyFieldValue] as? [String: Any?] else {
                                 
-                                errors?.append(String.formatErrorCode)
+                                errors?.append(errorCode.rawValue)
                                 continue
                         }
                         
@@ -225,7 +225,7 @@ struct MetaRules {
                         do {
                             validatorOutput = try validator.validate(data: value as! [String: Any?])
                         } catch {
-                            return (errorCode, nil)
+                            return (errorCode.rawValue, nil)
                         }
                         
                         if let validationErrors = validator.errors {
@@ -252,7 +252,7 @@ struct MetaRules {
     
     struct Or: LivrRule, PreDefinedRule, RuleThatCreatesValidator {
         static var name: String = "or"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         var updatedValue: UpdatedValue?
         var isAutoTrim: Bool = true

@@ -12,14 +12,15 @@ struct AdultAge: CustomRule {
     var name: String = "adult_age"
     var rules: Any?
     var arguments: Any?
-    var errorCode: ErrorCode = "WRONG_AGE"
+    var errorCode: LIVR.ErrorCode = .format
+    var customErrorCode: String? = "WRONG_AGE"
     
     init() {}
     
     func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-        guard !Utils.hasNoValue(value) else { return (errorCode, nil) }
+        guard !Utils.hasNoValue(value) else { return (customErrorCode, nil) }
         if let value = value {
-            guard Utils.isPrimitive(value) else { return (errorCode, nil) }
+            guard Utils.isPrimitive(value) else { return (customErrorCode, nil) }
             
             if let valueAsDouble = value as? Double {
                 return validate(valueAsDouble)
@@ -36,7 +37,7 @@ struct AdultAge: CustomRule {
         if isAnAdult(age: valueAsDouble) {
             return (nil, nil)
         }
-        return (errorCode, nil)
+        return (errorCode.rawValue, nil)
     }
     
     private func isAnAdult(age: Double) -> Bool {

@@ -16,7 +16,7 @@ struct ModifiersRules {
     
     struct ToLc: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "to_lc"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
@@ -36,7 +36,7 @@ struct ModifiersRules {
     
     struct ToUc: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "to_uc"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
@@ -56,7 +56,7 @@ struct ModifiersRules {
     
     struct Remove: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "remove"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
@@ -77,7 +77,7 @@ struct ModifiersRules {
     
     struct LeaveOnly: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "leave_only"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
@@ -98,7 +98,7 @@ struct ModifiersRules {
     
     struct Default: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "default"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
@@ -118,7 +118,7 @@ struct ModifiersRules {
     
     struct Trim: LivrRule, PreDefinedRule, Modifier {
         static var name: String = "trim"
-        var errorCode: ErrorCode = ""
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {

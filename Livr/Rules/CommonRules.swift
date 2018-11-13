@@ -10,13 +10,13 @@ struct CommonRules {
     // can't be nil/null
     struct Required: LivrRule, PreDefinedRule {
         static var name = "required"
-        var errorCode = "REQUIRED"
+        var errorCode: LIVR.ErrorCode = .required
         var arguments: Any?
         
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            if Utils.hasNoValue(value) { return (errorCode, nil) }
+            if Utils.hasNoValue(value) { return (errorCode.rawValue, nil) }
             return (nil, nil)
         }
     }
@@ -24,14 +24,14 @@ struct CommonRules {
     // can be Any? value, including nil/null
     struct NotEmpty: LivrRule, PreDefinedRule {
         static var name = "not_empty"
-        var errorCode = "CANNOT_BE_EMPTY"
+        var errorCode: LIVR.ErrorCode = .cannotBeEmpty
         var arguments: Any?
         
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if let value = value, String(describing: value).isEmpty {
-                return (errorCode, nil)
+                return (errorCode.rawValue, nil)
             }
             return (nil, nil)
         }
@@ -40,17 +40,17 @@ struct CommonRules {
     // must be a list of Any
     struct NotEmptyList: LivrRule, PreDefinedRule {
         static var name = "not_empty_list"
-        var errorCode = "CANNOT_BE_EMPTY"
+        var errorCode: LIVR.ErrorCode = .cannotBeEmpty
         var arguments: Any?
         
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            if Utils.hasNoValue(value) { return (errorCode, nil) }
+            if Utils.hasNoValue(value) { return (errorCode.rawValue, nil) }
             if let value = value {
-                if Utils.hasNoValue(value) { return (errorCode, nil) }
-                if !Utils.isList(value) { return (String.formatErrorCode, nil) }
-                if let value = value as? Array<Any>, value.count < 1 { return (errorCode, nil) }
+                if Utils.hasNoValue(value) { return (errorCode.rawValue, nil) }
+                if !Utils.isList(value) { return (LIVR.ErrorCode.format.rawValue, nil) }
+                if let value = value as? Array<Any>, value.count < 1 { return (errorCode.rawValue, nil) }
             }
             return (nil, nil)
         }
@@ -59,7 +59,7 @@ struct CommonRules {
     // must be a list of Any
     struct AnyObject: LivrRule, PreDefinedRule {
         static var name = "any_object"
-        var errorCode = String.formatErrorCode
+        var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
         
         init() {}
@@ -67,7 +67,7 @@ struct CommonRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if value as? [String: Any?] == nil {
-                return (errorCode, nil)
+                return (errorCode.rawValue, nil)
             }
             return (nil, nil)
         }
