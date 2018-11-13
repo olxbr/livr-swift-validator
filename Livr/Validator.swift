@@ -21,6 +21,7 @@ public struct Validator {
     private(set) var validatingData: [String: Any?]?
     
     private(set) var isAutoTrim: Bool
+    public var allRequired: Bool = false
     
     public typealias Output = [String: Any?]
     
@@ -51,6 +52,11 @@ public struct Validator {
     init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
         self.validationRules = validationRules
         self.isAutoTrim = isAutoTrim
+    }
+    
+    private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
+        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
     }
     
     public func registerRule(aliases: [[String: Any?]]) throws {
@@ -121,7 +127,7 @@ public struct Validator {
     public func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
         guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) }
-        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        insertCommonRulesIfNeeded(in: &rules)
         return validate(value: value, rules: rules)
     }
     
@@ -143,8 +149,7 @@ public struct Validator {
     mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
         
         guard var rules = rulesByField?[field] else { return }
-        
-        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        insertCommonRulesIfNeeded(in: &rules)
         
         for (index, rule) in rules.enumerated() {
             if var equalToFieldRule = rule as? SpecialRules.EqualToField {
