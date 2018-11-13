@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Livr"
-  s.version      = "1.0.2"
+  s.version      = "1.0.4"
   s.summary      = "Lightweight validator supporting Language Independent Validation Rules Specification"
 
   s.homepage     = "https://github.com/marinofelipe/swift-validator-livr"
