@@ -100,6 +100,7 @@ public struct Validator {
     
     // MARK: - Validating
     
+    @discardableResult
     public mutating func validate(data: [String: Any?]) throws -> Output? {
         
         try setRulesByField()
@@ -124,6 +125,8 @@ public struct Validator {
     }
     
     // to validate single values within its rules
+    
+    @discardableResult
     public func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
         guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) }
@@ -131,6 +134,7 @@ public struct Validator {
         return validate(value: value, rules: rules)
     }
     
+    @discardableResult
     public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
         var updatedValue: AnyObject?

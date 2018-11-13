@@ -23,14 +23,18 @@ class AllRequiredTests: XCTestCase {
         
         var validator = LIVR.validator(validationRules: rules)
         validator.allRequired = true
-        try? validator.validate(data: input)
-        guard let errors = validator.errors else {
-            XCTFail("errors should not be nil")
-            return
-        }
         
-        XCTAssertEqual(errors["field-1"] as? String, "REQUIRED")
-        XCTAssertEqual(errors["field-2"] as? String, "REQUIRED")
-        XCTAssertEqual(errors.count, 2)
+        do {
+            try validator.validate(data: input)
+            
+            guard let errors = validator.errors else {
+                XCTFail("errors should not be nil")
+                return
+            }
+            
+            XCTAssertEqual(errors["field-1"] as? String, "REQUIRED")
+            XCTAssertEqual(errors["field-2"] as? String, "REQUIRED")
+            XCTAssertEqual(errors.count, 2)
+        } catch { XCTFail("Error while trying to validate") }
     }
 }
