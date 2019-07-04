@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:LivrCommonCustomRules/LivrCommonCustomRules.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:LivrDemo/LivrDemo.xcodeproj">
    </FileRef>
    <FileRef
