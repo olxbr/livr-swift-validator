@@ -156,16 +156,16 @@ public struct Validator {
         insertCommonRulesIfNeeded(in: &rules)
         
         for (index, rule) in rules.enumerated() {
-            if var equalToFieldRule = rule as? SpecialRules.EqualToField {
-                if let fieldToCompareValue = (rule as? SpecialRules.EqualToField)?.arguments as? String, let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
+            if var ruleThatCompareFields = rule as? RuleThatCompareFields {
+                if let fieldToCompareValue = rule.arguments as? String, let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
                     
-                    equalToFieldRule.otherFieldValue = valueToCompare
-                    rules[index] = equalToFieldRule
-                } else if let arguments = (rule as? SpecialRules.EqualToField)?.arguments as? [Any], let fieldToCompareValue = arguments.first as? String,
+                    ruleThatCompareFields.otherFieldValue = valueToCompare
+                    rules[index] = ruleThatCompareFields
+                } else if let arguments = rule.arguments as? [Any], let fieldToCompareValue = arguments.first as? String,
                     let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
                     
-                    equalToFieldRule.otherFieldValue = valueToCompare
-                    rules[index] = equalToFieldRule
+                    ruleThatCompareFields.otherFieldValue = valueToCompare
+                    rules[index] = ruleThatCompareFields
                 }
             }
             

@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		4F7DD728B77778EA5DB0EBAE /* Pods_LivrCommonCustomRules.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 611E5166DF1175202CE4C7B1 /* Pods_LivrCommonCustomRules.framework */; };
 		75425CE422CD4D7500E29D7C /* LivrCommonCustomRules.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75425CDA22CD4D7500E29D7C /* LivrCommonCustomRules.framework */; };
-		75425CE922CD4D7500E29D7C /* LivrCommonCustomRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75425CE822CD4D7500E29D7C /* LivrCommonCustomRulesTests.swift */; };
+		75425CE922CD4D7500E29D7C /* LivrCommonCustomRulesPositiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75425CE822CD4D7500E29D7C /* LivrCommonCustomRulesPositiveTests.swift */; };
 		75425CEB22CD4D7500E29D7C /* LivrCommonCustomRules.h in Headers */ = {isa = PBXBuildFile; fileRef = 75425CDD22CD4D7500E29D7C /* LivrCommonCustomRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		75425CF522CDA32500E29D7C /* ExtraRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75425CF422CDA32500E29D7C /* ExtraRules.swift */; };
+		75C75DAA22CE930700FADBBB /* LivrCommonCustomRulesNegativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C75DA922CE930700FADBBB /* LivrCommonCustomRulesNegativeTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,9 +33,10 @@
 		75425CDD22CD4D7500E29D7C /* LivrCommonCustomRules.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivrCommonCustomRules.h; sourceTree = "<group>"; };
 		75425CDE22CD4D7500E29D7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75425CE322CD4D7500E29D7C /* LivrCommonCustomRulesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LivrCommonCustomRulesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		75425CE822CD4D7500E29D7C /* LivrCommonCustomRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivrCommonCustomRulesTests.swift; sourceTree = "<group>"; };
+		75425CE822CD4D7500E29D7C /* LivrCommonCustomRulesPositiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivrCommonCustomRulesPositiveTests.swift; sourceTree = "<group>"; };
 		75425CEA22CD4D7500E29D7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75425CF422CDA32500E29D7C /* ExtraRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraRules.swift; sourceTree = "<group>"; };
+		75C75DA922CE930700FADBBB /* LivrCommonCustomRulesNegativeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivrCommonCustomRulesNegativeTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +65,6 @@
 				483BAAEF499CE7EE2B9F3BA5 /* Pods-LivrCommonCustomRules.debug.xcconfig */,
 				6FC0AE8EF00DE9E80F250CDD /* Pods-LivrCommonCustomRules.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -100,7 +101,8 @@
 		75425CE722CD4D7500E29D7C /* LivrCommonCustomRulesTests */ = {
 			isa = PBXGroup;
 			children = (
-				75425CE822CD4D7500E29D7C /* LivrCommonCustomRulesTests.swift */,
+				75425CE822CD4D7500E29D7C /* LivrCommonCustomRulesPositiveTests.swift */,
+				75C75DA922CE930700FADBBB /* LivrCommonCustomRulesNegativeTests.swift */,
 				75425CEA22CD4D7500E29D7C /* Info.plist */,
 			);
 			path = LivrCommonCustomRulesTests;
@@ -265,7 +267,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75425CE922CD4D7500E29D7C /* LivrCommonCustomRulesTests.swift in Sources */,
+				75425CE922CD4D7500E29D7C /* LivrCommonCustomRulesPositiveTests.swift in Sources */,
+				75C75DAA22CE930700FADBBB /* LivrCommonCustomRulesNegativeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

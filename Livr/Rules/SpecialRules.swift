@@ -8,6 +8,10 @@
 
 typealias URLType = URL
 
+public protocol RuleThatCompareFields: LivrRule {
+    var otherFieldValue: Any? { get set }
+}
+
 struct SpecialRules {
     
     // must be a valid URL
@@ -84,7 +88,7 @@ struct SpecialRules {
         }
     }
     
-    struct EqualToField: LivrRule, PreDefinedRule {
+    struct EqualToField: LivrRule, PreDefinedRule, RuleThatCompareFields {
         static var name = "equal_to_field"
         var errorCode: LIVR.ErrorCode = .fieldsNotEqual
         var arguments: Any?
