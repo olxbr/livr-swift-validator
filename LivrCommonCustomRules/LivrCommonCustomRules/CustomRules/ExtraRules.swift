@@ -11,9 +11,8 @@ import Livr
 
 struct CustomRules {
     
-    struct GreaterThanOrEqualToField: LivrRule, PreDefinedRule, RuleThatCompareFields, CustomRule {
+    struct GreaterThanOrEqualToField: LivrRule, RuleThatCompareFields, CustomRule {
         var name: String = "greater_eq_than_field"
-        static var name = "greater_eq_than_field"
         var rules: Any?
         var customErrorCode: String? = "NOT_GREATER_OR_EQUAL_TO_FIELD"
         var errorCode: LIVR.ErrorCode = .fieldsNotEqual
