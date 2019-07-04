@@ -11,6 +11,6 @@
       location = "group:Livr.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:LivrDemo/Pods/Pods.xcodeproj">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

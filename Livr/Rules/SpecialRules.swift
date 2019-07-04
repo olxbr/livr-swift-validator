@@ -105,5 +105,4 @@ struct SpecialRules {
             return (nil, nil)
         }
     }
-    
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F7DD728B77778EA5DB0EBAE /* Pods_LivrCommonCustomRules.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 611E5166DF1175202CE4C7B1 /* Pods_LivrCommonCustomRules.framework */; };
 		75425CE422CD4D7500E29D7C /* LivrCommonCustomRules.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75425CDA22CD4D7500E29D7C /* LivrCommonCustomRules.framework */; };
 		75425CE922CD4D7500E29D7C /* LivrCommonCustomRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75425CE822CD4D7500E29D7C /* LivrCommonCustomRulesTests.swift */; };
 		75425CEB22CD4D7500E29D7C /* LivrCommonCustomRules.h in Headers */ = {isa = PBXBuildFile; fileRef = 75425CDD22CD4D7500E29D7C /* LivrCommonCustomRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,6 +25,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		483BAAEF499CE7EE2B9F3BA5 /* Pods-LivrCommonCustomRules.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrCommonCustomRules.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-LivrCommonCustomRules/Pods-LivrCommonCustomRules.debug.xcconfig"; sourceTree = "<group>"; };
+		611E5166DF1175202CE4C7B1 /* Pods_LivrCommonCustomRules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LivrCommonCustomRules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FC0AE8EF00DE9E80F250CDD /* Pods-LivrCommonCustomRules.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrCommonCustomRules.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-LivrCommonCustomRules/Pods-LivrCommonCustomRules.release.xcconfig"; sourceTree = "<group>"; };
 		75425CDA22CD4D7500E29D7C /* LivrCommonCustomRules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LivrCommonCustomRules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75425CDD22CD4D7500E29D7C /* LivrCommonCustomRules.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivrCommonCustomRules.h; sourceTree = "<group>"; };
 		75425CDE22CD4D7500E29D7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -38,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F7DD728B77778EA5DB0EBAE /* Pods_LivrCommonCustomRules.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,12 +57,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		58BCF3002793802FC95A8B9A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				483BAAEF499CE7EE2B9F3BA5 /* Pods-LivrCommonCustomRules.debug.xcconfig */,
+				6FC0AE8EF00DE9E80F250CDD /* Pods-LivrCommonCustomRules.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		75425CD022CD4D7500E29D7C = {
 			isa = PBXGroup;
 			children = (
 				75425CDC22CD4D7500E29D7C /* LivrCommonCustomRules */,
 				75425CE722CD4D7500E29D7C /* LivrCommonCustomRulesTests */,
 				75425CDB22CD4D7500E29D7C /* Products */,
+				58BCF3002793802FC95A8B9A /* Pods */,
+				E055192FDA5DC2E307490799 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,9 +90,9 @@
 		75425CDC22CD4D7500E29D7C /* LivrCommonCustomRules */ = {
 			isa = PBXGroup;
 			children = (
+				75425CF622CDA9FD00E29D7C /* CustomRules */,
 				75425CDD22CD4D7500E29D7C /* LivrCommonCustomRules.h */,
 				75425CDE22CD4D7500E29D7C /* Info.plist */,
-				75425CF422CDA32500E29D7C /* ExtraRules.swift */,
 			);
 			path = LivrCommonCustomRules;
 			sourceTree = "<group>";
@@ -87,6 +104,22 @@
 				75425CEA22CD4D7500E29D7C /* Info.plist */,
 			);
 			path = LivrCommonCustomRulesTests;
+			sourceTree = "<group>";
+		};
+		75425CF622CDA9FD00E29D7C /* CustomRules */ = {
+			isa = PBXGroup;
+			children = (
+				75425CF422CDA32500E29D7C /* ExtraRules.swift */,
+			);
+			path = CustomRules;
+			sourceTree = "<group>";
+		};
+		E055192FDA5DC2E307490799 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				611E5166DF1175202CE4C7B1 /* Pods_LivrCommonCustomRules.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +140,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75425CEE22CD4D7500E29D7C /* Build configuration list for PBXNativeTarget "LivrCommonCustomRules" */;
 			buildPhases = (
+				708237D862EA0DBBFAAC6BAF /* [CP] Check Pods Manifest.lock */,
 				75425CD522CD4D7500E29D7C /* Headers */,
 				75425CD622CD4D7500E29D7C /* Sources */,
 				75425CD722CD4D7500E29D7C /* Frameworks */,
@@ -192,6 +226,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		708237D862EA0DBBFAAC6BAF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LivrCommonCustomRules-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		75425CD622CD4D7500E29D7C /* Sources */ = {
@@ -345,6 +404,7 @@
 		};
 		75425CEF22CD4D7500E29D7C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 483BAAEF499CE7EE2B9F3BA5 /* Pods-LivrCommonCustomRules.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -366,13 +426,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = "Swift 4.2";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		75425CF022CD4D7500E29D7C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6FC0AE8EF00DE9E80F250CDD /* Pods-LivrCommonCustomRules.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -393,7 +454,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.zap.LivrCommonCustomRules;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = "Swift 4.2";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -412,7 +473,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.zap.LivrCommonCustomRulesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -431,7 +492,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.zap.LivrCommonCustomRulesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

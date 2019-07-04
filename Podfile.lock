@@ -1,0 +1,16 @@
+PODS:
+  - Livr (1.0.4)
+
+DEPENDENCIES:
+  - Livr
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Livr
+
+SPEC CHECKSUMS:
+  Livr: e2a86dfdd1c7740e46a81ccd4adacce6c43bee3d
+
+PODFILE CHECKSUM: 679da5a2c308b2ecfdb851141b6ec366b6a8ed9c
+
+COCOAPODS: 1.7.3

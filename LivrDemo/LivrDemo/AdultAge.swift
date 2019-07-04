@@ -9,10 +9,12 @@
 import Livr
 
 struct AdultAge: CustomRule {
+    var customErrorCode: String? = "WRONG_AGE"
+    
     var name: String = "adult_age"
     var rules: Any?
     var arguments: Any?
-    var errorCode: ErrorCode = "WRONG_AGE"
+    var errorCode: LIVR.ErrorCode = .wrongFormat
     
     init() {}
     
