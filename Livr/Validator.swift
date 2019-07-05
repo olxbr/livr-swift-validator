@@ -5,10 +5,50 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
-public struct Validator {
+public final class Validator {
     
-    public private(set) var errors: [String: Any?]?
-    public private(set) var output: [String: Any?]?
+    /// Private queue used to apply thread safety
+    private var queue: DispatchQueue = DispatchQueue(label: "livr.validator.reader-writer.queue", attributes: .concurrent)
+    
+    /// Private error property - holds the dictionary of validation errors by field
+    private var privateErrors: [String: Any?]?
+    
+    /// public error property - applies thread safety to the errors dictionary
+    public private(set) var errors: [String: Any?]? {
+        get {
+            var errors: [String: Any?]? = nil
+            queue.sync {
+                errors = privateErrors
+            }
+            
+            return errors
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateErrors = newValue
+            }
+        }
+    }
+    
+    /// Private output property - holds the dictionary of outputs
+    private var privateOutput: [String: Any?]?
+    
+    /// public output property - applies thread safety to the output dictionary
+    public private(set) var output: [String: Any?]? {
+        get {
+            var output: [String: Any?]? = nil
+            queue.sync {
+                output = privateOutput
+            }
+            
+            return output
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateOutput = newValue
+            }
+        }
+    }
     
     typealias Field = String
     typealias Rules = [LivrRule]
@@ -16,12 +56,101 @@ public struct Validator {
     typealias RuleName = String
     typealias RuleArguments = Any
     
-    private(set) var validationRules: [String: Any?]?
-    private(set) var rulesByField: [Field: Rules]?
-    private(set) var validatingData: [String: Any?]?
+    /// Private validationRules property - holds the dictionary of validation rules
+    private var privateValidationRules: [String: Any?]?
     
-    private(set) var isAutoTrim: Bool
-    public var allRequired: Bool = false
+    /// public validationRules property - applies thread safety to the output dictionary
+    private(set) var validationRules: [String: Any?]? {
+        get {
+            var validationRules: [String: Any?]? = nil
+            queue.sync {
+                validationRules = privateValidationRules
+            }
+            
+            return validationRules
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateValidationRules = newValue
+            }
+        }
+    }
+    
+    /// Private rulesByField property - holds the dictionary of rules for each field
+    private var privateRulesByField: [Field: Rules]?
+    
+    /// public rulesByField property - applies thread safety to the rulesByField dictionary
+    private(set) var rulesByField: [Field: Rules]? {
+        get {
+            var rulesByField: [Field: Rules]? = nil
+            queue.sync {
+                rulesByField = privateRulesByField
+            }
+            
+            return rulesByField
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateRulesByField = newValue
+            }
+        }
+    }
+    
+    /// Private validatingData property - holds the dictionary of data that is beign validated
+    private var privateValidatingData: [String: Any?]?
+    
+    /// public validatingData property - applies thread safety to the validatingData dictionary
+    public private(set) var validatingData: [String: Any?]? {
+        get {
+            var validatingData: [String: Any?]? = nil
+            queue.sync {
+                validatingData = privateValidatingData
+            }
+            
+            return validatingData
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateValidatingData = newValue
+            }
+        }
+    }
+    
+    private var privateIsAutoTrim: Bool
+    
+    private(set) var isAutoTrim: Bool {
+        get {
+            var isAutoTrim: Bool = false
+            queue.sync {
+                isAutoTrim = privateIsAutoTrim
+            }
+            
+            return isAutoTrim
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateIsAutoTrim = newValue
+            }
+        }
+    }
+    
+    private var privateAllRequired: Bool = false
+    
+    public var allRequired: Bool {
+        get {
+            var allRequired: Bool = false
+            queue.sync {
+                allRequired = privateAllRequired
+            }
+            
+            return allRequired
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateAllRequired = newValue
+            }
+        }
+    }
     
     public typealias Output = [String: Any?]
     
@@ -46,12 +175,12 @@ public struct Validator {
     
     // MARK: - Register + Rules of validation
     init(isAutoTrim: Bool) {
-        self.isAutoTrim = isAutoTrim
+        self.privateIsAutoTrim = isAutoTrim
     }
     
     init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
-        self.validationRules = validationRules
-        self.isAutoTrim = isAutoTrim
+        self.privateValidationRules = validationRules
+        self.privateIsAutoTrim = isAutoTrim
     }
     
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
@@ -84,7 +213,7 @@ public struct Validator {
         LIVR.register(rule: ruleAlias)
     }
     
-    private mutating func setRulesByField() throws {
+    private func setRulesByField() throws {
         guard let validationRules = validationRules else { throw ErrorType.nilValidationRules }
         rulesByField = [:]
         
@@ -101,7 +230,7 @@ public struct Validator {
     // MARK: - Validating
     
     @discardableResult
-    public mutating func validate(data: [String: Any?]) throws -> Output? {
+    public func validate(data: [String: Any?]) throws -> Output? {
         
         try setRulesByField()
         
@@ -150,7 +279,7 @@ public struct Validator {
         return (nil, updatedValue)
     }
     
-    mutating private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
+    private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
         
         guard var rules = rulesByField?[field] else { return }
         insertCommonRulesIfNeeded(in: &rules)
