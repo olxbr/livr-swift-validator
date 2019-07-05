@@ -1,5 +1,5 @@
 PODS:
-  - Livr (1.0.1)
+  - Livr (1.0.4)
 
 DEPENDENCIES:
   - Livr (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Livr: b6c6eb8075a725e30c74e38a9f3a82465f22f193
+  Livr: e2a86dfdd1c7740e46a81ccd4adacce6c43bee3d
 
 PODFILE CHECKSUM: 9c555a7c3d7a91cc2414b97dc818cde30e44efce
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

@@ -168,7 +168,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-LivrDemo/Pods-LivrDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Livr/Livr.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -179,7 +179,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LivrDemo/Pods-LivrDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		808C00F815CDF2E60057D337 /* [CP] Check Pods Manifest.lock */ = {
