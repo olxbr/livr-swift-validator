@@ -1,9 +1,0 @@
-platform :ios, '9.0'
-workspace '../Livr'
-
-target 'LivrDemo' do
-  use_frameworks!
-
-  pod 'Livr', :path => '../'  
-
-end

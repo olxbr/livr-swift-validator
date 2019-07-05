@@ -17,8 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		763FD83225D49886B1F19CEB /* Pods-LivrDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		CF0BF96F18F37E18D47A5AEE /* Pods-LivrDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo.release.xcconfig"; sourceTree = "<group>"; };
+		763FD83225D49886B1F19CEB /* Pods-LivrDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		CF0BF96F18F37E18D47A5AEE /* Pods-LivrDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivrDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-LivrDemo/Pods-LivrDemo.release.xcconfig"; sourceTree = "<group>"; };
 		D5379180216AD9320087257E /* LivrDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LivrDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5379183216AD9320087257E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5379185216AD9320087257E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +166,7 @@
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LivrDemo/Pods-LivrDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LivrDemo/Pods-LivrDemo-frameworks.sh",
@@ -173,9 +174,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Livr.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-LivrDemo/Pods-LivrDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -367,7 +366,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marinofelipe.LivrDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -386,7 +385,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marinofelipe.LivrDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

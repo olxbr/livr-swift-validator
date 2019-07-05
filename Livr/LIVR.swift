@@ -64,9 +64,9 @@ public struct LIVR {
     }
 }
 
-extension LIVR {
+public extension LIVR {
     
-    public enum ErrorCode: String {
+    enum ErrorCode: String {
         case required = "REQUIRED",
         cannotBeEmpty = "CANNOT_BE_EMPTY",
         format = "FORMAT_ERROR",

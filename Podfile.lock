@@ -1,0 +1,16 @@
+PODS:
+  - Livr (1.0.4)
+
+DEPENDENCIES:
+  - Livr (from `~/Documents/projects/livr-swift-validator`)
+
+EXTERNAL SOURCES:
+  Livr:
+    :path: "~/Documents/projects/livr-swift-validator"
+
+SPEC CHECKSUMS:
+  Livr: 0a0232e093a1f2f48e8787756c131f23ffb6b489
+
+PODFILE CHECKSUM: 25379d388b00ee5cfb7794a6d7af38da865e0582
+
+COCOAPODS: 1.7.3
