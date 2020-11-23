@@ -2,15 +2,15 @@ PODS:
   - Livr (1.0.4)
 
 DEPENDENCIES:
-  - Livr (from `~/Documents/projects/livr-swift-validator`)
+  - Livr (from `~/livr-swift-validator`)
 
 EXTERNAL SOURCES:
   Livr:
-    :path: "~/Documents/projects/livr-swift-validator"
+    :path: "~/livr-swift-validator"
 
 SPEC CHECKSUMS:
   Livr: 0a0232e093a1f2f48e8787756c131f23ffb6b489
 
-PODFILE CHECKSUM: 25379d388b00ee5cfb7794a6d7af38da865e0582
+PODFILE CHECKSUM: 6c4a83cda70af3e88dc36cec6fdc2c0b551f61ed
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.10.0
