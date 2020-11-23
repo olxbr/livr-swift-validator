@@ -5,7 +5,7 @@ target 'LivrDemo' do
   use_frameworks!
   project 'LivrDemo/LivrDemo.xcodeproj'
 #  pod 'Livr'
-  pod 'Livr', :path => '~/Documents/projects/livr-swift-validator'
+  pod 'Livr', :path => '~/livr-swift-validator'
 
 end
 
@@ -13,6 +13,6 @@ target 'LivrCommonCustomRules' do
   use_frameworks!
   project 'LivrCommonCustomRules/LivrCommonCustomRules.xcodeproj'
 #  pod 'Livr'
-pod 'Livr', :path => '~/Documents/projects/livr-swift-validator'
+pod 'Livr', :path => '~/livr-swift-validator'
 
 end
