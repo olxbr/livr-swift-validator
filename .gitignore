@@ -37,4 +37,5 @@ Pods/
 */report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
-*/test_output!.github/*
+*/test_output
+!.github/*
