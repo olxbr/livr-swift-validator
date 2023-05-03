@@ -59,51 +59,6 @@ public struct CustomRules {
             return (nil, nil)
         }
     }
-
-    public struct RequiredIf: LivrRule, RuleThatCompareFields, CustomRule {
-        public var name: String = "required_if"
-        public var rules: Any?
-        public var customErrorCode: String?
-        public var errorCode: LIVR.ErrorCode = .required
-        public var arguments: Any?
-        public var otherFieldValue: Any?
-        public var isAutoTrim: Bool = true
-
-        public init() {}
-
-        public func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard !Utils.hasNoValue(otherFieldValue) else { return (nil, nil) }
-            guard let validationRules = arguments as? [String: Any?] else { return (LIVR.ErrorCode.format.rawValue, nil) }
-            let validator = LIVR.validator(isAutoTrim: isAutoTrim)
-            let validatorOutput = validator.validate(value: otherFieldValue, validationRules: Array(validationRules.values))
-            guard validatorOutput.0 == nil else { return (nil, nil) }
-            guard !Utils.hasNoValue(value) else { return (errorCode.rawValue, nil) }
-            return (nil, nil)
-        }
-    }
-
-    public struct NotEmptyListIf: LivrRule, RuleThatCompareFields, CustomRule {
-        public var name: String = "not_empty_list_if"
-        public var rules: Any?
-        public var customErrorCode: String?
-        public var errorCode: LIVR.ErrorCode = .cannotBeEmpty
-        public var arguments: Any?
-        public var otherFieldValue: Any?
-        public var isAutoTrim: Bool = true
-
-        public init() {}
-
-        public func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard !Utils.hasNoValue(otherFieldValue) else { return (nil, nil) }
-            guard let validationRules = arguments as? [String: Any?] else { return (LIVR.ErrorCode.format.rawValue, nil) }
-            let validator = LIVR.validator(isAutoTrim: isAutoTrim)
-            let validatorOutput = validator.validate(value: otherFieldValue, validationRules: Array(validationRules.values))
-            guard validatorOutput.0 == nil else { return (nil, nil) }
-            guard !Utils.hasNoValue(value) else { return (errorCode.rawValue, nil) }
-            guard let value = value as? Array<Any>, !value.isEmpty else { return (errorCode.rawValue, nil) }
-            return (nil, nil)
-        }
-    }
 }
 
 private extension String {
