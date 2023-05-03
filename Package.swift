@@ -9,11 +9,9 @@ let package = Package(
     products: [
         .library(
             name: "Livr",
-            type: .dynamic,
             targets: ["Livr"]),
         .library(
             name: "LivrCommonCustomRules",
-            type: .dynamic,
             targets: ["Livr", "LivrCommonCustomRules"]),
     ],
     dependencies: [
@@ -22,22 +20,18 @@ let package = Package(
     targets: [
         .target(
             name: "LivrCommonCustomRules",
-            dependencies: ["Livr"],
-            resources: [.process("Resources")]),
+            dependencies: ["Livr"]),
         .target(
             name: "Livr",
-            dependencies: [],
-            resources: [.process("Resources")]),
+            dependencies: []),
         .testTarget(
             name: "LivrCommonCustomRulesTests",
-            dependencies: ["LivrCommonCustomRules"],
-            resources: [.process("Resources")]),
+            dependencies: ["LivrCommonCustomRules"]),
         .testTarget(
             name: "LivrTests",
             dependencies: ["Livr"],
             resources: [
-                .copy("Json"),
-                .process("Resources")
+                .copy("Json")
             ]
         )
     ]

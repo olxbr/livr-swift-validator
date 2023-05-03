@@ -27,7 +27,7 @@ struct MetaRules {
             
             if !(value is [String: Any?]) { return (errorCode.rawValue, nil) }
             
-            var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
+            let validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
             
             var output: [String: Any?]?
             do {
@@ -65,7 +65,7 @@ struct MetaRules {
                 return (errorCode.rawValue, nil)
             }
                 
-            var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
+            let validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
             
             var output: [String: Any?]?
             do {
@@ -153,7 +153,7 @@ struct MetaRules {
                             continue
                         }
                         
-                        var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
+                        let validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
                         
                         var validatorOutput: [String: Any?]?
                         do {
@@ -221,7 +221,7 @@ struct MetaRules {
                                 continue
                         }
                         
-                        var validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
+                        let validator = LIVR.validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
                         
                         var validatorOutput: [String: Any?]?
                         do {
