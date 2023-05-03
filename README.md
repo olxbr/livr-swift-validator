@@ -3,7 +3,6 @@ Swift LIVR Validator 📏
 [![Build Status](https://travis-ci.org/marinofelipe/swift-validator-livr.svg?branch=master)](https://travis-ci.org/marinofelipe/swift-validator-livr)
 [![Coverage Status](https://coveralls.io/repos/github/marinofelipe/swift-validator-livr/badge.svg?branch=master)](https://coveralls.io/github/marinofelipe/swift-validator-livr?branch=master)
 <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-4.1-orange.svg?style=flat" alt="Swift" /></a>
-[![CocoaPods compatible](https://img.shields.io/cocoapods/v/Livr.svg)](https://cocoapods.org/pods/Livr)
 [![License](https://img.shields.io/cocoapods/l/Livr.svg)](https://raw.githubusercontent.com/marinofelipe/swift-validator-livr/master/LICENSE)
 
 Lightweight Swift validator supporting Language Independent Validation Rules Specification (LIVR).
@@ -97,24 +96,16 @@ validator.registerRule(alias: "strong_password", rules: ["min_length": 6], error
 
 # Installation
 
-### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
-
-**Tested with `pod --version`: `1.0.3`**
-
-```ruby
-# Podfile
-use_frameworks!
-
-target 'YOUR_TARGET_NAME' do
-    pod 'Livr'
-end
+On your Xcode project:
+- Select File > Swift Packages > Add Package Dependency
+- Choose your project
+- Enter its repository URL:
+```swift
+https://github.com/olxbr/livr-swift-validator 
 ```
+- Click Finish and you're ready to use Livr in your project 🏁 
 
-Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
-
-```bash
-$ pod install
-```
+Don't forget to `import Livr` in your swift file.
 
 ## Contributing and future improvements
 Feel free to fork, open feature requests, issues and PRs. Known issues and mapped activities are in this repo issues.

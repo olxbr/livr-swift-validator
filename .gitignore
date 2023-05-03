@@ -39,3 +39,4 @@ Pods/
 */fastlane/screenshots
 */test_output
 !.github/*
+.DS_Store
