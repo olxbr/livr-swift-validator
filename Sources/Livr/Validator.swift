@@ -297,6 +297,11 @@ public final class Validator {
 
                     ruleThatCompareFields.otherFieldValue = valueToCompare
                     rules[index] = ruleThatCompareFields
+                } else if let arguments = rule.arguments as? [String: Any?], let fieldToCompareValue = arguments.keys.first,
+                    let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
+
+                    ruleThatCompareFields.otherFieldValue = valueToCompare
+                    rules[index] = ruleThatCompareFields
                 }
             }
 
