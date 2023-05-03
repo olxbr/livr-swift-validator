@@ -176,11 +176,11 @@ public final class Validator {
     }
 
     // MARK: - Register + Rules of validation
-    init(isAutoTrim: Bool) {
+    public init(isAutoTrim: Bool) {
         self.privateIsAutoTrim = isAutoTrim
     }
 
-    init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
+    public init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
         self.privateValidationRules = validationRules
         self.privateIsAutoTrim = isAutoTrim
     }
