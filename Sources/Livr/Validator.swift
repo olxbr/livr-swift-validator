@@ -62,7 +62,7 @@ public final class Validator {
     private var privateValidationRules: [String: Any?]?
 
     /// public validationRules property - applies thread safety to the output dictionary
-    private(set) var validationRules: [String: Any?]? {
+    var validationRules: [String: Any?]? {
         get {
             var validationRules: [String: Any?]? = nil
             queue.sync {
