@@ -284,6 +284,7 @@ public final class Validator {
     private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
 
         guard var rules = rulesByField?[field] else { return }
+        errors = nil
         insertCommonRulesIfNeeded(in: &rules)
 
         for (index, rule) in rules.enumerated() {
