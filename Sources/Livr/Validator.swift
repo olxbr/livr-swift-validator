@@ -311,6 +311,7 @@ public final class Validator {
                 errors?[field] = error
                 output = nil
             } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
+                errors = nil
                 output == nil ? output = [:] : ()
 
                 if rule is MetaRules.NestedObject {
