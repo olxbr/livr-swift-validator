@@ -29,7 +29,8 @@ public struct Utils {
     }
     
     public static func canBeCoercedToNumber(_ value: Any) -> Bool {
-        return Double((value as? String) ?? "") != nil
+        let string = String(describing: value)
+        return Double(string) != nil
     }
     
     public static func isList(_ value: Any) -> Bool {
