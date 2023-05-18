@@ -233,7 +233,7 @@ public final class Validator {
 
     @discardableResult
     public func validate(data: [String: Any?]) throws -> Output? {
-
+        errors = nil
         try setRulesByField()
 
         validatingData = data
