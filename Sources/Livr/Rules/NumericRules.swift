@@ -218,7 +218,7 @@ struct NumericRules {
                 if !Utils.isPrimitive(value) { return (LIVR.ErrorCode.format.rawValue, nil) }
                 if !Utils.canBeCoercedToNumber(value) { return (LIVR.ErrorCode.notNumber.rawValue, nil) }
                 
-                let valueAsString = StringType((value as? String) ?? "")
+                let valueAsString = StringType(describing: value)
                 
                 if let arrayOfArguments = arguments as? [Any], let minAllowedValueArgument = arrayOfArguments.first, arrayOfArguments.count > 1 {
                     
