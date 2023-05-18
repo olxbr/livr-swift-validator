@@ -321,8 +321,6 @@ public final class Validator {
                 } else if let updatedValue = errorAndUpdatedValue.1 {
                     output?[field] = updatedValue
                 }
-            } else if errorAndUpdatedValue.0 == nil {
-                errors = nil
             }
         }
 
