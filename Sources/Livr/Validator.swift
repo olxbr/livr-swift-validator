@@ -328,7 +328,7 @@ public final class Validator {
             let errorAndUpdatedValue = rules[index].validate(value: value)
             if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
-                errors?[field] = error
+                errors?[field] = isBoundary ? (error, rule.arguments as? [Any]): error
                 output = nil
             } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
                 errors = nil
