@@ -154,6 +154,24 @@ public final class Validator {
         }
     }
 
+    private var privateIsBoundary: Bool = false
+
+    public var isBoundary: Bool {
+        get {
+            var boundary: Bool = false
+            queue.sync {
+                boundary = privateIsBoundary
+            }
+
+            return boundary
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateIsBoundary = newValue
+            }
+        }
+    }
+
     public typealias Output = [String: Any?]
 
     enum ErrorType: Error {
@@ -308,7 +326,7 @@ public final class Validator {
             let errorAndUpdatedValue = rules[index].validate(value: value)
             if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
-                errors?[field] = error
+                errors?[field] = isBoundary ? [error as? String ?? "unknown": rule.arguments]: error
                 output = nil
             } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
                 errors = nil
