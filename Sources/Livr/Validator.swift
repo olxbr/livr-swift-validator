@@ -176,9 +176,8 @@ public final class Validator {
     }
 
     // MARK: - Register + Rules of validation
-    public init(isAutoTrim: Bool, isBoundary: Bool = false) {
+    public init(isAutoTrim: Bool) {
         self.privateIsAutoTrim = isAutoTrim
-        self.privateIsBoundary = isBoundary
     }
 
     public init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
