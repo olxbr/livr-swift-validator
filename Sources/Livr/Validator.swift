@@ -234,6 +234,7 @@ public final class Validator {
     @discardableResult
     public func validate(data: [String: Any?]) throws -> Output? {
         errors = nil
+        rulesByField?.removeAll()
         try setRulesByField()
 
         validatingData = data
@@ -323,7 +324,5 @@ public final class Validator {
                 }
             }
         }
-
-        rulesByField?.removeValue(forKey: field)
     }
 }
