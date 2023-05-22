@@ -51,12 +51,12 @@ public struct LIVR {
                                               ModifiersRules.Trim.name: ModifiersRules.Trim()]
     
     
-    public static func validator(validationRules: [String: Any?], isAutoTrim: Bool = true) -> Validator {
-        return Validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
+    public static func validator(validationRules: [String: Any?], isAutoTrim: Bool = true, isBoundary: Bool = false) -> Validator {
+        return Validator(validationRules: validationRules, isAutoTrim: isAutoTrim, isBoundary: isBoundary)
     }
     
-    public static func validator(isAutoTrim: Bool) -> Validator {
-        return Validator(isAutoTrim: isAutoTrim)
+    public static func validator(isAutoTrim: Bool, isBoundary: Bool = false) -> Validator {
+        return Validator(isAutoTrim: isAutoTrim, isBoundary: isBoundary)
     }
     
     public static func register(rule: CustomRule) {
