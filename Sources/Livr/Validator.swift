@@ -52,8 +52,8 @@ public final class Validator {
         }
     }
 
-    public typealias Field = String
-    public typealias Rules = [LivrRule]
+    typealias Field = String
+    typealias Rules = [LivrRule]
 
     typealias RuleName = String
     typealias RuleArguments = Any
@@ -82,7 +82,7 @@ public final class Validator {
     private var privateRulesByField: [Field: Rules]?
 
     /// public rulesByField property - applies thread safety to the rulesByField dictionary
-    public private(set) var rulesByField: [Field: Rules]? {
+    private(set) var rulesByField: [Field: Rules]? {
         get {
             var rulesByField: [Field: Rules]? = nil
             queue.sync {
