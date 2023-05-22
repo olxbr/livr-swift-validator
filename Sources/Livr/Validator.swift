@@ -198,9 +198,10 @@ public final class Validator {
         self.privateIsAutoTrim = isAutoTrim
     }
 
-    public init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
+    public init(validationRules: [String: Any?], isAutoTrim: Bool = true, isBoundary: Bool = false) {
         self.privateValidationRules = validationRules
         self.privateIsAutoTrim = isAutoTrim
+        self.privateIsBoundary = isBoundary
     }
 
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
