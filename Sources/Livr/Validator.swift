@@ -154,6 +154,24 @@ public final class Validator {
         }
     }
 
+    private var privateIsBoundary: Bool = false
+
+    public var isBoundary: Bool {
+        get {
+            var boundary: Bool = false
+            queue.sync {
+                boundary = privateIsBoundary
+            }
+
+            return boundary
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privateIsBoundary = newValue
+            }
+        }
+    }
+
     public typealias Output = [String: Any?]
 
     enum ErrorType: Error {
@@ -176,13 +194,15 @@ public final class Validator {
     }
 
     // MARK: - Register + Rules of validation
-    public init(isAutoTrim: Bool) {
+    public init(isAutoTrim: Bool, isBoundary: Bool = false) {
         self.privateIsAutoTrim = isAutoTrim
+        self.privateIsBoundary = isBoundary
     }
 
-    public init(validationRules: [String: Any?], isAutoTrim: Bool = true) {
+    public init(validationRules: [String: Any?], isAutoTrim: Bool = true, isBoundary: Bool = false) {
         self.privateValidationRules = validationRules
         self.privateIsAutoTrim = isAutoTrim
+        self.privateIsBoundary = isBoundary
     }
 
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
@@ -308,7 +328,7 @@ public final class Validator {
             let errorAndUpdatedValue = rules[index].validate(value: value)
             if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
-                errors?[field] = error
+                errors?[field] = isBoundary ? [error as? String ?? "unknown": rule.arguments]: error
                 output = nil
             } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
                 errors = nil
