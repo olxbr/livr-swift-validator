@@ -303,6 +303,14 @@ public final class Validator {
 
     private func validate(_ value: Any?, for field: String, asInputed isAnInputedValue: Bool = true) {
 
+        func extractArguments(withKey key: String, value: Any?) -> [String: Any]? {
+            guard let value = value else {
+                return nil
+            }
+            return [key: value]
+        }
+
+
         guard var rules = rulesByField?[field] else { return }
         insertCommonRulesIfNeeded(in: &rules)
 
@@ -328,7 +336,7 @@ public final class Validator {
             let errorAndUpdatedValue = rules[index].validate(value: value)
             if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
-                errors?[field] = isBoundary ? (error, rule.arguments as? [Any]): error
+                errors?[field] = isBoundary ? (error, extractArguments(withKey: "\(type(of: rule))", value: rule.arguments)): error
                 output = nil
             } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
                 errors = nil
