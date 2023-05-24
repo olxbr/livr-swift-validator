@@ -106,7 +106,7 @@ struct SpecialRules {
                 if let otherFieldValue = otherFieldValue, String(describing: value) == String(describing: otherFieldValue) {
                     return (nil, nil)
                 }
-                return (OutputError(errors: errorCode.rawValue, args: otherFieldValue), nil)
+                return (OutputError(errors: errorCode.rawValue, args: [EqualToField.name: otherFieldValue]), nil)
             }
             return (nil, nil)
         }

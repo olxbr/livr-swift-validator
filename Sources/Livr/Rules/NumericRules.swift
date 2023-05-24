@@ -128,26 +128,26 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value, let arguments = arguments {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: arguments), nil) }
-                if !Utils.canBeCoercedToNumber(value) { return (OutputError(errors: LIVR.ErrorCode.notNumber.rawValue, args: arguments), nil) }
+                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [MaxNumber.name: arguments]), nil) }
+                if !Utils.canBeCoercedToNumber(value) { return (OutputError(errors: LIVR.ErrorCode.notNumber.rawValue, args: [MaxNumber.name: arguments]), nil) }
                 
                 let maxValueAsString = String(describing: arguments)
                 let inputedValueAsString = String(describing: value)
                 
                 if let valueAsInt = value as? Int, let maxValueAsInt = Int(maxValueAsString) {
                     if valueAsInt > maxValueAsInt {
-                        return (OutputError(errors: errorCode.rawValue, args: arguments), nil)
+                        return (OutputError(errors: errorCode.rawValue, args: [MaxNumber.name: arguments]), nil)
                     }
                     return (nil, nil)
                 } else if let valueAsDouble = value as? Double, let maxValueAsDouble = Double(maxValueAsString) {
                     if valueAsDouble > maxValueAsDouble {
-                        return (OutputError(errors: errorCode.rawValue, args: arguments), nil)
+                        return (OutputError(errors: errorCode.rawValue, args: [MaxNumber.name: arguments]), nil)
                     }
                     return (nil, nil)
                 } else if let inputedValueAsDouble = Double(inputedValueAsString), let maxValueAsDouble = Double(maxValueAsString) {
                     
                     if inputedValueAsDouble > maxValueAsDouble {
-                        return (OutputError(errors: errorCode.rawValue, args: arguments), nil)
+                        return (OutputError(errors: errorCode.rawValue, args: [MaxNumber.name: arguments]), nil)
                     }
                     
                     if inputedValueAsDouble.truncatingRemainder(dividingBy: 1) == 0 {
@@ -171,26 +171,26 @@ struct NumericRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value, let arguments = arguments {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: arguments), nil) }
-                if !Utils.canBeCoercedToNumber(value) { return (OutputError(errors: LIVR.ErrorCode.notNumber.rawValue, args: arguments), nil) }
+                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [MinNumber.name: arguments]), nil) }
+                if !Utils.canBeCoercedToNumber(value) { return (OutputError(errors: LIVR.ErrorCode.notNumber.rawValue, args: [MinNumber.name: arguments]), nil) }
                 
                 let minValueAsString = String(describing: arguments)
                 let inputedValueAsString = String(describing: value)
                 
                 if let valueAsInt = value as? Int, let minValueAsInt = Int(minValueAsString) {
                     if valueAsInt < minValueAsInt {
-                        return (OutputError(errors: errorCode.rawValue, args: arguments), nil)
+                        return (OutputError(errors: errorCode.rawValue, args: [MinNumber.name: arguments]), nil)
                     }
                     return (nil, nil)
                 } else if let valueAsDouble = value as? Double, let minValueAsDouble = Double(minValueAsString) {
                     if valueAsDouble < minValueAsDouble {
-                        return (OutputError(errors: errorCode.rawValue, args: arguments), nil)
+                        return (OutputError(errors: errorCode.rawValue, args: [MinNumber.name: arguments]), nil)
                     }
                     return (nil, nil)
                 } else if let inputedValueAsDouble = Double(inputedValueAsString), let minValueAsDouble = Double(minValueAsString) {
                     
                     if inputedValueAsDouble < minValueAsDouble {
-                        return (OutputError(errors: errorCode.rawValue, args: arguments), nil)
+                        return (OutputError(errors: errorCode.rawValue, args: [MinNumber.name: arguments]), nil)
                     }
                     
                     if inputedValueAsDouble.truncatingRemainder(dividingBy: 1) == 0 {
@@ -215,8 +215,8 @@ struct NumericRules {
             
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value, let arguments = arguments {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: arguments), nil) }
-                if !Utils.canBeCoercedToNumber(value) { return (OutputError(errors: LIVR.ErrorCode.notNumber.rawValue, args: arguments), nil) }
+                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [NumberBetween.name: arguments]), nil) }
+                if !Utils.canBeCoercedToNumber(value) { return (OutputError(errors: LIVR.ErrorCode.notNumber.rawValue, args: [NumberBetween.name: arguments]), nil) }
                 
                 let valueAsString = StringType(describing: value)
                 
@@ -230,24 +230,24 @@ struct NumericRules {
                     if let valueAsInt = value as? Int, let minAllowedValueAsInt = Int(minAllowedValueAsString),
                         let maxAllowedValueAsInt = Int(maxAllowedValueAsString) {
                         if valueAsInt < minAllowedValueAsInt {
-                            return (OutputError(errors: LIVR.ErrorCode.tooLow.rawValue, args: arrayOfArguments), nil)
+                            return (OutputError(errors: LIVR.ErrorCode.tooLow.rawValue, args: [NumberBetween.name: arrayOfArguments]), nil)
                         } else if valueAsInt > maxAllowedValueAsInt {
-                            return (OutputError(errors: LIVR.ErrorCode.tooHigh.rawValue, args: arrayOfArguments), nil)
+                            return (OutputError(errors: LIVR.ErrorCode.tooHigh.rawValue, args: [NumberBetween.name: arrayOfArguments]), nil)
                         }
                         return (nil, nil)
                     } else if let valueAsDouble = value as? Double, let minAllowedValueAsDouble = Double(minAllowedValueAsString), let maxAllowedValueAsDouble = Double(maxAllowedValueAsString) {
                         if valueAsDouble < minAllowedValueAsDouble {
-                            return (OutputError(errors: LIVR.ErrorCode.tooLow.rawValue, args: arrayOfArguments), nil)
+                            return (OutputError(errors: LIVR.ErrorCode.tooLow.rawValue, args: [NumberBetween.name: arrayOfArguments]), nil)
                         } else if valueAsDouble > maxAllowedValueAsDouble {
-                            return (OutputError(errors: LIVR.ErrorCode.tooHigh.rawValue, args: arrayOfArguments), nil)
+                            return (OutputError(errors: LIVR.ErrorCode.tooHigh.rawValue, args: [NumberBetween.name: arrayOfArguments]), nil)
                         }
                         return (nil, nil)
                     } else if let inputedValueAsDouble = Double(valueAsString), let minAllowedValueAsDouble = Double(minAllowedValueAsString), let maxAllowedValueAsDouble = Double(maxAllowedValueAsString) {
                         
                         if inputedValueAsDouble < minAllowedValueAsDouble {
-                            return (OutputError(errors: LIVR.ErrorCode.tooLow.rawValue, args: arrayOfArguments), nil)
+                            return (OutputError(errors: LIVR.ErrorCode.tooLow.rawValue, args: [NumberBetween.name: arrayOfArguments]), nil)
                         } else if inputedValueAsDouble > maxAllowedValueAsDouble {
-                            return (OutputError(errors: LIVR.ErrorCode.tooHigh.rawValue, args: arrayOfArguments), nil)
+                            return (OutputError(errors: LIVR.ErrorCode.tooHigh.rawValue, args: [NumberBetween.name: arrayOfArguments]), nil)
                         }
                         
                         if inputedValueAsDouble.truncatingRemainder(dividingBy: 1) == 0 {
