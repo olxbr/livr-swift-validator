@@ -16,7 +16,7 @@ struct CommonRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            if Utils.hasNoValue(value) { return (errorCode.rawValue, nil) }
+            if Utils.hasNoValue(value) { return (OutputError(errors: errorCode.rawValue), nil) }
             return (nil, nil)
         }
     }
@@ -31,7 +31,7 @@ struct CommonRules {
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if let value = value, String(describing: value).isEmpty {
-                return (errorCode.rawValue, nil)
+                return (OutputError(errors: errorCode.rawValue), nil)
             }
             return (nil, nil)
         }
@@ -46,11 +46,11 @@ struct CommonRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            if Utils.hasNoValue(value) { return (errorCode.rawValue, nil) }
+            if Utils.hasNoValue(value) { return (OutputError(errors: errorCode.rawValue), nil) }
             if let value = value {
-                if Utils.hasNoValue(value) { return (errorCode.rawValue, nil) }
-                if !Utils.isList(value) { return (LIVR.ErrorCode.format.rawValue, nil) }
-                if let value = value as? Array<Any>, value.count < 1 { return (errorCode.rawValue, nil) }
+                if Utils.hasNoValue(value) { return (OutputError(errors: errorCode.rawValue), nil) }
+                if !Utils.isList(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue), nil) }
+                if let value = value as? Array<Any>, value.count < 1 { return (OutputError(errors: errorCode.rawValue), nil) }
             }
             return (nil, nil)
         }
@@ -67,7 +67,7 @@ struct CommonRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if value as? [String: Any?] == nil {
-                return (errorCode.rawValue, nil)
+                return (OutputError(errors: errorCode.rawValue), nil)
             }
             return (nil, nil)
         }
