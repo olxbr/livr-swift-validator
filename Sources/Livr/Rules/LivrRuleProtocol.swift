@@ -60,8 +60,8 @@ public struct RuleAlias: CustomRule, RuleThatCreatesValidator {
 }
 
 public struct OutputError {
-    let errors: Any?
-    let args: Any?
+    public let errors: Any?
+    public let args: Any?
 
     public init(errors: Any?, args: Any? = nil) {
         self.errors = errors
