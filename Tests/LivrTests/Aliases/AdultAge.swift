@@ -18,9 +18,9 @@ struct AdultAge: CustomRule {
     init() {}
     
     func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-        guard !Utils.hasNoValue(value) else { return (OutputError(errors: customErrorCode), nil) }
+        guard !Utils.hasNoValue(value) else { return (buildError(inputErrors: customErrorCode), nil) }
         if let value = value {
-            guard Utils.isPrimitive(value) else { return (OutputError(errors: customErrorCode), nil) }
+            guard Utils.isPrimitive(value) else { return (buildError(inputErrors: customErrorCode), nil) }
             
             if let valueAsDouble = value as? Double {
                 return validate(valueAsDouble)
@@ -37,7 +37,7 @@ struct AdultAge: CustomRule {
         if isAnAdult(age: valueAsDouble) {
             return (nil, nil)
         }
-        return (OutputError(errors: errorCode.rawValue), nil)
+        return (buildError(inputErrors: errorCode.rawValue), nil)
     }
     
     private func isAnAdult(age: Double) -> Bool {

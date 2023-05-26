@@ -49,14 +49,17 @@ public struct LIVR {
                                               ModifiersRules.LeaveOnly.name: ModifiersRules.LeaveOnly(),
                                               ModifiersRules.Default.name: ModifiersRules.Default(),
                                               ModifiersRules.Trim.name: ModifiersRules.Trim()]
-    
-    
-    public static func validator(validationRules: [String: Any?], isAutoTrim: Bool = true, isBoundary: Bool = false) -> Validator {
-        return Validator(validationRules: validationRules, isAutoTrim: isAutoTrim, isBoundary: isBoundary)
+    public static var isBoundary: Bool = false
+
+
+    public static func validator(validationRules: [String: Any?], isAutoTrim: Bool = true, isBoundary: Bool = LIVR.isBoundary) -> Validator {
+        LIVR.isBoundary = isBoundary
+        return Validator(validationRules: validationRules, isAutoTrim: isAutoTrim)
     }
     
-    public static func validator(isAutoTrim: Bool, isBoundary: Bool = false) -> Validator {
-        return Validator(isAutoTrim: isAutoTrim, isBoundary: isBoundary)
+    public static func validator(isAutoTrim: Bool, isBoundary: Bool = LIVR.isBoundary) -> Validator {
+        LIVR.isBoundary = isBoundary
+        return Validator(isAutoTrim: isAutoTrim)
     }
     
     public static func register(rule: CustomRule) {

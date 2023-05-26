@@ -10,9 +10,20 @@ public protocol LivrRule {
     
     var errorCode: LIVR.ErrorCode {get}
     
-    typealias Errors = OutputError?
+    typealias Errors = Any?
     typealias UpdatedValue = AnyObject
     func validate(value: Any?) -> (Errors?, UpdatedValue?)
+}
+
+extension LivrRule {
+    public func buildError(inputErrors: Any?, inputArgs: Any? = nil) -> Any? {
+        if LIVR.isBoundary {
+            let errors = (inputErrors as? [Any])?.compactMap { $0 as? [String: Any?] }.last
+            return errors ?? ["Errors": inputErrors, "Args": inputArgs]
+        }
+
+        return inputErrors
+    }
 }
 
 public protocol PreDefinedRule: LivrRule {
@@ -49,22 +60,12 @@ public struct RuleAlias: CustomRule, RuleThatCreatesValidator {
             
             if let error = errorOrUpdatedValue.0 {
                 if let customErrorCode = customErrorCode {
-                    return (OutputError(errors: customErrorCode), nil)
+                    return (buildError(inputErrors: customErrorCode), nil)
                 }
                 return (error, nil)
             }
             return (nil, (errorOrUpdatedValue.1 ?? value) as AnyObject)
         }
         return (nil, nil)
-    }
-}
-
-public struct OutputError {
-    public let errors: Any?
-    public let args: Any?
-
-    public init(errors: Any?, args: Any? = nil) {
-        self.errors = errors
-        self.args = args
     }
 }

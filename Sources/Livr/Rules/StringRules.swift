@@ -24,7 +24,7 @@ struct StringRules {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
                 if Utils.isString(value) { return (nil, nil) }
-                if !Utils.isPrimitive(value) { return (OutputError(errors: errorCode.rawValue), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: errorCode.rawValue), nil) }
                 return (nil, StringType(describing: value) as AnyObject)
             }
             return (nil, nil)
@@ -40,10 +40,10 @@ struct StringRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let arguments = arguments else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [Eq.name: arguments]), nil) }
+            guard let arguments = arguments else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [Eq.name: arguments]), nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [Eq.name: arguments]), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [Eq.name: arguments]), nil) }
                 if let listOfArguments = arguments as? [Any],
                     let firstArgument = listOfArguments.first,
                     StringType(describing: firstArgument) == StringType(describing: value) {
@@ -53,7 +53,7 @@ struct StringRules {
                 if StringType(describing: value) == StringType(describing: arguments) {
                     return (nil, arguments as AnyObject)
                 }
-                return (OutputError(errors: errorCode.rawValue, args: [Eq.name: arguments]), nil)
+                return (buildError(inputErrors: errorCode.rawValue, inputArgs: [Eq.name: arguments]), nil)
             }
             return (nil, nil)
         }
@@ -67,10 +67,10 @@ struct StringRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let arguments = arguments else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [OneOf.name: arguments]), nil) }
+            guard let arguments = arguments else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [OneOf.name: arguments]), nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [OneOf.name: arguments]), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [OneOf.name: arguments]), nil) }
                 if StringType(describing: arguments) == StringType(describing: value) {
                     return (nil, arguments as AnyObject)
                 }
@@ -88,7 +88,7 @@ struct StringRules {
                         }
                     }
                 }
-                return (OutputError(errors: errorCode.rawValue, args: [OneOf.name: arguments]), nil)
+                return (buildError(inputErrors: errorCode.rawValue, inputArgs: [OneOf.name: arguments]), nil)
             }
             return (nil, nil)
         }
@@ -102,16 +102,16 @@ struct StringRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let arguments = arguments else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [MaxLength.name: arguments]), nil) }
+            guard let arguments = arguments else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [MaxLength.name: arguments]), nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [MaxLength.name: arguments]), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [MaxLength.name: arguments]), nil) }
                 
                 var maxLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
                 if let maxLength = Int(maxLengthAsString) {
                     if valueAsString.count > maxLength {
-                        return (OutputError(errors: errorCode.rawValue, args: [MaxLength.name: arguments]), nil)
+                        return (buildError(inputErrors: errorCode.rawValue, inputArgs: [MaxLength.name: arguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 } else if let arrayOfArguments = arguments as? [Any], let firstArgument = arrayOfArguments.first {
@@ -120,7 +120,7 @@ struct StringRules {
                     if let maxLength = Int(maxLengthAsString),
                         valueAsString.count > maxLength {
                     
-                        return (OutputError(errors: errorCode.rawValue, args: [MaxLength.name: arrayOfArguments]), nil)
+                        return (buildError(inputErrors: errorCode.rawValue, inputArgs: [MaxLength.name: arrayOfArguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 }
@@ -137,16 +137,16 @@ struct StringRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let arguments = arguments else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [MinLength.name: arguments]), nil) }
+            guard let arguments = arguments else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [MinLength.name: arguments]), nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [MinLength.name: arguments]), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [MinLength.name: arguments]), nil) }
                 
                 var minLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
                 if let minLength = Int(minLengthAsString) {
                     if valueAsString.count < minLength {
-                        return (OutputError(errors: errorCode.rawValue, args: [MinLength.name: arguments]), nil)
+                        return (buildError(inputErrors: errorCode.rawValue, inputArgs: [MinLength.name: arguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 } else if let arrayOfArguments = arguments as? [Any], let firstArgument = arrayOfArguments.first {
@@ -155,7 +155,7 @@ struct StringRules {
                     if let minLength = Int(minLengthAsString),
                         valueAsString.count < minLength {
                         
-                        return (OutputError(errors: errorCode.rawValue, args: [MinLength.name: arrayOfArguments]), nil)
+                        return (buildError(inputErrors: errorCode.rawValue, inputArgs: [MinLength.name: arrayOfArguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 }
@@ -172,10 +172,10 @@ struct StringRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let arguments = arguments else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [LengthBetween.name: arguments]), nil) }
+            guard let arguments = arguments else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [LengthBetween.name: arguments]), nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [LengthBetween.name: arguments]), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [LengthBetween.name: arguments]), nil) }
                 
                 let valueAsString = StringType(describing: value)
                 if let arrayOfArguments = arguments as? [Any], let minLengthArgument = arrayOfArguments.first, arrayOfArguments.count > 1 {
@@ -187,11 +187,11 @@ struct StringRules {
                     if let minLength = Int(minLengthAsString),
                         valueAsString.count < minLength {
                         
-                        return (OutputError(errors: LIVR.ErrorCode.tooShort.rawValue, args: [LengthBetween.name: arrayOfArguments]), nil)
+                        return (buildError(inputErrors: LIVR.ErrorCode.tooShort.rawValue, inputArgs: [LengthBetween.name: arrayOfArguments]), nil)
                     } else if let maxLength = Int(maxLengthAsString),
                         valueAsString.count > maxLength {
                         
-                        return (OutputError(errors: LIVR.ErrorCode.tooLong.rawValue, args: [LengthBetween.name: arrayOfArguments]), nil)
+                        return (buildError(inputErrors: LIVR.ErrorCode.tooLong.rawValue, inputArgs: [LengthBetween.name: arrayOfArguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 }
@@ -209,19 +209,19 @@ struct StringRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let arguments = arguments else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [LengthEqual.name: arguments]), nil) }
+            guard let arguments = arguments else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [LengthEqual.name: arguments]), nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [LengthEqual.name: arguments]), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [LengthEqual.name: arguments]), nil) }
                 
                 var allowedLengthAsString = StringType(describing: arguments)
                 let valueAsString = StringType(describing: value)
                 if let allowedLength = Int(allowedLengthAsString) {
                     if valueAsString.count < allowedLength {
-                        return (OutputError(errors: LIVR.ErrorCode.tooShort.rawValue, args: [LengthEqual.name: arguments]), nil)
+                        return (buildError(inputErrors: LIVR.ErrorCode.tooShort.rawValue, inputArgs: [LengthEqual.name: arguments]), nil)
                     } else if 
                         valueAsString.count > allowedLength {
-                        return (OutputError(errors: LIVR.ErrorCode.tooLong.rawValue, args: [LengthEqual.name: arguments]), nil)
+                        return (buildError(inputErrors: LIVR.ErrorCode.tooLong.rawValue, inputArgs: [LengthEqual.name: arguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 } else if let arrayOfArguments = arguments as? [Any], let firstArgument = arrayOfArguments.first {
@@ -229,9 +229,9 @@ struct StringRules {
                     allowedLengthAsString = StringType(describing: firstArgument)
                     if let allowedLength = Int(allowedLengthAsString) {
                         if valueAsString.count < allowedLength {
-                            return (OutputError(errors: LIVR.ErrorCode.tooShort.rawValue, args: [LengthEqual.name: arrayOfArguments]), nil)
+                            return (buildError(inputErrors: LIVR.ErrorCode.tooShort.rawValue, inputArgs: [LengthEqual.name: arrayOfArguments]), nil)
                         } else if valueAsString.count > allowedLength {
-                            return (OutputError(errors: LIVR.ErrorCode.tooLong.rawValue, args: [LengthEqual.name: arrayOfArguments]), nil)
+                            return (buildError(inputErrors: LIVR.ErrorCode.tooLong.rawValue, inputArgs: [LengthEqual.name: arrayOfArguments]), nil)
                         }
                         return (nil, valueAsString as AnyObject)
                     }
@@ -250,17 +250,17 @@ struct StringRules {
         init() {}
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            guard let arguments = arguments else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [Like.name: arguments]), nil) }
+            guard let arguments = arguments else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [Like.name: arguments]), nil) }
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue, args: [Like.name: arguments]), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue, inputArgs: [Like.name: arguments]), nil) }
                 
                 let valueAsString = value as? StringType ?? StringType(describing: value)
                 
                 if let regex = arguments as? StringType {
                     let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
                     if !predicate.evaluate(with: valueAsString) {
-                        return (OutputError(errors: errorCode.rawValue, args: [Like.name: arguments]), nil)
+                        return (buildError(inputErrors: errorCode.rawValue, inputArgs: [Like.name: arguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 } else  if let arrayOfArguments = arguments as? [Any], var regex = arrayOfArguments.first as? StringType {
@@ -274,7 +274,7 @@ struct StringRules {
                     
                     let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
                     if !predicate.evaluate(with: valueAsString) {
-                        return (OutputError(errors: errorCode.rawValue, args: [Like.name: arrayOfArguments]), nil)
+                        return (buildError(inputErrors: errorCode.rawValue, inputArgs: [Like.name: arrayOfArguments]), nil)
                     }
                     return (nil, valueAsString as AnyObject)
                 }

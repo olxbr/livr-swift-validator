@@ -28,14 +28,14 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue), nil) }
                 
                 let predicate = NSPredicate(format:"SELF MATCHES %@", regex)
                 if let stringValue = value as? String,
                     stringValue.count < 2083, predicate.evaluate(with: stringValue) {
                         return (nil, nil)
                 }
-                return (OutputError(errors: errorCode.rawValue), nil)
+                return (buildError(inputErrors: errorCode.rawValue), nil)
             }
             return (nil, nil)
         }
@@ -53,13 +53,13 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue), nil) }
                 
                 let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
                 if let stringValue = value as? String, predicate.evaluate(with: stringValue) {
                     return (nil, nil)
                 }
-                return (OutputError(errors: errorCode.rawValue), nil)
+                return (buildError(inputErrors: errorCode.rawValue), nil)
             }
             return (nil, nil)
         }
@@ -76,7 +76,7 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue), nil) }
                 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
@@ -84,7 +84,7 @@ struct SpecialRules {
                 if let stringValue = value as? String, formatter.date(from: stringValue) != nil {
                     return (nil, nil)
                 }
-                return (OutputError(errors: errorCode.rawValue), nil)
+                return (buildError(inputErrors: errorCode.rawValue), nil)
             }
             return (nil, nil)
         }
@@ -101,12 +101,12 @@ struct SpecialRules {
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             if let value = value {
-                if !Utils.isPrimitive(value) { return (OutputError(errors: LIVR.ErrorCode.format.rawValue), nil) }
+                if !Utils.isPrimitive(value) { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue), nil) }
                 
                 if let otherFieldValue = otherFieldValue, String(describing: value) == String(describing: otherFieldValue) {
                     return (nil, nil)
                 }
-                return (OutputError(errors: errorCode.rawValue, args: [EqualToField.name: otherFieldValue]), nil)
+                return (buildError(inputErrors: errorCode.rawValue, inputArgs: [EqualToField.name: otherFieldValue]), nil)
             }
             return (nil, nil)
         }

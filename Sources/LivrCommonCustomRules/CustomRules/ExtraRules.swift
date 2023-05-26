@@ -30,7 +30,7 @@ public struct CustomRules {
                     
                     guard let otherFieldValue = otherFieldValue,
                         Float(stringValue) ?? 0.0 >= Float(String(describing: otherFieldValue)) ?? 1.0 else {
-                            return (OutputError(errors: customErrorCode), nil)
+                            return (buildError(inputErrors: customErrorCode), nil)
                     }
                     
                     return (nil, nil)
@@ -43,7 +43,7 @@ public struct CustomRules {
                     }
                     
                     guard valueAsArray?.count == otherFieldAsArray?.count else {
-                        return (OutputError(errors: String.differentLengthThan, args: [self.name: otherFieldAsArray]), nil)
+                        return (buildError(inputErrors: String.differentLengthThan, inputArgs: [self.name: otherFieldAsArray]), nil)
                     }
                     
                     for (index, value) in valueAsArray!.enumerated() {
@@ -51,7 +51,7 @@ public struct CustomRules {
                         let valueAsString = String(describing: value)
                         
                         if Double(valueAsString) ?? 0 < Double(valueToCompareAsString) ?? 1 {
-                            return (OutputError(errors: customErrorCode, args: [self.name: otherFieldAsArray]), nil)
+                            return (buildError(inputErrors: customErrorCode, inputArgs: [self.name: otherFieldAsArray]), nil)
                         }
                     }
                 }
@@ -73,11 +73,11 @@ public struct CustomRules {
 
         public func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             guard !Utils.hasNoValue(otherFieldValue) else { return (nil, nil) }
-            guard let validationRules = arguments as? [String: Any?] else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue), nil) }
+            guard let validationRules = arguments as? [String: Any?] else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue), nil) }
             let validator = LIVR.validator(isAutoTrim: isAutoTrim)
             let validatorOutput = validator.validate(value: otherFieldValue, validationRules: Array(validationRules.values))
             guard validatorOutput.0 == nil else { return (nil, nil) }
-            guard !Utils.hasNoValue(value) else { return (OutputError(errors: errorCode.rawValue, args: [self.name: otherFieldValue]), nil) }
+            guard !Utils.hasNoValue(value) else { return (buildError(inputErrors: errorCode.rawValue, inputArgs: [self.name: otherFieldValue]), nil) }
             return (nil, nil)
         }
     }
@@ -95,12 +95,12 @@ public struct CustomRules {
 
         public func validate(value: Any?) -> (Errors?, UpdatedValue?) {
             guard !Utils.hasNoValue(otherFieldValue) else { return (nil, nil) }
-            guard let validationRules = arguments as? [String: Any?] else { return (OutputError(errors: LIVR.ErrorCode.format.rawValue), nil) }
+            guard let validationRules = arguments as? [String: Any?] else { return (buildError(inputErrors: LIVR.ErrorCode.format.rawValue), nil) }
             let validator = LIVR.validator(isAutoTrim: isAutoTrim)
             let validatorOutput = validator.validate(value: otherFieldValue, validationRules: Array(validationRules.values))
             guard validatorOutput.0 == nil else { return (nil, nil) }
-            guard !Utils.hasNoValue(value) else { return (OutputError(errors: errorCode.rawValue, args: [self.name: otherFieldValue]), nil) }
-            guard let value = value as? Array<Any>, !value.isEmpty else { return (OutputError(errors: errorCode.rawValue, args: [self.name: otherFieldValue]), nil) }
+            guard !Utils.hasNoValue(value) else { return (buildError(inputErrors: errorCode.rawValue, inputArgs: [self.name: otherFieldValue]), nil) }
+            guard let value = value as? Array<Any>, !value.isEmpty else { return (buildError(inputErrors: errorCode.rawValue, inputArgs: [self.name: otherFieldValue]), nil) }
             return (nil, nil)
         }
     }
