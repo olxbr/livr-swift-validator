@@ -44,7 +44,10 @@ struct SpecialRules {
     struct Email: LivrRule, PreDefinedRule {
         static var name = "email"
         var errorCode: LIVR.ErrorCode = .wrongEmail
-        let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        // One "@" only, and no "_" in the domain: a quoted local part cannot contain "@",
+        // the domain cannot contain "_" or "@".
+        let regex = "(?:[^<>()\\[\\]\\\\.,;:\\s@\"]+(?:\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*|\"[^@\\n\\r\\u2028\\u2029]+\")"
+            + "@(?:\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]|(?:[a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,})"
         var arguments: Any?
         
         init() {}
@@ -78,8 +81,13 @@ struct SpecialRules {
                 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
+                // fixed locale and time zone: some dates have no midnight in time zones with DST
+                formatter.locale = Locale(identifier: "en_US_POSIX")
+                formatter.timeZone = TimeZone(identifier: "UTC")
                 
-                if let stringValue = value as? String, formatter.date(from: stringValue) != nil {
+                // DateFormatter also accepts one digit months and days
+                if let stringValue = value as? String, stringValue.matches(regex: "[0-9]{4}-[0-9]{2}-[0-9]{2}"),
+                    formatter.date(from: stringValue) != nil {
                     return (nil, nil)
                 }
                 return (errorCode.rawValue, nil)

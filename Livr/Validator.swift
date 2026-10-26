@@ -186,7 +186,11 @@ public final class Validator {
     }
     
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
-        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        if isAutoTrim {
+            var autoTrim = ModifiersRules.Trim()
+            autoTrim.isAutoTrim = true
+            rules.insert(autoTrim, at: 0)
+        }
         allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
     }
     
@@ -236,6 +240,8 @@ public final class Validator {
         
         try setRulesByField()
         
+        // valid data without any of the fields gives an empty output
+        output = [:]
         validatingData = data
         
         guard let rulesByField = rulesByField else { return nil }
@@ -309,7 +315,7 @@ public final class Validator {
                 output == nil ? output = [:] : ()
                 
                 if rule is MetaRules.NestedObject {
-                    output?[field] = errorAndUpdatedValue.1 ?? [:]
+                    output?[field] = errorAndUpdatedValue.1 ?? value
                 } else if output?[field] == nil {
                     output?[field] = errorAndUpdatedValue.1 ?? value
                 } else if let updatedValue = errorAndUpdatedValue.1 {

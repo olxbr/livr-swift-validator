@@ -15,7 +15,7 @@ public struct Utils {
     }
     
     public static func hasNoValue(_ value: Any?) -> Bool {
-        if value == nil { return true }
+        if value == nil || value is NSNull { return true }
         if let value = value as? String, value.isEmpty { return true }
         return false
     }
