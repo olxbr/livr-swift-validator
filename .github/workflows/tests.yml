@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - run: swift build
+      # the performance test fails when its timings vary too much on a shared runner
+      - run: swift test --skip testValidationPerformance
+
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Swift 5.3 needs test discovery enabled explicitly
+          - swift: "5.3"
+            image: swift:5.3-focal
+            flags: --enable-test-discovery
+          - swift: "5.7"
+            image: swift:5.7
+          - swift: "5.10"
+            image: swift:5.10
+          - swift: "6.0"
+            image: swift:6.0
+          - swift: latest
+            image: swift:latest
+    container: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v7
+      - run: swift build ${{ matrix.flags }}
+      # skips the performance test (swift test --skip is not available in Swift 5.3)
+      - run: swift test ${{ matrix.flags }} --filter 'LivrTests\.(?!PositiveTests/testValidationPerformance)'

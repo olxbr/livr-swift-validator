@@ -1,7 +1,6 @@
 Swift LIVR Validator 📏
 ======================================
-[![Build Status](https://travis-ci.org/marinofelipe/swift-validator-livr.svg?branch=master)](https://travis-ci.org/marinofelipe/swift-validator-livr)
-[![Coverage Status](https://coveralls.io/repos/github/marinofelipe/swift-validator-livr/badge.svg?branch=master)](https://coveralls.io/github/marinofelipe/swift-validator-livr?branch=master)
+[![Tests](https://github.com/olxbr/livr-swift-validator/actions/workflows/tests.yml/badge.svg)](https://github.com/olxbr/livr-swift-validator/actions/workflows/tests.yml)
 <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-4.1-orange.svg?style=flat" alt="Swift" /></a>
 [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Livr.svg)](https://cocoapods.org/pods/Livr)
 [![License](https://img.shields.io/cocoapods/l/Livr.svg)](https://raw.githubusercontent.com/marinofelipe/swift-validator-livr/master/LICENSE)
