@@ -5,6 +5,8 @@
 //  Created by Felipe Lefèvre Marino on 9/18/18.
 //
 
+import Foundation
+
 typealias LivrRulesDict = [String: LivrRule]
 
 public struct LIVR {

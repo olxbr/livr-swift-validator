@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 typealias DecimalNum = Decimal
 
 struct NumericRules {

@@ -1,7 +1,6 @@
 Swift LIVR Validator 📏
 ======================================
-[![Build Status](https://travis-ci.org/marinofelipe/swift-validator-livr.svg?branch=master)](https://travis-ci.org/marinofelipe/swift-validator-livr)
-[![Coverage Status](https://coveralls.io/repos/github/marinofelipe/swift-validator-livr/badge.svg?branch=master)](https://coveralls.io/github/marinofelipe/swift-validator-livr?branch=master)
+[![Tests](https://github.com/olxbr/livr-swift-validator/actions/workflows/tests.yml/badge.svg)](https://github.com/olxbr/livr-swift-validator/actions/workflows/tests.yml)
 <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-4.1-orange.svg?style=flat" alt="Swift" /></a>
 [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Livr.svg)](https://cocoapods.org/pods/Livr)
 [![License](https://img.shields.io/cocoapods/l/Livr.svg)](https://raw.githubusercontent.com/marinofelipe/swift-validator-livr/master/LICENSE)
@@ -115,6 +114,10 @@ Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
 ```bash
 $ pod install
 ```
+
+### [Swift Package Manager](https://www.swift.org/documentation/package-manager/)
+
+Add `https://github.com/olxbr/livr-swift-validator.git` to the dependencies of your package or Xcode project, and the `Livr` product to your target. The package also builds on Linux.
 
 ## Contributing and future improvements
 Feel free to fork, open feature requests, issues and PRs. Known issues and mapped activities are in this repo issues.

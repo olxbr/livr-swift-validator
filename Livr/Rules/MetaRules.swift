@@ -6,8 +6,15 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 protocol RuleThatCreatesValidator {
     var isAutoTrim: Bool {get set}
+}
+
+/// errors of a list rule start with null for each valid item before the first error
+private func nullForEach(_ validItems: [Any]?) -> [Any] {
+    return [Any](repeating: NSNull(), count: validItems?.count ?? 0)
 }
 
 struct MetaRules {
@@ -103,7 +110,7 @@ struct MetaRules {
                         
                         let errorAndUpdatedValue = validator.validate(value: value, validationRules: arguments)
                         if let error = errorAndUpdatedValue.0 {
-                            errors == nil ? errors = [] : ()
+                            errors == nil ? errors = nullForEach(output) : ()
                             errors?.append(error as Any)
                         } else if errors != nil {
                             errors?.append(NSNull())
@@ -146,7 +153,7 @@ struct MetaRules {
                     for value in listOfValues {
                         
                         if !(value is [String: Any?]) {
-                            errors == nil ? errors = [] : ()
+                            errors == nil ? errors = nullForEach(output) : ()
                             errors?.append(errorCode.rawValue)
                             continue
                         }
@@ -161,7 +168,7 @@ struct MetaRules {
                         }
                         
                         if let validationErrors = validator.errors {
-                            errors == nil ? errors = [] : ()
+                            errors == nil ? errors = nullForEach(output) : ()
                             errors?.append(validationErrors as Any)
                         } else if errors != nil {
                             errors?.append(NSNull())
@@ -204,7 +211,7 @@ struct MetaRules {
                     for value in listOfValues {
                         
                         if !(value is [String: Any?]) {
-                            errors == nil ? errors = [] : ()
+                            errors == nil ? errors = nullForEach(output) : ()
                             errors?.append(errorCode.rawValue)
                             continue
                         }
@@ -215,6 +222,7 @@ struct MetaRules {
                             let keyFieldValue = valueAsJson[keyField] as? String,
                             let validationRules = validationForEachKeyFieldValue[keyFieldValue] as? [String: Any?] else {
                                 
+                                errors == nil ? errors = nullForEach(output) : ()
                                 errors?.append(errorCode.rawValue)
                                 continue
                         }
@@ -229,7 +237,7 @@ struct MetaRules {
                         }
                         
                         if let validationErrors = validator.errors {
-                            errors == nil ? errors = [] : ()
+                            errors == nil ? errors = nullForEach(output) : ()
                             errors?.append(validationErrors as Any)
                         } else if errors != nil {
                             errors?.append(NSNull())
@@ -258,38 +266,23 @@ struct MetaRules {
         var isAutoTrim: Bool = true
         
         func validate(value: Any?) -> (Errors?, UpdatedValue?) {
-            if Utils.hasNoValue(value) { return (nil, nil) }
+            guard let arrayOfArguments = arguments as? [Any] else { return (nil, nil) }
             
-            var updatedValue: LivrRule.UpdatedValue?
-            var errors: [LivrRule.Errors]?
+            // applies each set of rules until one succeeds, otherwise returns the error of the last one
+            var lastError: LivrRule.Errors?
+            let validator = LIVR.validator(isAutoTrim: isAutoTrim)
             
-            if let value = value {
-                if let arrayOfArguments = arguments as? [Any] {
-                    for argument in arrayOfArguments {
-                        let rules = RuleGenerator.generateRules(from: argument)
-                        var errorsForBlockOfRules: [LivrRule.Errors]?
-                        
-                        let validator = LIVR.validator(isAutoTrim: isAutoTrim)
-                        
-                        for rule in rules! {
-                            let errorAndUpdatedValue = validator.validate(value: value, rules: [rule])
-                            
-                            if let validatorUpdatedValue = errorAndUpdatedValue.1, !(rule is Modifier && errorsForBlockOfRules != nil) {
-                                updatedValue = validatorUpdatedValue
-                                return (nil, updatedValue as AnyObject)
-                            } else if errorAndUpdatedValue.0 == nil && !rules!.contains(where: { $0 is Modifier }) {
-                                return (nil, nil)
-                            } else if let error = errorAndUpdatedValue.0 {
-                                errors == nil ? errors = [] : ()
-                                errors?.append(error)
-                                errorsForBlockOfRules == nil ? errorsForBlockOfRules = [] : ()
-                                errorsForBlockOfRules?.append(error)
-                            }
-                        }
-                    }
+            for argument in arrayOfArguments {
+                guard let rules = RuleGenerator.generateRules(from: argument) else { continue }
+                let errorAndUpdatedValue = validator.validate(value: value, rules: rules)
+                
+                if let error = errorAndUpdatedValue.0 {
+                    lastError = error
+                } else {
+                    return (nil, errorAndUpdatedValue.1)
                 }
-            }            
-            return (errors?.last as AnyObject, nil)
+            }
+            return (lastError, nil)
         }
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 public struct Utils {
     
     public static func isPrimitive(_ value: Any) -> Bool{
@@ -13,7 +15,7 @@ public struct Utils {
     }
     
     public static func hasNoValue(_ value: Any?) -> Bool {
-        if value == nil { return true }
+        if value == nil || value is NSNull { return true }
         if let value = value as? String, value.isEmpty { return true }
         return false
     }

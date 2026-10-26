@@ -5,6 +5,8 @@
 //  Created by Felipe Lefèvre Marino on 9/18/18.
 //
 
+import Foundation
+
 public protocol LivrRule {
     var arguments: Any? {get set}
     
@@ -53,7 +55,8 @@ public struct RuleAlias: CustomRule, RuleThatCreatesValidator {
                 }
                 return (error, nil)
             }
-            return (nil, (errorOrUpdatedValue.1 ?? value) as AnyObject)
+            // a missing value stays missing
+            return (nil, errorOrUpdatedValue.1 ?? value.map { $0 as AnyObject })
         }
         return (nil, nil)
     }

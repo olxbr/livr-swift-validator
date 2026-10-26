@@ -39,3 +39,7 @@ Pods/
 */fastlane/screenshots
 */test_output
 !.github/*
+
+# Swift Package Manager
+.build/
+.swiftpm/

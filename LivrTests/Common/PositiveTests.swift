@@ -51,6 +51,59 @@ class PositiveTests: XCTestCase {
         validate(testSuiteAt: .resourcesPath + "24-iso_date")
     }
     
+    func testISODateWithoutMidnightInTimeZone() {
+        let defaultTimeZone = NSTimeZone.default
+        defer { NSTimeZone.default = defaultTimeZone }
+        // daylight saving time started at midnight
+        NSTimeZone.default = TimeZone(identifier: "America/Sao_Paulo")!
+        
+        let validator = LIVR.validator(validationRules: ["date": "iso_date"])
+        let output = try? validator.validate(data: ["date": "2018-11-04"])
+        XCTAssertNil(validator.errors)
+        XCTAssertEqual(output??["date"] as? String, "2018-11-04")
+    }
+    
+    func testValidDataWithoutFieldsInOutput() {
+        let rules: [String: Any?] = ["number": "integer",
+                                     "objects": ["list_of_objects": ["id": "integer"]],
+                                     "object": ["variable_object": ["type", ["a": ["id": "integer"]]]]]
+        
+        let validator = LIVR.validator(validationRules: rules)
+        XCTAssertEqual((try? validator.validate(data: [:]))??.count, 0)
+        
+        let output = try? validator.validate(data: ["objects": [[String: Any]()], "object": ["type": "a"]])
+        XCTAssertNil(validator.errors)
+        
+        let expectedOutput: [String: Any] = ["objects": [[String: Any]()], "object": [String: Any]()]
+        XCTAssertTrue((output ?? nil)?.isEqual(to: expectedOutput) == true, "\(String(describing: output))")
+    }
+    
+    func testValidatorUsedTwice() {
+        let validator = LIVR.validator(validationRules: ["number": "integer"])
+        _ = try? validator.validate(data: ["number": "abc"])
+        XCTAssertNotNil(validator.errors)
+        
+        let output = try? validator.validate(data: ["number": 1])
+        XCTAssertNil(validator.errors)
+        XCTAssertEqual(output??["number"] as? Int, 1)
+    }
+    
+    func testRulesThatSetMissingFields() {
+        let rules: [String: Any?] = ["alias": "default_number",
+                                     "or": ["or": [[["default": 5], "integer"], "email"]],
+                                     "nested": [["default": [String: Any]()], ["nested_object": ["number": ["default": 5]]]],
+                                     "not_set": "uppercase"]
+        
+        let validator = LIVR.validator(validationRules: rules)
+        validator.registerRule(alias: "default_number", rules: [["default": 5], "integer"])
+        validator.registerRule(alias: "uppercase", rules: "to_uc")
+        let output = try? validator.validate(data: [:])
+        XCTAssertNil(validator.errors)
+        
+        let expectedOutput: [String: Any] = ["alias": 5, "or": 5, "nested": ["number": 5]]
+        XCTAssertTrue((output ?? nil)?.isEqual(to: expectedOutput) == true, "\(String(describing: output))")
+    }
+    
     func testNotEmptyList() {
         validate(testSuiteAt: .resourcesPath + "22-not_empty_list")
     }

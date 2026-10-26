@@ -5,6 +5,8 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
+import Foundation
+
 public final class Validator {
     
     /// Private queue used to apply thread safety
@@ -183,9 +185,34 @@ public final class Validator {
         self.privateIsAutoTrim = isAutoTrim
     }
     
+    /// rules that create validators (nested_object, list_of, aliases, ...) use the same automatic trim setting
+    private func setAutoTrim(in rules: inout [LivrRule]) {
+        for (index, rule) in rules.enumerated() {
+            if var ruleThatCreatesValidator = rule as? LivrRule & RuleThatCreatesValidator {
+                ruleThatCreatesValidator.isAutoTrim = isAutoTrim
+                rules[index] = ruleThatCreatesValidator
+            }
+        }
+    }
+    
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
-        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        setAutoTrim(in: &rules)
         allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
+        // the automatic trim comes first, so the other rules get the trimmed value
+        if isAutoTrim {
+            var autoTrim = ModifiersRules.Trim()
+            autoTrim.isAutoTrim = true
+            rules.insert(autoTrim, at: 0)
+        }
+    }
+    
+    /// with automatic trim, rules that compare fields get the trimmed value of the other field
+    private func autoTrimmedIfNeeded(_ data: [String: Any?]) -> [String: Any?] {
+        guard isAutoTrim else { return data }
+        return data.mapValues { (value: Any?) -> Any? in
+            guard let string = value as? String else { return value }
+            return string.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
     }
     
     public func registerRule(aliases: [[String: Any?]]) throws {
@@ -234,7 +261,11 @@ public final class Validator {
         
         try setRulesByField()
         
-        validatingData = data
+        // the validator can be used more than once
+        errors = nil
+        // valid data without any of the fields gives an empty output
+        output = [:]
+        validatingData = autoTrimmedIfNeeded(data)
         
         guard let rulesByField = rulesByField else { return nil }
         for case let field in rulesByField.keys {
@@ -266,9 +297,13 @@ public final class Validator {
     @discardableResult
     public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
+        var rules = rules
+        setAutoTrim(in: &rules)
+        
         var updatedValue: AnyObject?
         for rule in rules {
-            let errorAndUpdatedValue = rule.validate(value: value)
+            // each rule gets the value updated by the previous ones
+            let errorAndUpdatedValue = rule.validate(value: updatedValue ?? value)
             
             if let error = errorAndUpdatedValue.0 {
                 return (error, nil)
@@ -284,6 +319,8 @@ public final class Validator {
         guard var rules = rulesByField?[field] else { return }
         insertCommonRulesIfNeeded(in: &rules)
         
+        // each rule gets the value updated by the previous ones
+        var value = value
         for (index, rule) in rules.enumerated() {
             if var ruleThatCompareFields = rule as? RuleThatCompareFields {
                 if let fieldToCompareValue = rule.arguments as? String, let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
@@ -303,16 +340,21 @@ public final class Validator {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error
                 output = nil
-            } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
+                break
+            } else if errors == nil && (isAnInputedValue || errorAndUpdatedValue.1 != nil) {
                 output == nil ? output = [:] : ()
                 
                 if rule is MetaRules.NestedObject {
-                    output?[field] = errorAndUpdatedValue.1 ?? [:]
+                    output?[field] = errorAndUpdatedValue.1 ?? value
                 } else if output?[field] == nil {
                     output?[field] = errorAndUpdatedValue.1 ?? value
                 } else if let updatedValue = errorAndUpdatedValue.1 {
                     output?[field] = updatedValue
                 }
+            }
+            
+            if let updatedValue = errorAndUpdatedValue.1 {
+                value = updatedValue
             }
         }
         

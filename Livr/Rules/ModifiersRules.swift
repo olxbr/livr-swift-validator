@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 protocol Modifier {
     typealias ModifiedValue = AnyObject
     
@@ -120,29 +122,22 @@ struct ModifiersRules {
         static var name: String = "trim"
         var errorCode: LIVR.ErrorCode = .format
         var arguments: Any?
+        /// the automatic trim only trims strings, the trim rule also converts numbers to strings
+        var isAutoTrim: Bool = false
         
         func validate(value: Any?) -> (Errors?, ModifiedValue?) {
             if Utils.hasNoValue(value) { return (nil, nil) }
             
             if let value = value {
                 if !Utils.isPrimitive(value) { return (nil, nil) }
+                if isAutoTrim && !Utils.isString(value) { return (nil, nil) }
                 return (nil, modified(value: value))
             }
             return (nil, nil)
         }
         
         func modified(value: Any) -> AnyObject {
-            let valueAsString = String(describing: value)
-            
-            guard !valueAsString.trimmingCharacters(in: .whitespaces).isEmpty else {
-                return value as AnyObject
-            }
-            
-            if valueAsString.contains(" ") || valueAsString.contains("\n") {
-                return String(describing: value).trimmingCharacters(in: .whitespacesAndNewlines) as AnyObject
-            } else {
-                return value as AnyObject
-            }
+            return String(describing: value).trimmingCharacters(in: .whitespacesAndNewlines) as AnyObject
         }
     }
 }

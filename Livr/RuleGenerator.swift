@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 struct RuleGenerator {
     
     static func generateRules(from validationRules: Any?) -> [LivrRule]? {
