@@ -186,12 +186,22 @@ public final class Validator {
     }
     
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
+        allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
+        // the automatic trim comes first, so the other rules get the trimmed value
         if isAutoTrim {
             var autoTrim = ModifiersRules.Trim()
             autoTrim.isAutoTrim = true
             rules.insert(autoTrim, at: 0)
         }
-        allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
+    }
+    
+    /// with automatic trim, rules that compare fields get the trimmed value of the other field
+    private func autoTrimmedIfNeeded(_ data: [String: Any?]) -> [String: Any?] {
+        guard isAutoTrim else { return data }
+        return data.mapValues { (value: Any?) -> Any? in
+            guard let string = value as? String else { return value }
+            return string.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
     }
     
     public func registerRule(aliases: [[String: Any?]]) throws {
@@ -242,7 +252,7 @@ public final class Validator {
         
         // valid data without any of the fields gives an empty output
         output = [:]
-        validatingData = data
+        validatingData = autoTrimmedIfNeeded(data)
         
         guard let rulesByField = rulesByField else { return nil }
         for case let field in rulesByField.keys {
@@ -276,7 +286,8 @@ public final class Validator {
         
         var updatedValue: AnyObject?
         for rule in rules {
-            let errorAndUpdatedValue = rule.validate(value: value)
+            // each rule gets the value updated by the previous ones
+            let errorAndUpdatedValue = rule.validate(value: updatedValue ?? value)
             
             if let error = errorAndUpdatedValue.0 {
                 return (error, nil)
@@ -292,6 +303,8 @@ public final class Validator {
         guard var rules = rulesByField?[field] else { return }
         insertCommonRulesIfNeeded(in: &rules)
         
+        // each rule gets the value updated by the previous ones
+        var value = value
         for (index, rule) in rules.enumerated() {
             if var ruleThatCompareFields = rule as? RuleThatCompareFields {
                 if let fieldToCompareValue = rule.arguments as? String, let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
@@ -311,6 +324,7 @@ public final class Validator {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error
                 output = nil
+                break
             } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
                 output == nil ? output = [:] : ()
                 
@@ -321,6 +335,10 @@ public final class Validator {
                 } else if let updatedValue = errorAndUpdatedValue.1 {
                     output?[field] = updatedValue
                 }
+            }
+            
+            if let updatedValue = errorAndUpdatedValue.1 {
+                value = updatedValue
             }
         }
         

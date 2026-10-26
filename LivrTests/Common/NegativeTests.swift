@@ -115,6 +115,15 @@ class NegativeTests: XCTestCase {
         validate(testSuiteAt: .resourcesPath + "19-list_of")
     }
     
+    func testFirstErrorOfField() {
+        let rules: [String: Any?] = ["number": ["positive_integer", ["min_number": 5]]]
+        
+        let validator = LIVR.validator(validationRules: rules, isAutoTrim: false)
+        _ = try? validator.validate(data: ["number": "abc"])
+        
+        XCTAssertEqual(validator.errors?["number"] as? String, "NOT_POSITIVE_INTEGER")
+    }
+    
     func testListsWithValidItemsBeforeErrors() {
         let rules: [String: Any?] = ["list": ["list_of": "integer"],
                                      "objects": ["list_of_objects": ["id": "integer"]]]

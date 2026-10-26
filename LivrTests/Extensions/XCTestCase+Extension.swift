@@ -24,7 +24,8 @@ extension XCTestCase {
             testResultJson = outputJson
         }
         
-        var validator = LIVR.validator(validationRules: rulesJson)
+        // the test suite is written for validators without automatic trim
+        var validator = LIVR.validator(validationRules: rulesJson, isAutoTrim: false)
         
         loadAliasesIfNeeded(for: path, validator: validator, jsonLoader: jsonLoader)
         
