@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 public struct Utils {
     
     public static func isPrimitive(_ value: Any) -> Bool{

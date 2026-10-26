@@ -11,6 +11,6 @@ import Foundation
 extension Dictionary where Key: Hashable, Value: Any {
     
     func isEqual<K: Hashable, V: Any>(to other: [K: V]) -> Bool {
-        return (self as NSDictionary).isEqual(to: other)
+        return (self as NSDictionary).isEqual(other as NSDictionary)
     }
 }

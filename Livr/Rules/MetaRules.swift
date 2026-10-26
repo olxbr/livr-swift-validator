@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 protocol RuleThatCreatesValidator {
     var isAutoTrim: Bool {get set}
 }

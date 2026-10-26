@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 typealias StringType = String
 
 struct StringRules {
@@ -256,22 +258,21 @@ struct StringRules {
                 let valueAsString = value as? StringType ?? StringType(describing: value)
                 
                 if let regex = arguments as? StringType {
-                    let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-                    if !predicate.evaluate(with: valueAsString) {
+                    if !valueAsString.matches(regex: regex) {
                         return (errorCode.rawValue, nil)
                     }
                     return (nil, valueAsString as AnyObject)
-                } else  if let arrayOfArguments = arguments as? [Any], var regex = arrayOfArguments.first as? StringType {
+                } else  if let arrayOfArguments = arguments as? [Any], let regex = arrayOfArguments.first as? StringType {
                     
+                    var options: NSRegularExpression.Options = []
                     if arrayOfArguments.count > 1,
                         let flag = arrayOfArguments[1] as? StringType,
                         flag == "i" {
                         
-                        regex.replaceSubrange(regex.startIndex...regex.startIndex, with: "(?i)")
+                        options.insert(.caseInsensitive)
                     }
                     
-                    let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-                    if !predicate.evaluate(with: valueAsString) {
+                    if !valueAsString.matches(regex: regex, options: options) {
                         return (errorCode.rawValue, nil)
                     }
                     return (nil, valueAsString as AnyObject)

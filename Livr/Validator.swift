@@ -5,6 +5,8 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
+import Foundation
+
 public final class Validator {
     
     /// Private queue used to apply thread safety

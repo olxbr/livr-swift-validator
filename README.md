@@ -116,6 +116,10 @@ Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
 $ pod install
 ```
 
+### [Swift Package Manager](https://www.swift.org/documentation/package-manager/)
+
+Add `https://github.com/olxbr/livr-swift-validator.git` to the dependencies of your package or Xcode project, and the `Livr` product to your target. The package also builds on Linux.
+
 ## Contributing and future improvements
 Feel free to fork, open feature requests, issues and PRs. Known issues and mapped activities are in this repo issues.
 A `contribuiting.md` will be addressed soon.

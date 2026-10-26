@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 typealias URLType = URL
 
 public protocol RuleThatCompareFields: LivrRule {
@@ -28,9 +30,8 @@ struct SpecialRules {
             if let value = value {
                 if !Utils.isPrimitive(value) { return (LIVR.ErrorCode.format.rawValue, nil) }
                 
-                let predicate = NSPredicate(format:"SELF MATCHES %@", regex)
                 if let stringValue = value as? String,
-                    stringValue.count < 2083, predicate.evaluate(with: stringValue) {
+                    stringValue.count < 2083, stringValue.matches(regex: regex) {
                         return (nil, nil)
                 }
                 return (errorCode.rawValue, nil)
@@ -53,8 +54,7 @@ struct SpecialRules {
             if let value = value {
                 if !Utils.isPrimitive(value) { return (LIVR.ErrorCode.format.rawValue, nil) }
                 
-                let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-                if let stringValue = value as? String, predicate.evaluate(with: stringValue) {
+                if let stringValue = value as? String, stringValue.matches(regex: regex) {
                     return (nil, nil)
                 }
                 return (errorCode.rawValue, nil)
