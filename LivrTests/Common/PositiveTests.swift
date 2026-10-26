@@ -78,6 +78,32 @@ class PositiveTests: XCTestCase {
         XCTAssertTrue((output ?? nil)?.isEqual(to: expectedOutput) == true, "\(String(describing: output))")
     }
     
+    func testValidatorUsedTwice() {
+        let validator = LIVR.validator(validationRules: ["number": "integer"])
+        _ = try? validator.validate(data: ["number": "abc"])
+        XCTAssertNotNil(validator.errors)
+        
+        let output = try? validator.validate(data: ["number": 1])
+        XCTAssertNil(validator.errors)
+        XCTAssertEqual(output??["number"] as? Int, 1)
+    }
+    
+    func testRulesThatSetMissingFields() {
+        let rules: [String: Any?] = ["alias": "default_number",
+                                     "or": ["or": [[["default": 5], "integer"], "email"]],
+                                     "nested": [["default": [String: Any]()], ["nested_object": ["number": ["default": 5]]]],
+                                     "not_set": "uppercase"]
+        
+        let validator = LIVR.validator(validationRules: rules)
+        validator.registerRule(alias: "default_number", rules: [["default": 5], "integer"])
+        validator.registerRule(alias: "uppercase", rules: "to_uc")
+        let output = try? validator.validate(data: [:])
+        XCTAssertNil(validator.errors)
+        
+        let expectedOutput: [String: Any] = ["alias": 5, "or": 5, "nested": ["number": 5]]
+        XCTAssertTrue((output ?? nil)?.isEqual(to: expectedOutput) == true, "\(String(describing: output))")
+    }
+    
     func testNotEmptyList() {
         validate(testSuiteAt: .resourcesPath + "22-not_empty_list")
     }

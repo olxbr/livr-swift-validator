@@ -74,6 +74,26 @@ class AutoTrimTests: XCTestCase {
         XCTAssertEqual(validator.errors?["field"] as? String, "REQUIRED")
     }
     
+    func testWithoutAutoTrim() {
+        let rules: [String: Any?] = ["field-1": ["required"],
+                                     "field-2": ["nested_object": ["string_value": "string"]],
+                                     "field-3": ["list_of": "required"]]
+        
+        let input: [String: Any?] = ["field-1": " 13",
+                                     "field-2": ["string_value": " not_trimmed_string "],
+                                     "field-3": ["white_space_in_the_end "]]
+        
+        let validator = LIVR.validator(validationRules: rules, isAutoTrim: false)
+        guard let optionalOutput = try? validator.validate(data: input), let output = optionalOutput else {
+            XCTFail("output should not be nil")
+            return
+        }
+        
+        XCTAssertEqual(output["field-1"] as? String, " 13")
+        XCTAssertEqual(output["field-2"] as? [String: String], ["string_value": " not_trimmed_string "])
+        XCTAssertEqual(output["field-3"] as? [String], ["white_space_in_the_end "])
+    }
+    
     func testAutoTrimKeepsNumbers() {
         let rules: [String: Any?] = ["field-1": ["required"],
                                      "field-2": ["trim"]]

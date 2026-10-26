@@ -185,7 +185,18 @@ public final class Validator {
         self.privateIsAutoTrim = isAutoTrim
     }
     
+    /// rules that create validators (nested_object, list_of, aliases, ...) use the same automatic trim setting
+    private func setAutoTrim(in rules: inout [LivrRule]) {
+        for (index, rule) in rules.enumerated() {
+            if var ruleThatCreatesValidator = rule as? LivrRule & RuleThatCreatesValidator {
+                ruleThatCreatesValidator.isAutoTrim = isAutoTrim
+                rules[index] = ruleThatCreatesValidator
+            }
+        }
+    }
+    
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
+        setAutoTrim(in: &rules)
         allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
         // the automatic trim comes first, so the other rules get the trimmed value
         if isAutoTrim {
@@ -250,6 +261,8 @@ public final class Validator {
         
         try setRulesByField()
         
+        // the validator can be used more than once
+        errors = nil
         // valid data without any of the fields gives an empty output
         output = [:]
         validatingData = autoTrimmedIfNeeded(data)
@@ -283,6 +296,9 @@ public final class Validator {
     
     @discardableResult
     public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
+        
+        var rules = rules
+        setAutoTrim(in: &rules)
         
         var updatedValue: AnyObject?
         for rule in rules {
@@ -325,7 +341,7 @@ public final class Validator {
                 errors?[field] = error
                 output = nil
                 break
-            } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
+            } else if errors == nil && (isAnInputedValue || errorAndUpdatedValue.1 != nil) {
                 output == nil ? output = [:] : ()
                 
                 if rule is MetaRules.NestedObject {
