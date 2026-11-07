@@ -140,4 +140,44 @@ struct ModifiersRules {
             return String(describing: value).trimmingCharacters(in: .whitespacesAndNewlines) as AnyObject
         }
     }
+    
+    // MARK: - LIVR 2.5
+    
+    /// splits the string form at every separator (not a regular expression); a list stays as it is
+    struct Split: LivrRule, PreDefinedRule, Modifier {
+        static var name: String = "split"
+        var errorCode: LIVR.ErrorCode = .format
+        var arguments: Any?
+        private var separator = ""
+        
+        mutating func prepare() throws {
+            guard let separator = Utils.stringArgument(Utils.argumentsList(arguments).first), !separator.isEmpty else {
+                throw RuleGenerator.wrongArguments(Split.name, arguments)
+            }
+            self.separator = separator
+        }
+        
+        func validate(value: Any?) -> (Errors?, ModifiedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            
+            if let value = value {
+                if !Utils.isPrimitive(value) { return (nil, nil) }
+                return (nil, modified(value: value))
+            }
+            return (nil, nil)
+        }
+        
+        func modified(value: Any) -> AnyObject {
+            guard let string = Utils.stringForm(value) else { return value as AnyObject }
+            var rest = string[...]
+            var parts: [String] = []
+            while let range = rest.range(of: separator, options: .literal) {
+                parts.append(String(rest[..<range.lowerBound]))
+                rest = rest[range.upperBound...]
+            }
+            parts.append(String(rest))
+            return parts as AnyObject
+        }
+    }
 }
+
