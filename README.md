@@ -135,6 +135,7 @@ Fixes that change LIVR 2.0 schemas that did not work as written:
  * A rule that is not registered is a schema error (see above); LIVR 2.0 ignored it.
  * `equal_to_field` (and the new `required_if` and `when`) inside an alias or an `or` branch compares with the fields next to the validated field.
  * `iso_date` with an argument that is not an options object (`{"iso_date": "today"}`) is a schema error, and dates use the proleptic Gregorian calendar (`1500-02-29` is not a date). `"iso_date"`, `{"iso_date": []}` and `{"iso_date": null}` work as before.
+ * `url` rejects a dot after the host (`https://example.com.`), host labels longer than 63 characters and ports above 65535, and accepts one-digit ports (`https://example.com:8`).
  * `eq` and `one_of` with a boolean also accept `"true"` and `"false"`.
 
 # Installation

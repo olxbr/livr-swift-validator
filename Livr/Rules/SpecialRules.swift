@@ -20,8 +20,23 @@ struct SpecialRules {
     struct URL: LivrRule, PreDefinedRule {
         static var name = "url"
         var errorCode: LIVR.ErrorCode = .wrongUrl
-        let regex = "^(?:(?:http|https|HTTP|HTTPS)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[0-1]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))\\.?|localhost)(?::\\d{2,5})?(?:[/?#]\\S*)?$"
+        let regex = URL.pattern
         var arguments: Any?
+        
+        // letters of host labels: Latin letters and U+00A1-U+FFFF, so Unicode hosts pass
+        private static let letter = "a-z\\u00a1-\\uffff"
+        // 1-63 characters, not starting or ending with "-"; "." is not in a label, so labels do not overlap
+        private static let label = "[\(letter)0-9](?:[\(letter)0-9-]{0,61}[\(letter)0-9])?"
+        // the first byte is 1-223, the last one is not 255
+        private static let ipv4 = "(?:[1-9]\\d?|1\\d\\d|2[0-1]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}"
+            + "(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))"
+        // 0-65535 in 1-5 digits
+        private static let port = "(?:[0-9]{1,4}|[0-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])"
+        // optional user info, then an IPv4 address, labels with a top-level domain of 2-63 letters or localhost,
+        // no dot after the host
+        private static let pattern = "^(?:(?:http|https|HTTP|HTTPS)://)(?:\\S+@)?"
+            + "(?:\(ipv4)|(?:\(label)\\.)+[\(letter)]{2,63}|localhost)"
+            + "(?::\(port))?(?:[/?#]\\S*)?$"
         
         init() {}
         
