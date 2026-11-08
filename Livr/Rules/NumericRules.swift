@@ -6,6 +6,8 @@
 //  Copyright © 2018 Felipe Marino. All rights reserved.
 //
 
+import Foundation
+
 typealias DecimalNum = Decimal
 
 struct NumericRules {
@@ -258,6 +260,75 @@ struct NumericRules {
                 }
             }
             return (nil, nil)
+        }
+    }
+    
+    // MARK: - LIVR 2.5
+    
+    /// true, false, 1, 0, "1", "0", "true" and "false" give a real boolean
+    struct Boolean: LivrRule, PreDefinedRule {
+        static var name = "boolean"
+        var errorCode: LIVR.ErrorCode = .notBoolean
+        var arguments: Any?
+        
+        init() {}
+        
+        mutating func prepare() throws {
+            try RuleGenerator.checkNoArguments(arguments, of: Boolean.name)
+        }
+        
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            guard let value = value, Utils.isPrimitive(value) else { return (LIVR.ErrorCode.format.rawValue, nil) }
+            
+            switch Utils.stringForm(value) {
+            case "true"?, "1"?: return (nil, true as AnyObject)
+            case "false"?, "0"?: return (nil, false as AnyObject)
+            default: return (errorCode.rawValue, nil)
+            }
+        }
+    }
+    
+    /// at most that many digits after the decimal point, trailing zeros do not count
+    struct MaxDecimals: LivrRule, PreDefinedRule {
+        static var name = "max_decimals"
+        var errorCode: LIVR.ErrorCode = .tooManyDecimals
+        var arguments: Any?
+        private var maxDecimals = 0
+        
+        init() {}
+        
+        mutating func prepare() throws {
+            guard let maxDecimals = Utils.nonNegativeInteger(Utils.argumentsList(arguments).first) else {
+                throw RuleGenerator.wrongArguments(MaxDecimals.name, arguments)
+            }
+            self.maxDecimals = maxDecimals
+        }
+        
+        func validate(value: Any?) -> (Errors?, UpdatedValue?) {
+            if Utils.hasNoValue(value) { return (nil, nil) }
+            guard let value = value, Utils.isPrimitive(value) else { return (LIVR.ErrorCode.format.rawValue, nil) }
+            if Utils.isBoolean(value) { return (LIVR.ErrorCode.notNumber.rawValue, nil) }
+            
+            // a number is counted in its string form, a string as it is written
+            var output: AnyObject?
+            let decimal: String
+            if let string = value as? String {
+                guard Utils.isDecimal(string), let number = Double(string), number.isFinite else {
+                    return (LIVR.ErrorCode.notNumber.rawValue, nil)
+                }
+                decimal = string
+                // the output is a number
+                output = string.contains(".") ? NSNumber(value: number) : Int(string).map { NSNumber(value: $0) } ?? NSNumber(value: number)
+            } else {
+                guard let stringForm = Utils.stringForm(value) else { return (LIVR.ErrorCode.notNumber.rawValue, nil) }
+                decimal = stringForm
+            }
+            
+            let fraction = decimal.split(separator: ".", omittingEmptySubsequences: false).dropFirst().first ?? ""
+            let decimals = fraction.utf8.reversed().drop(while: { $0 == 0x30 }).count
+            if decimals > maxDecimals { return (errorCode.rawValue, nil) }
+            return (nil, output)
         }
     }
 }

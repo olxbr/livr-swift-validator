@@ -115,6 +115,34 @@ class NegativeTests: XCTestCase {
         validate(testSuiteAt: .resourcesPath + "19-list_of")
     }
     
+    func testFirstErrorOfField() {
+        let rules: [String: Any?] = ["number": ["positive_integer", ["min_number": 5]]]
+        
+        let validator = LIVR.validator(validationRules: rules, isAutoTrim: false)
+        _ = try? validator.validate(data: ["number": "abc"])
+        
+        XCTAssertEqual(validator.errors?["number"] as? String, "NOT_POSITIVE_INTEGER")
+    }
+    
+    func testListsWithValidItemsBeforeErrors() {
+        let rules: [String: Any?] = ["list": ["list_of": "integer"],
+                                     "objects": ["list_of_objects": ["id": "integer"]]]
+        let input: [String: Any?] = ["list": [1, "x"],
+                                     "objects": [["id": 1], ["id": "x"]]]
+        
+        let validator = LIVR.validator(validationRules: rules, isAutoTrim: false)
+        guard let output = try? validator.validate(data: input) else {
+            XCTFail("validate should not throw")
+            return
+        }
+        XCTAssertNil(output)
+        
+        let errors = validator.errors ?? [:]
+        let expectedErrors: [String: Any] = ["list": [NSNull(), "NOT_INTEGER"],
+                                             "objects": [NSNull(), ["id": "NOT_INTEGER"]]]
+        XCTAssertTrue(errors.isEqual(to: expectedErrors), "\(errors)")
+    }
+    
     func testListOfObjects() {
         validate(testSuiteAt: .resourcesPath + "20-list_of_objects")
     }

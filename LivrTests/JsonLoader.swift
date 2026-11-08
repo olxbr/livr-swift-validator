@@ -32,7 +32,11 @@ struct JsonLoader {
     }
     
     private func loadJson<T>(for file: String) -> T {
+        #if SWIFT_PACKAGE
+        let bundle = Bundle.module
+        #else
         let bundle = Bundle.init(for: PositiveTests.classForCoder())
+        #endif
         guard let fileUrl = bundle.path(forResource: file,
                                         ofType: .json,
                                         inDirectory: directory) else {

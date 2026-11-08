@@ -5,6 +5,8 @@
 //  Created by Felipe Lefèvre Marino on 9/14/18.
 //
 
+import Foundation
+
 public final class Validator {
     
     /// Private queue used to apply thread safety
@@ -72,6 +74,26 @@ public final class Validator {
         set {
             queue.async(flags: .barrier) {
                 self.privateValidationRules = newValue
+            }
+        }
+    }
+    
+    /// Private preparedRulesByField property - holds the rules for each field once the validator is built
+    private var privatePreparedRulesByField: [Field: Rules]?
+    
+    /// preparedRulesByField property - applies thread safety to the preparedRulesByField dictionary
+    private var preparedRulesByField: [Field: Rules]? {
+        get {
+            var preparedRulesByField: [Field: Rules]? = nil
+            queue.sync {
+                preparedRulesByField = privatePreparedRulesByField
+            }
+    
+            return preparedRulesByField
+        }
+        set {
+            queue.async(flags: .barrier) {
+                self.privatePreparedRulesByField = newValue
             }
         }
     }
@@ -154,15 +176,18 @@ public final class Validator {
     
     public typealias Output = [String: Any?]
     
-    enum ErrorType: Error {
+    public enum ErrorType: Error {
         case notRegistered(rule: String),
         nilValidationRules,
-        emptyAliasName, emptyAliasRules
+        emptyAliasName, emptyAliasRules,
+        wrongArguments(rule: String, reason: String)
         
-        var description: String {
+        public var description: String {
             switch self {
             case .notRegistered(let ruleName):
                 return "Rule [" + ruleName + "] not registered"
+            case .wrongArguments(let ruleName, let reason):
+                return "Rule [" + ruleName + "]: " + reason
             case .emptyAliasName:
                 return "Alias should have a name key containing it's String name"
             case .emptyAliasRules:
@@ -183,9 +208,41 @@ public final class Validator {
         self.privateIsAutoTrim = isAutoTrim
     }
     
+    /// a validator for rules that are already prepared (nested_object, list_of_objects, ...)
+    init(rulesByField: [String: [LivrRule]], isAutoTrim: Bool) {
+        self.privateValidationRules = [:]
+        self.privatePreparedRulesByField = rulesByField
+        self.privateIsAutoTrim = isAutoTrim
+    }
+    
+    /// rules that create validators (nested_object, list_of, aliases, ...) use the same automatic trim setting
+    private func setAutoTrim(in rules: inout [LivrRule]) {
+        for (index, rule) in rules.enumerated() {
+            if var ruleThatCreatesValidator = rule as? LivrRule & RuleThatCreatesValidator {
+                ruleThatCreatesValidator.isAutoTrim = isAutoTrim
+                rules[index] = ruleThatCreatesValidator
+            }
+        }
+    }
+    
     private func insertCommonRulesIfNeeded(in rules: inout [LivrRule]) {
-        isAutoTrim ? rules.insert(ModifiersRules.Trim(), at: 0) : ()
+        setAutoTrim(in: &rules)
         allRequired ? rules.insert(CommonRules.Required(), at: 0) : ()
+        // the automatic trim comes first, so the other rules get the trimmed value
+        if isAutoTrim {
+            var autoTrim = ModifiersRules.Trim()
+            autoTrim.isAutoTrim = true
+            rules.insert(autoTrim, at: 0)
+        }
+    }
+    
+    /// with automatic trim, rules that compare fields get the trimmed value of the other field
+    private func autoTrimmedIfNeeded(_ data: [String: Any?]) -> [String: Any?] {
+        guard isAutoTrim else { return data }
+        return data.mapValues { (value: Any?) -> Any? in
+            guard let string = value as? String else { return value }
+            return string.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
     }
     
     public func registerRule(aliases: [[String: Any?]]) throws {
@@ -205,26 +262,33 @@ public final class Validator {
     
     public func register(customRule: CustomRule) {
         LIVR.register(rule: customRule)
+        preparedRulesByField = nil
     }
     
     public func registerRule(alias: String, rules: Any, errorCode: String? = nil) {
         
         let ruleAlias = RuleAlias(name: alias, errorCode: errorCode, rules: rules, isAutoTrim: isAutoTrim)
         LIVR.register(rule: ruleAlias)
+        preparedRulesByField = nil
     }
     
-    private func setRulesByField() throws {
+    /// Builds the rules of the validator. A rule that is not registered or has wrong arguments
+    /// throws (a schema error). Calling it first is optional: `validate(data:)` builds the rules too
+    /// and throws the same errors.
+    public func prepare() throws {
+        guard preparedRulesByField == nil else { return }
         guard let validationRules = validationRules else { throw ErrorType.nilValidationRules }
-        rulesByField = [:]
-        
-        for pairOfFieldAndValidationRules in validationRules {
-            let field = pairOfFieldAndValidationRules.key
-            let validationRules = pairOfFieldAndValidationRules.value
-            
-            if let rules = RuleGenerator.generateRules(from: validationRules) {
-                rulesByField?[field] = rules
+        preparedRulesByField = try Validator.rulesByField(from: validationRules)
+    }
+    
+    static func rulesByField(from validationRules: [String: Any?]) throws -> [Field: Rules] {
+        var rulesByField: [Field: Rules] = [:]
+        for (field, validationRules) in validationRules {
+            if let rules = try RuleGenerator.generateRules(from: validationRules) {
+                rulesByField[field] = rules
             }
         }
+        return rulesByField
     }
     
     // MARK: - Validating
@@ -232,9 +296,14 @@ public final class Validator {
     @discardableResult
     public func validate(data: [String: Any?]) throws -> Output? {
         
-        try setRulesByField()
+        try prepare()
+        rulesByField = preparedRulesByField
         
-        validatingData = data
+        // the validator can be used more than once
+        errors = nil
+        // valid data without any of the fields gives an empty output
+        output = [:]
+        validatingData = autoTrimmedIfNeeded(data)
         
         guard let rulesByField = rulesByField else { return nil }
         for case let field in rulesByField.keys {
@@ -258,17 +327,35 @@ public final class Validator {
     @discardableResult
     public func validate(value: Any?, validationRules: Any?) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
         
-        guard var rules = RuleGenerator.generateRules(from: validationRules) else { return (nil, nil) }
+        let rules = try? RuleGenerator.generateRules(from: validationRules)
+        guard let fieldRules = rules ?? nil else { return (nil, nil) }
+        return validate(value: value, fieldRules: fieldRules)
+    }
+    
+    /// validates a value without a containing object (an item of list_of, a value of values) with the
+    /// rules of a field, including the automatic trim
+    func validate(value: Any?, fieldRules rules: [LivrRule]) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
+        
+        var rules = rules
         insertCommonRulesIfNeeded(in: &rules)
         return validate(value: value, rules: rules)
     }
     
     @discardableResult
     public func validate(value: Any?, rules: [LivrRule]) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
+        return validate(value: value, rules: rules, in: nil)
+    }
+    
+    /// the rules of aliases, or and when see the object that contains the field
+    func validate(value: Any?, rules: [LivrRule], in object: [String: Any?]?) -> (LivrRule.Errors, LivrRule.UpdatedValue?) {
+        
+        var rules = rules
+        setAutoTrim(in: &rules)
         
         var updatedValue: AnyObject?
         for rule in rules {
-            let errorAndUpdatedValue = rule.validate(value: value)
+            // each rule gets the value updated by the previous ones
+            let errorAndUpdatedValue = rule.validate(value: updatedValue ?? value, in: object)
             
             if let error = errorAndUpdatedValue.0 {
                 return (error, nil)
@@ -284,35 +371,30 @@ public final class Validator {
         guard var rules = rulesByField?[field] else { return }
         insertCommonRulesIfNeeded(in: &rules)
         
-        for (index, rule) in rules.enumerated() {
-            if var ruleThatCompareFields = rule as? RuleThatCompareFields {
-                if let fieldToCompareValue = rule.arguments as? String, let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
-                    
-                    ruleThatCompareFields.otherFieldValue = valueToCompare
-                    rules[index] = ruleThatCompareFields
-                } else if let arguments = rule.arguments as? [Any], let fieldToCompareValue = arguments.first as? String,
-                    let validatingData = validatingData, let valueToCompare = validatingData[fieldToCompareValue] {
-                    
-                    ruleThatCompareFields.otherFieldValue = valueToCompare
-                    rules[index] = ruleThatCompareFields
-                }
-            }
-            
-            let errorAndUpdatedValue = rules[index].validate(value: value)
+        // each rule gets the value updated by the previous ones
+        var value = value
+        let validatingData = self.validatingData
+        for rule in rules {
+            let errorAndUpdatedValue = rule.validate(value: value, in: validatingData)
             if let error = errorAndUpdatedValue.0 {
                 errors == nil ? errors = [:] : ()
                 errors?[field] = error
                 output = nil
-            } else if errors == nil && (isAnInputedValue || rule is ModifiersRules.Default) {
+                break
+            } else if errors == nil && (isAnInputedValue || errorAndUpdatedValue.1 != nil) {
                 output == nil ? output = [:] : ()
                 
                 if rule is MetaRules.NestedObject {
-                    output?[field] = errorAndUpdatedValue.1 ?? [:]
+                    output?[field] = errorAndUpdatedValue.1 ?? value
                 } else if output?[field] == nil {
                     output?[field] = errorAndUpdatedValue.1 ?? value
                 } else if let updatedValue = errorAndUpdatedValue.1 {
                     output?[field] = updatedValue
                 }
+            }
+            
+            if let updatedValue = errorAndUpdatedValue.1 {
+                value = updatedValue
             }
         }
         
